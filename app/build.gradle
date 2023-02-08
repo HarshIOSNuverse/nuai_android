@@ -1,24 +1,63 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
     namespace 'com.nuai'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.nuai"
         minSdk 21
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        targetSdk 33
+        versionCode Integer.parseInt(version_code)
+        versionName app_version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "APP_VERSION", "\"${app_version}\""
+        buildConfigField "String", "API_VERSION", "\"${api_version}\""
+        buildConfigField "String", "CLIENT_ID", "\"" + productionClientId + "\""
+        buildConfigField "String", "CLIENT_SECRET", "\"" + productionClientSecret + "\""
     }
 
-    buildTypes {
+    signingConfigs {
+        debug {
+//            storeFile file(keyStoreDebug)
+        }
+
         release {
+//            storeFile file(keyStoreRelease)
+//            keyAlias keyStoreAlias
+//            keyPassword keyStorePass
+//            storePassword keyStoreAliasPass
+        }
+    }
+    buildTypes {
+
+        debug {
+            signingConfig signingConfigs.debug
+
+            buildConfigField "String", "BASE_URL", "\"${debugBaseUrl}\""
+            buildConfigField "String", "BASE_URL_PROTOCOL", "\"HTTPS\""
+            buildConfigField "boolean", "ENABLED", "" + true + ""
+            buildConfigField("String", "PREF_FILE", "\"" + prefFile + "\"")
+            buildConfigField("String", "PREF_APP_FILE", "\"" + prefAppFile + "\"")
+            buildConfigField "boolean", "DEBUG", "" + true + ""
+        }
+
+        release {
+            signingConfig signingConfigs.release
+
+            buildConfigField "String", "BASE_URL", "\"${liveBaseUrl}\""
+            buildConfigField "String", "BASE_URL_PROTOCOL", "\"HTTPS\""
+            buildConfigField "boolean", "ENABLED", "" + false + ""
+            buildConfigField("String", "PREF_FILE", "\"" + prefFile + "\"")
+            buildConfigField("String", "PREF_APP_FILE", "\"" + prefAppFile + "\"")
+            buildConfigField "boolean", "DEBUG", "" + false + ""
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -30,15 +69,43 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    implementation 'com.google.dagger:hilt-android:2.44'
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation 'androidx.activity:activity-ktx:1.6.1'
+    implementation "androidx.fragment:fragment-ktx:1.5.5"
+    implementation 'com.squareup:javapoet:1.13.0'
+
+    // Networking
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.okhttp3:okhttp:4.9.3"
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+
+    // Coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:{latest-version}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:{latest-version}"
+
+    // Image cropper
+//    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+
+    // Image load
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }
