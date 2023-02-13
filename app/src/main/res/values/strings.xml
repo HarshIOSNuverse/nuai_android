@@ -58,7 +58,7 @@
     <string name="password_didnt_match">Password didn\'t match</string>
     <string name="pls_enter_weight">Please enter weight</string>
     <string name="pls_enter_height">Please enter height</string>
-<string name="password_guidelines">Password Guidelines:</string>
+    <string name="password_guidelines">Password Guidelines:</string>
     <string name="password_guideline_1">Must have 1 uppercase letter and 1 special character (!@#$%^&amp;).</string>
     <string name="password_guideline_2">Must have at least 8 but not exceed 20 alphanumeric characters.</string>
     <string name="password_guideline_3">Must not contain spaces.</string>
@@ -66,4 +66,10 @@
     <string name="activation_code_sent_on_email_msg">Please enter the activation code sent  to your email address.</string>
     <string name="activate">Activate</string>
     <string name="resend_activation_code">Resend Activation Code</string>
+    <string name="before_getting_started">Before getting started</string>
+    <string name="continue_">Continue</string>
+    <string name="before_started_msg">This App is NOT a medical or diagnostic product.\n\nMeasurements provided by this application are intended for informational purposes only and aim to promote general wellness.\n\nThe measured indicators are not intended for medical purposes; they are designed only for general fitness and wellness.\n\nYour data and measurements will be stored and processed by the App.</string>
+    <string name="term_check_full_text">I have read and agree to the Terms of Use and the Privacy Policy.</string>
+    <string name="term_of_use">Terms of Use</string>
+    <string name="privacy_policy">Privacy Policy</string>
 </resources>

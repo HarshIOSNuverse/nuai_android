@@ -98,7 +98,7 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.activate_btn -> {
-                TutorialActivity.startActivity(this)
+                AcceptTermsAndConditionActivity.startActivity(this)
             }
             R.id.resend_text -> {
                 startCountDownTimer()
