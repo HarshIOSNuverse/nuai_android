@@ -111,6 +111,7 @@ class TutorialActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.get_started_btn_text -> {
+
             }
         }
     }

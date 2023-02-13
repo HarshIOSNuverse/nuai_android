@@ -82,6 +82,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             R.id.login_btn -> {
                 binding.emailDivider.setBackgroundColor(normalColor)
                 binding.passwordDivider.setBackgroundColor(normalColor)
+                binding.emailErrorText.visibility = View.GONE
+                binding.passwordErrorText.visibility = View.GONE
                 val email = binding.emailEdit.text.toString().trim()
                 val password = binding.passwordEdit.text.toString().trim()
                 if (email.isEmpty()) {
@@ -104,6 +106,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.forgot_pwd_text -> {
                 ForgotPasswordActivity.startActivity(this)
+            }
+            R.id.dont_have_account_text -> {
+                RegisterActivity.startActivity(this)
+                finish()
+                AnimationsHandler.playActivityAnimation(
+                    this, AnimationsHandler.Animations.RightToLeft
+                )
             }
         }
     }

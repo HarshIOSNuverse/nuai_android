@@ -99,8 +99,12 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.register_btn -> {
-                binding.emailDivider.setBackgroundColor(normalColor)
                 binding.firstDivider.setBackgroundColor(normalColor)
+                binding.firstErrorText.visibility = View.GONE
+                binding.lastDivider.setBackgroundColor(normalColor)
+                binding.lastErrorText.visibility = View.GONE
+                binding.emailDivider.setBackgroundColor(normalColor)
+                binding.emailErrorText.visibility = View.GONE
                 val email = binding.emailEdit.text.toString().trim()
                 val firstName = binding.firstEdit.text.toString().trim()
                 if (email.isEmpty()) {
