@@ -108,4 +108,7 @@ dependencies {
     // Image load
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    // Page indicator
+    implementation 'com.tbuonomo:dotsindicator:4.2'
+
 }
