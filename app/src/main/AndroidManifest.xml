@@ -53,7 +53,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Nuai.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
-
+        <activity
+            android:name=".onboarding.ui.activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        
 
         <provider
             android:name=".utils.GenericFileProvider"
