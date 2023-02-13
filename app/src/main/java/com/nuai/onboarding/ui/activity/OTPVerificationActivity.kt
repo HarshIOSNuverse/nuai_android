@@ -11,7 +11,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.nuai.R
 import com.nuai.base.BaseActivity
-import com.nuai.databinding.EnterActivationCodeActivityBinding
+import com.nuai.databinding.OtpVerificationActivityBinding
 import com.nuai.utils.AnimationsHandler
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -19,10 +19,10 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
+class OTPVerificationActivity : BaseActivity(), View.OnClickListener {
     companion object {
         fun startActivity(activity: Activity) {
-            Intent(activity, EnterActivationCodeActivity::class.java).run {
+            Intent(activity, OTPVerificationActivity::class.java).run {
                 activity.startActivity(this)
                 AnimationsHandler.playActivityAnimation(
                     activity, AnimationsHandler.Animations.RightToLeft
@@ -31,11 +31,11 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private lateinit var binding: EnterActivationCodeActivityBinding
+    private lateinit var binding: OtpVerificationActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.enter_activation_code_activity)
+        binding = DataBindingUtil.setContentView(this, R.layout.otp_verification_activity)
         initClickListener()
         startCountDownTimer()
     }
@@ -85,7 +85,7 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 enableDisableButton(
-                    binding.activateBtn,
+                    binding.resetPwdBtn,
                     binding.lineField.text.toString().trim().length == 6
                 )
             }
@@ -97,7 +97,7 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.activate_btn -> {
+            R.id.reset_pwd_btn -> {
                 AcceptTermsAndConditionActivity.startActivity(this)
             }
             R.id.resend_text -> {

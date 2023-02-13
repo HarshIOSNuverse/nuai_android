@@ -26,5 +26,6 @@
     <color name="background_color">#F8F8F8</color>
     <color name="divider_color">#E0E0E0</color>
     <color name="error_msg_text_color">#E13D3C</color>
+    <color name="otp_timer_text_color">#E13D3C</color>
 
 </resources>

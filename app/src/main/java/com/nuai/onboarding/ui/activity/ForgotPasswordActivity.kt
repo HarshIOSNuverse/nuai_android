@@ -85,7 +85,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                     binding.emailErrorText.visibility = View.VISIBLE
                     return
                 } else {
-                    TutorialActivity.startActivity(this)
+                    OTPVerificationActivity.startActivity(this)
                 }
             }
         }

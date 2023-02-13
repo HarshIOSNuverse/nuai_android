@@ -74,4 +74,8 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="hello">Hello</string>
     <string name="you_are_registered_now">You‘re now a registered user!</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="otp_code_sent_on_email_msg">Please enter the OTP sent to your registered email address.</string>
+    <string name="didnt_received_otp">Didn\'t received the OTP?</string>
+    <string name="resend">Resend</string>
 </resources>
