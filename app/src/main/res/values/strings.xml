@@ -54,5 +54,12 @@
     <string name="enter_a_strong_password">Enter a strong password</string>
     <string name="submit">Submit</string>
     <string name="confirm_password">Confirm Password</string>
-
+    <string name="password_didnt_match_the_guidelines">Password didn\'t match the guidelines</string>
+    <string name="password_didnt_match">Password didn\'t match</string>
+    <string name="pls_enter_weight">Please enter weight</string>
+    <string name="pls_enter_height">Please enter height</string>
+<string name="password_guidelines">Password Guidelines:</string>
+    <string name="password_guideline_1">Must have 1 uppercase letter and 1 special character (!@#$%^&amp;).</string>
+    <string name="password_guideline_2">Must have at least 8 but not exceed 20 alphanumeric characters.</string>
+    <string name="password_guideline_3">Must not contain spaces.</string>
 </resources>

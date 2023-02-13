@@ -61,6 +61,6 @@
     <dimen name="sp_40">40sp</dimen>
     <dimen name="sp_45">45sp</dimen>
     <dimen name="onboading_header_text_size">30sp</dimen>
-    <dimen name="spinner_item_vertical_padding">5dp</dimen>
+    <dimen name="spinner_item_vertical_padding">7dp</dimen>
     <dimen name="spinner_item_padding">5dp</dimen>
 </resources>

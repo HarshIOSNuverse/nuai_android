@@ -306,23 +306,13 @@ object CommonUtils {
 
     fun isValidPassword(password: String): Boolean {
         val pattern: Pattern
-        //        val specialCharacters = "-@%\\[\\}+'!/#$^?:;,\\(\"\\)~`.*=&\\{>\\]<_"
+        val specialCharacters = "-@%\\[\\}+'!/#$^?:;,\\(\"\\)~`.*=&\\{>\\]<_"
         val passwordExp =
-            "^(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8,20}$"
+//            "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[$specialCharacters])(?=\\S+$).{8,20}$"
+            "^(?=.*[a-zA-Z])(?=.*[$specialCharacters])(?=\\S+$).{8,20}$"
         pattern = Pattern.compile(passwordExp)
         val matcher: Matcher = pattern.matcher(password)
-//        return if (matcher.matches()) {
-//            val patternSP: Pattern
-//            val matcherSP: Matcher
-//            val passwordRegExp =
-//                "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[$specialCharacters])(?=\\S+$).{8,20}$"
-//            patternSP = Pattern.compile(passwordRegExp)
-//            matcherSP = patternSP.matcher(password)
-//            !matcherSP.matches()
-//        } else {
         return matcher.matches()
-//        }
-
     }
 
 //    fun isAlphaNumeric(password: String): Boolean {

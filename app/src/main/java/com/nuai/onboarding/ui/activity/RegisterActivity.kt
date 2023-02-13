@@ -118,7 +118,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                     binding.firstErrorText.text = getString(R.string.pls_enter_first_name)
                     return
                 } else {
-                    TutorialActivity.startActivity(this)
+                    CreatePasswordActivity.startActivity(this)
                 }
             }
             R.id.already_have_account_text -> {
