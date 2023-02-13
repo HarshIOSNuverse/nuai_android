@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:padding="@dimen/dp_25"
+        tools:context=".onboarding.ui.activity.SplashActivity">
+
+        <ImageView
+            android:id="@+id/ivBgImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:onClick="@{onClickListener}"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivLogoImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_45"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/login_app_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title_txt"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:gravity="center_horizontal"
+            android:text="@string/create_an_account"
+            android:textSize="@dimen/onboading_header_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivLogoImage" />
+
+        <View
+            android:id="@+id/top_divider"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_0_7"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@color/divider_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_txt" />
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:scrollbars="none"
+            android:verticalScrollbarPosition="defaultPosition"
+            app:layout_constraintBottom_toTopOf="@+id/register_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.32"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_divider"
+            app:layout_constraintVertical_bias="0.0">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/first_edit"
+                    style="@style/EditTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:background="@null"
+                    android:hint="@string/first_name"
+                    android:inputType="textEmailAddress"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/first_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_0_7"
+                    android:background="@color/et_hint_color"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/first_edit" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/first_error_text"
+                    style="@style/TextViewStyleRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:drawableStart="@drawable/error_info"
+                    android:drawablePadding="@dimen/dp_5"
+                    android:text="@string/email_not_found_msg"
+                    android:textColor="@color/error_msg_text_color"
+                    android:textSize="@dimen/sp_14"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/first_divider" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/last_edit"
+                    style="@style/EditTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:background="@null"
+                    android:hint="@string/last_name"
+                    android:inputType="textEmailAddress"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/first_error_text" />
+
+                <View
+                    android:id="@+id/last_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_0_7"
+                    android:background="@color/et_hint_color"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/last_edit" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/last_error_text"
+                    style="@style/TextViewStyleRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:drawableStart="@drawable/error_info"
+                    android:drawablePadding="@dimen/dp_5"
+                    android:text="@string/email_not_found_msg"
+                    android:textColor="@color/error_msg_text_color"
+                    android:textSize="@dimen/sp_14"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/last_divider" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cr_email"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_30"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/last_error_text">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/email_edit"
+                        style="@style/EditTextStyle"
+                        android:layout_width="0dp"
+                        android:background="@null"
+                        android:hint="@string/email_address"
+                        android:inputType="textEmailAddress"
+                        app:layout_constraintBottom_toTopOf="@+id/email_divider"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_email"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/iv_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/todo"
+                        android:onClick="@{onClickListener}"
+                        android:src="@drawable/tick"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/email_edit"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/email_edit"
+                        app:layout_constraintTop_toTopOf="@+id/email_edit" />
+
+                    <View
+                        android:id="@+id/email_divider"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_0_7"
+                        android:layout_marginBottom="@dimen/dp_5"
+                        android:background="@color/et_hint_color"
+                        app:layout_constraintBottom_toTopOf="@+id/email_error_text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/email_error_text"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/error_info"
+                        android:drawablePadding="@dimen/dp_5"
+                        android:text="@string/email_not_found_msg"
+                        android:textColor="@color/error_msg_text_color"
+                        android:textSize="@dimen/sp_14"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cr_dob"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:onClick="@{onClickListener}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cr_email">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/dob_edit"
+                        style="@style/EditTextStyle"
+                        android:layout_width="0dp"
+                        android:background="@null"
+                        android:focusable="false"
+                        android:hint="@string/date_of_birth"
+                        android:inputType="text"
+                        android:onClick="@{onClickListener}"
+                        app:layout_constraintBottom_toTopOf="@+id/dob_divider"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_dob"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/iv_dob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/todo"
+                        android:padding="@dimen/dp_5"
+                        android:src="@drawable/calendar"
+                        app:layout_constraintBottom_toBottomOf="@+id/dob_edit"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/dob_edit"
+                        app:layout_constraintTop_toTopOf="@+id/dob_edit" />
+
+                    <View
+                        android:id="@+id/dob_divider"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_0_7"
+                        android:layout_marginBottom="@dimen/dp_5"
+                        android:background="@color/et_hint_color"
+                        app:layout_constraintBottom_toTopOf="@+id/dob_error_text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/dob_error_text"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/error_info"
+                        android:drawablePadding="@dimen/dp_5"
+                        android:text="@string/please_select_dob"
+                        android:textColor="@color/error_msg_text_color"
+                        android:textSize="@dimen/sp_14"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cr_gender"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_50"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:onClick="@{onClickListener}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cr_dob">
+
+                    <Spinner
+                        android:id="@+id/gender_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="-5dp"
+                        android:background="@android:color/transparent"
+                        app:layout_constraintBottom_toTopOf="@+id/gender_divider"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/iv_gender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/todo"
+                        android:paddingEnd="@dimen/dp_5"
+                        android:src="@drawable/down_arrow"
+                        app:layout_constraintBottom_toBottomOf="@+id/gender_spinner"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/gender_spinner"
+                        tools:ignore="RtlSymmetry" />
+
+                    <View
+                        android:id="@+id/gender_divider"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_0_7"
+                        android:layout_marginBottom="@dimen/dp_5"
+                        android:background="@color/et_hint_color"
+                        app:layout_constraintBottom_toTopOf="@+id/gender_error_text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/gender_error_text"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/error_info"
+                        android:drawablePadding="@dimen/dp_5"
+                        android:text="@string/please_select_gender"
+                        android:textColor="@color/error_msg_text_color"
+                        android:textSize="@dimen/sp_14"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/weight_edit"
+                    style="@style/EditTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:background="@null"
+                    android:hint="@string/weight_in_kg"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cr_gender" />
+
+                <View
+                    android:id="@+id/weight_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_0_7"
+                    android:background="@color/et_hint_color"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/weight_edit" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/weight_error_text"
+                    style="@style/TextViewStyleRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:drawableStart="@drawable/error_info"
+                    android:drawablePadding="@dimen/dp_5"
+                    android:text="@string/email_not_found_msg"
+                    android:textColor="@color/error_msg_text_color"
+                    android:textSize="@dimen/sp_14"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/weight_divider" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/height_edit"
+                    style="@style/EditTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:background="@null"
+                    android:hint="@string/height_in_cms"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/weight_error_text" />
+
+                <View
+                    android:id="@+id/height_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_0_7"
+                    android:background="@color/et_hint_color"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/height_edit" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/height_error_text"
+                    style="@style/TextViewStyleRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:layout_marginBottom="@dimen/dp_30"
+                    android:drawableStart="@drawable/error_info"
+                    android:drawablePadding="@dimen/dp_5"
+                    android:text="@string/email_not_found_msg"
+                    android:textColor="@color/error_msg_text_color"
+                    android:textSize="@dimen/sp_14"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/height_divider" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </ScrollView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/register_btn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:background="@drawable/rc_gray_filled_c25"
+            android:enabled="false"
+            android:fontFamily="@font/switzer_medium"
+            android:onClick="@{onClickListener}"
+            android:text="@string/register"
+            android:textAllCaps="false"
+            android:textColor="@color/disabled_btn_text_color"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintBottom_toTopOf="@+id/already_have_account_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/already_have_account_text"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:gravity="center_horizontal"
+            android:onClick="@{onClickListener}"
+            android:padding="@dimen/dp_5"
+            android:text="@string/already_have_account"
+            android:textColor="@color/blue_text_color"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
