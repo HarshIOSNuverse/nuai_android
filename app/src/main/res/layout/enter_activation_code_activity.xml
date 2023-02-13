@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:padding="@dimen/dp_25"
+        tools:context=".onboarding.ui.activity.SplashActivity">
+
+        <ImageView
+            android:id="@+id/ivLogoImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_45"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/login_app_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title_txt"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:gravity="center_horizontal"
+            android:text="@string/enter_activation_code"
+            android:textSize="@dimen/onboading_header_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivLogoImage" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/message_txt"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:gravity="center_horizontal"
+            android:text="@string/activation_code_sent_on_email_msg"
+            android:textColor="@color/secondary_text_color"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_txt" />
+
+        <com.poovam.pinedittextfield.SquarePinField
+            android:id="@+id/lineField"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="-5dp"
+            android:layout_marginTop="@dimen/dp_25"
+            android:layout_marginEnd="-5dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/switzer_medium"
+            android:includeFontPadding="false"
+            android:inputType="numberPassword"
+            android:textSelectHandle="@drawable/text_handle"
+            android:textSize="@dimen/sp_30"
+            app:bottomTextPaddingDp="@dimen/dp_1"
+            app:cornerRadius="5dp"
+            app:fieldBgColor="@color/white"
+            app:highlightColor="@color/theme_color"
+            app:highlightEnabled="true"
+            app:highlightSingleFieldMode="true"
+            app:isCursorEnabled="true"
+            app:isCustomBackground="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/message_txt"
+            app:lineThickness="@dimen/dp_1"
+            app:noOfFields="6" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/activate_btn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginTop="@dimen/dp_40"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:background="@drawable/rc_gray_filled_c25"
+            android:enabled="false"
+            android:fontFamily="@font/switzer_medium"
+            android:onClick="@{onClickListener}"
+            android:text="@string/activate"
+            android:textAllCaps="false"
+            android:textColor="@color/disabled_btn_text_color"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lineField" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/resend_text"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/dp_30"
+            android:gravity="center_horizontal"
+            android:onClick="@{onClickListener}"
+            android:padding="@dimen/dp_5"
+            android:visibility="gone"
+            android:text="@string/resend_activation_code"
+            android:textColor="@color/blue_text_color"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activate_btn" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/timer_text"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/dp_30"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/dp_5"
+            android:text="@string/resend_activation_code"
+            android:textColor="@color/primary_text_color"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activate_btn" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

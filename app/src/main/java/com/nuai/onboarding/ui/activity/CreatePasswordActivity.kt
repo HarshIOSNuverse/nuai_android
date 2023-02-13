@@ -102,7 +102,7 @@ class CreatePasswordActivity : BaseActivity(), View.OnClickListener {
                     binding.confirmPasswordErrorText.visibility = View.VISIBLE
                     return
                 } else {
-                    TutorialActivity.startActivity(this)
+                    EnterActivationCodeActivity.startActivity(this)
                 }
             }
             R.id.forgot_pwd_text -> {

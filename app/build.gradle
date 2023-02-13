@@ -110,5 +110,6 @@ dependencies {
 
     // Page indicator
     implementation 'com.tbuonomo:dotsindicator:4.2'
-
+    // OTP edit fields
+    implementation 'com.github.poovamraj:PinEditTextField:1.2.6'
 }

@@ -62,4 +62,8 @@
     <string name="password_guideline_1">Must have 1 uppercase letter and 1 special character (!@#$%^&amp;).</string>
     <string name="password_guideline_2">Must have at least 8 but not exceed 20 alphanumeric characters.</string>
     <string name="password_guideline_3">Must not contain spaces.</string>
+    <string name="enter_activation_code">Enter activation code</string>
+    <string name="activation_code_sent_on_email_msg">Please enter the activation code sent  to your email address.</string>
+    <string name="activate">Activate</string>
+    <string name="resend_activation_code">Resend Activation Code</string>
 </resources>
