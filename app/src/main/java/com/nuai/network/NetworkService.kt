@@ -3,6 +3,10 @@ package com.nuai.network
 import android.content.Context
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
+import com.nuai.onboarding.model.api.request.*
+import com.nuai.onboarding.model.api.response.LoginResponse
+import com.nuai.onboarding.model.api.response.MyProfileResponse
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -43,16 +47,62 @@ constructor(
      * all the Service all s to use for the retrofit requests.
      */
     interface NetworkAPI {
+//        @Headers("$HEADER_BEAR: true")
+//        @POST(Url.API + "register-device")
+//        suspend fun registerDeviceToken(@Body request: RegisterTokenRequest): Response<CommonResponse?>
+//
+//        @Headers("$HEADER_BEAR: true")
+//        @POST(Url.API + "unregister-device")
+//        suspend fun unregisterToken(
+//            @Query("push_type") pushType: String, @Query("token") token: String?
+//        ): Response<CommonResponse?>
 
-       /* @Headers("$HEADER_BEAR: true")
-        @POST(Url.API + "register-device")
-        suspend fun registerDeviceToken(@Body request: RegisterTokenRequest): Response<CommonResponse?>
+        @Headers("$HEADER_BEAR: false")
+        @POST(Url.API + "login")
+        suspend fun login(@Body request: LoginRequest?): Response<LoginResponse?>
 
         @Headers("$HEADER_BEAR: true")
-        @POST(Url.API + "unregister-device")
-        suspend fun unregisterToken(
-            @Query("push_type") pushType: String, @Query("token") token: String?
-        ): Response<CommonResponse?>*/
+        @GET(Url.API + "me")
+        suspend fun getMe(): Response<MyProfileResponse?>
+
+        @Headers("$HEADER_BEAR: false")
+        @POST(Url.API + "signup")
+        suspend fun signUp(@Body request: RegisterRequest?): Response<LoginResponse?>
+
+        @Headers("$HEADER_BEAR: false")
+        @POST(Url.API + "verify-otp")
+        suspend fun verifyOTPForgotPassword(@Body request: VerifyOTPRequest?): Response<CommonResponse?>
+
+        @Headers("$HEADER_BEAR: false")
+        @POST(Url.API + "resend-otp")
+        suspend fun resendOTPForgotPassword(@Body request: ForgotPasswordRequest): Response<CommonResponse?>
+
+        @Headers("$HEADER_BEAR: true")
+        @POST(Url.API + "otp/verify")
+        suspend fun verifyOTP(@Body request: VerifyOTPRequest?): Response<CommonResponse?>
+
+        @Headers("$HEADER_BEAR: true")
+        @POST(Url.API + "otp/resend")
+        suspend fun resendOTP(): Response<CommonResponse?>
+
+        @Headers("$HEADER_BEAR: false")
+        @POST(Url.API + "forgot-password")
+        suspend fun forgotPassword(@Body request: ForgotPasswordRequest?): Response<CommonResponse?>
+
+        @Headers("$HEADER_BEAR:false")
+        @POST(Url.API + "reset/password")
+        suspend fun resetPassword(@Body request: ResetPasswordRequest?): Response<CommonResponse?>
+
+
+        /* @Headers("$HEADER_BEAR: true")
+         @POST(Url.API + "register-device")
+         suspend fun registerDeviceToken(@Body request: RegisterTokenRequest): Response<CommonResponse?>
+
+         @Headers("$HEADER_BEAR: true")
+         @POST(Url.API + "unregister-device")
+         suspend fun unregisterToken(
+             @Query("push_type") pushType: String, @Query("token") token: String?
+         ): Response<CommonResponse?>*/
     }
 
     companion object {

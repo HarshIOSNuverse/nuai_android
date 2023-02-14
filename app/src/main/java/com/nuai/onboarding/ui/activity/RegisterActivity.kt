@@ -13,10 +13,12 @@ import androidx.databinding.DataBindingUtil
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.RegisterActivityBinding
+import com.nuai.onboarding.model.api.request.RegisterRequest
 import com.nuai.onboarding.ui.adapters.SpinnerAdapter
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.CommonUtils
 import com.nuai.utils.DateFormatter
+import com.nuai.utils.Enums
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import kotlin.collections.ArrayList
@@ -54,8 +56,12 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
 
     private fun initClickListener() {
         binding.onClickListener = this
-        binding.emailEdit.addTextChangedListener(textWatcher)
         binding.firstEdit.addTextChangedListener(textWatcher)
+        binding.lastEdit.addTextChangedListener(textWatcher)
+        binding.emailEdit.addTextChangedListener(textWatcher)
+        binding.dobEdit.addTextChangedListener(textWatcher)
+        binding.weightEdit.addTextChangedListener(textWatcher)
+        binding.heightEdit.addTextChangedListener(textWatcher)
     }
 
     private val textWatcher = object : TextWatcher {
@@ -63,21 +69,26 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            enableDisableButton(
-                binding.registerBtn,
-                (binding.firstEdit.text.toString().trim().isNotEmpty()
-                        && binding.lastEdit.text.toString().trim().isNotEmpty()
-                        && binding.emailEdit.text.toString().trim().isNotEmpty()
-//                        && binding.firstEdit.text.toString().trim().isNotEmpty()
-//                        && binding.firstEdit.text.toString().trim().isNotEmpty()
-//                        && binding.firstEdit.text.toString().trim().isNotEmpty()
-                        )
-
-            )
+            updateButtonView()
         }
 
         override fun afterTextChanged(s: Editable?) {
         }
+    }
+
+    private fun updateButtonView() {
+        enableDisableButton(
+            binding.registerBtn,
+            (binding.firstEdit.text.toString().trim().isNotEmpty()
+                    && binding.lastEdit.text.toString().trim().isNotEmpty()
+                    && binding.emailEdit.text.toString().trim().isNotEmpty()
+                    && binding.dobEdit.text.toString().trim().isNotEmpty()
+                    && binding.genderSpinner.selectedItemPosition > 0
+                    && binding.heightEdit.text.toString().trim().isNotEmpty()
+                    && binding.weightEdit.text.toString().trim().isNotEmpty()
+                    )
+
+        )
     }
 
     override fun onClick(v: View?) {
@@ -122,7 +133,17 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                     binding.firstErrorText.text = getString(R.string.pls_enter_first_name)
                     return
                 } else {
-                    CreatePasswordActivity.startActivity(this)
+                    val request = RegisterRequest(
+                        binding.firstEdit.text.toString().trim(),
+                        binding.lastEdit.text.toString().trim(),
+                        binding.emailEdit.text.toString().trim(),
+                        dob,
+                        if (binding.genderSpinner.selectedItemPosition == 1) Enums.Gender.MALE.toString() else Enums.Gender.FEMALE.toString(),
+                        binding.weightEdit.text.toString().trim().toInt(),
+                        binding.heightEdit.text.toString().trim().toInt(),
+                        null
+                    )
+                    CreatePasswordActivity.startActivity(this, request)
                 }
             }
             R.id.already_have_account_text -> {

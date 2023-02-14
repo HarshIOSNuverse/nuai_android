@@ -87,6 +87,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Nuai.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".onboarding.ui.activity.ResetPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".onboarding.ui.activity.ResetPasswordSuccessActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".home.ui.activity.HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
 
         <provider
             android:name=".utils.GenericFileProvider"

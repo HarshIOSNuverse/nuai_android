@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.SplashAnimationActivityBinding
+import com.nuai.home.ui.activity.HomeActivity
+import com.nuai.utils.Pref
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -46,7 +48,11 @@ class SplashAnimationActivity : BaseActivity() {
         mAnimationSet.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
-                LoginRegisterActivity.startActivity(this@SplashAnimationActivity)
+                if (Pref.user != null) {
+                    HomeActivity.startActivity(this@SplashAnimationActivity)
+                } else {
+                    LoginRegisterActivity.startActivity(this@SplashAnimationActivity)
+                }
             }
         })
         mAnimationSet.start()

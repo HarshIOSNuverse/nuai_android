@@ -76,6 +76,7 @@
             app:highlightSingleFieldMode="true"
             app:isCursorEnabled="true"
             app:isCustomBackground="false"
+            android:textColor="@color/et_text_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/message_txt"

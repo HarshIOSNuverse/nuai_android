@@ -1,10 +1,10 @@
 package com.nuai.di
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.nuai.app.MyApplication
+import android.app.Application
 import com.nuai.network.NetworkService
 import com.nuai.network.OkHttpClientFactory
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,7 +28,7 @@ class ApplicationModule {
     @Singleton
     @Provides
     fun provideNetworkService(
-        application: MyApplication,
+        application: Application,
         httpClientFactory: OkHttpClientFactory
     ): NetworkService {
         return NetworkService(context = application, okHttpClientFactory = httpClientFactory)

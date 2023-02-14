@@ -70,6 +70,7 @@
             android:textSize="@dimen/sp_30"
             app:bottomTextPaddingDp="@dimen/dp_1"
             app:cornerRadius="5dp"
+            android:textColor="@color/et_text_color"
             app:fieldBgColor="@color/white"
             app:highlightColor="@color/theme_color"
             app:highlightEnabled="true"

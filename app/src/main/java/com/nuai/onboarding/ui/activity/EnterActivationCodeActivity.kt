@@ -8,12 +8,20 @@ import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.EnterActivationCodeActivityBinding
+import com.nuai.network.ResponseStatus
+import com.nuai.network.Status
+import com.nuai.onboarding.viewmodel.OnBoardingViewModel
 import com.nuai.utils.AnimationsHandler
+import com.nuai.utils.CommonUtils
+import com.nuai.utils.Pref
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,12 +40,75 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: EnterActivationCodeActivityBinding
+    private val onBoardingViewModel: OnBoardingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.enter_activation_code_activity)
         initClickListener()
+        initObserver()
         startCountDownTimer()
+    }
+
+    private fun initObserver() {
+        lifecycleScope.launch {
+            onBoardingViewModel.verifyActivationCodeState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+                        showHideProgress(it.data == null)
+                    }
+                    Status.SUCCESS -> {
+                        if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
+                            onBoardingViewModel.getMe()
+                        }
+                    }
+                    Status.ERROR -> {
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@EnterActivationCodeActivity, it.message)
+                    }
+                }
+            }
+        }
+        lifecycleScope.launch {
+            onBoardingViewModel.meApiState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+                        showHideProgress(it.data == null)
+                    }
+                    Status.SUCCESS -> {
+                        if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
+                            Pref.user = it.data.user
+                            AcceptTermsAndConditionActivity.startActivity(this@EnterActivationCodeActivity)
+                        }
+                    }
+                    Status.ERROR -> {
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@EnterActivationCodeActivity, it.message)
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            onBoardingViewModel.resendActivationCodeState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+                        showHideProgress(it.data == null)
+                    }
+                    Status.SUCCESS -> {
+                        if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
+                            showHideProgress(false)
+                            CommonUtils.showToast(this@EnterActivationCodeActivity, it.data.message)
+                            startCountDownTimer()
+                        }
+                    }
+                    Status.ERROR -> {
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@EnterActivationCodeActivity, it.message)
+                    }
+                }
+            }
+        }
     }
 
     private var timer: CountDownTimer? = null
@@ -98,10 +169,10 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.activate_btn -> {
-                AcceptTermsAndConditionActivity.startActivity(this)
+                onBoardingViewModel.verifyOTP(null, binding.lineField.text.toString().trim())
             }
             R.id.resend_text -> {
-                startCountDownTimer()
+                onBoardingViewModel.resendOTP(null)
             }
         }
     }

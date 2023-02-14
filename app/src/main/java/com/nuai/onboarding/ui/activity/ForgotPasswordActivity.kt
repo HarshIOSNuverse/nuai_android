@@ -6,14 +6,21 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.ForgotPasswordActivityBinding
+import com.nuai.network.ResponseStatus
+import com.nuai.network.Status
+import com.nuai.onboarding.viewmodel.OnBoardingViewModel
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.CommonUtils
+import com.nuai.utils.Pref
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -30,12 +37,42 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: ForgotPasswordActivityBinding
+    private val onBoardingViewModel: OnBoardingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.forgot_password_activity)
         initClickListener()
+        initObserver()
+    }
 
+    private fun initObserver() {
+        lifecycleScope.launch {
+            onBoardingViewModel.forgotPasswordState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+                        showHideProgress(it.data == null)
+                    }
+                    Status.SUCCESS -> {
+                        if (it.data != null
+                            && (it.code == ResponseStatus.STATUS_CODE_SUCCESS
+                                    || it.code == ResponseStatus.STATUS_CODE_CREATED)
+                        ) {
+//                            Pref.accessToken = it.data.accessToken
+//                            onBoardingViewModel.getMe()
+                            OTPVerificationActivity.startActivity(
+                                this@ForgotPasswordActivity,
+                                binding.emailEdit.text.toString().trim()
+                            )
+                        }
+                    }
+                    Status.ERROR -> {
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@ForgotPasswordActivity, it.message)
+                    }
+                }
+            }
+        }
     }
 
     private fun initClickListener() {
@@ -85,7 +122,8 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                     binding.emailErrorText.visibility = View.VISIBLE
                     return
                 } else {
-                    OTPVerificationActivity.startActivity(this)
+                    Pref.accessToken = null
+                    onBoardingViewModel.forgotPassword(email)
                 }
             }
         }

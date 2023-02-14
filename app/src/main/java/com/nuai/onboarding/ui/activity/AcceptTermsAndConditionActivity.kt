@@ -36,7 +36,6 @@ class AcceptTermsAndConditionActivity : BaseActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: AcceptTermsAndConditionActivityBinding
-    private var isPasswordShow: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

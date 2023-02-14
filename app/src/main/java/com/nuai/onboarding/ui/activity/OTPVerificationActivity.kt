@@ -8,12 +8,20 @@ import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.OtpVerificationActivityBinding
+import com.nuai.network.ResponseStatus
+import com.nuai.network.Status
+import com.nuai.onboarding.viewmodel.OnBoardingViewModel
 import com.nuai.utils.AnimationsHandler
+import com.nuai.utils.CommonUtils
+import com.nuai.utils.IntentConstant
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -21,8 +29,17 @@ import java.util.*
 @AndroidEntryPoint
 class OTPVerificationActivity : BaseActivity(), View.OnClickListener {
     companion object {
-        fun startActivity(activity: Activity) {
-            Intent(activity, OTPVerificationActivity::class.java).run {
+        object From {
+            const val SIGNUP = 0
+            const val FORGOT_PASSWORD = 1
+            const val CHANGE_NUMBER = 3
+            const val LOGIN = 4
+        }
+
+        fun startActivity(activity: Activity, email: String?) {
+            Intent(activity, OTPVerificationActivity::class.java).apply {
+                putExtra(IntentConstant.EMAIL, email)
+            }.run {
                 activity.startActivity(this)
                 AnimationsHandler.playActivityAnimation(
                     activity, AnimationsHandler.Animations.RightToLeft
@@ -32,12 +49,62 @@ class OTPVerificationActivity : BaseActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: OtpVerificationActivityBinding
+    private val onBoardingViewModel: OnBoardingViewModel by viewModels()
+    private var email: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.otp_verification_activity)
         initClickListener()
         startCountDownTimer()
+        initObserver()
+        init()
+    }
+
+    private fun init() {
+        email = intent?.getStringExtra(IntentConstant.EMAIL)
+        onBoardingViewModel.from = From.FORGOT_PASSWORD
+    }
+
+    private fun initObserver() {
+        lifecycleScope.launch {
+            onBoardingViewModel.verifyActivationCodeState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+                        showHideProgress(it.data == null)
+                    }
+                    Status.SUCCESS -> {
+                        if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
+                            ResetPasswordActivity.startActivity(this@OTPVerificationActivity, email)
+                        }
+                    }
+                    Status.ERROR -> {
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@OTPVerificationActivity, it.message)
+                    }
+                }
+            }
+        }
+        lifecycleScope.launch {
+            onBoardingViewModel.resendActivationCodeState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+                        showHideProgress(it.data == null)
+                    }
+                    Status.SUCCESS -> {
+                        if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
+                            showHideProgress(false)
+                            CommonUtils.showToast(this@OTPVerificationActivity, it.data.message)
+                            startCountDownTimer()
+                        }
+                    }
+                    Status.ERROR -> {
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@OTPVerificationActivity, it.message)
+                    }
+                }
+            }
+        }
     }
 
     private var timer: CountDownTimer? = null
@@ -98,10 +165,10 @@ class OTPVerificationActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.reset_pwd_btn -> {
-                AcceptTermsAndConditionActivity.startActivity(this)
+                onBoardingViewModel.verifyOTP(email, binding.lineField.text.toString().trim())
             }
             R.id.resend_text -> {
-                startCountDownTimer()
+                onBoardingViewModel.resendOTP(email)
             }
         }
     }

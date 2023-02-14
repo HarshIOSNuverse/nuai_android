@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.TutorialActivityBinding
+import com.nuai.home.ui.activity.HomeActivity
 import com.nuai.onboarding.model.Tutorial
 import com.nuai.onboarding.ui.adapters.TutorialAdapter
 import com.nuai.utils.AnimationsHandler
@@ -24,7 +25,6 @@ class TutorialActivity : BaseActivity(), View.OnClickListener {
         fun startActivity(activity: Activity) {
             Intent(activity, TutorialActivity::class.java).run {
                 activity.startActivity(this)
-                activity.finish()
                 AnimationsHandler.playActivityAnimation(
                     activity, AnimationsHandler.Animations.RightToLeft
                 )
@@ -111,7 +111,7 @@ class TutorialActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.get_started_btn_text -> {
-
+                HomeActivity.startActivity(this)
             }
         }
     }

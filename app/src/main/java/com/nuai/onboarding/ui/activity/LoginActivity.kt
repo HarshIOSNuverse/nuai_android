@@ -6,14 +6,22 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.LoginActivityBinding
+import com.nuai.network.ResponseStatus
+import com.nuai.network.Status
+import com.nuai.onboarding.model.api.request.LoginRequest
+import com.nuai.onboarding.viewmodel.OnBoardingViewModel
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.CommonUtils
+import com.nuai.utils.Pref
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -27,16 +35,74 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 )
             }
         }
+
+        fun startActivityClearTop(activity: Activity) {
+            Intent(activity, LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            }.run {
+                activity.startActivity(this)
+                activity.finish()
+            }
+        }
     }
 
     private lateinit var binding: LoginActivityBinding
+    private val onBoardingViewModel: OnBoardingViewModel by viewModels()
     private var isPasswordShow: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.login_activity)
         initClickListener()
+        initObserver()
+    }
 
+    private fun initObserver() {
+        lifecycleScope.launch {
+            onBoardingViewModel.loginState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+                        showHideProgress(it.data == null)
+                    }
+                    Status.SUCCESS -> {
+                        if (it.data != null
+                            && (it.code == ResponseStatus.STATUS_CODE_SUCCESS
+                                    || it.code == ResponseStatus.STATUS_CODE_CREATED)
+                        ) {
+                            Pref.accessToken = it.data.accessToken
+                            onBoardingViewModel.getMe()
+                        }
+                    }
+                    Status.ERROR -> {
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@LoginActivity, it.message)
+                    }
+                }
+            }
+        }
+        lifecycleScope.launch {
+            onBoardingViewModel.meApiState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+                        showHideProgress(it.data == null)
+                    }
+                    Status.SUCCESS -> {
+                        if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
+                            if (!it.data.user?.emailVerifiedAt.isNullOrEmpty()) {
+                                Pref.user = it.data.user
+                                TutorialActivity.startActivity(this@LoginActivity)
+                            } else {
+                                EnterActivationCodeActivity.startActivity(this@LoginActivity)
+                            }
+                        }
+                    }
+                    Status.ERROR -> {
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@LoginActivity, it.message)
+                    }
+                }
+            }
+        }
     }
 
     private fun initClickListener() {
@@ -80,6 +146,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.login_btn -> {
+                Pref.accessToken = null
                 binding.emailDivider.setBackgroundColor(normalColor)
                 binding.passwordDivider.setBackgroundColor(normalColor)
                 binding.emailErrorText.visibility = View.GONE
@@ -101,7 +168,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     binding.emailErrorText.text = getString(R.string.pls_enter_password)
                     return
                 } else {
-                    TutorialActivity.startActivity(this)
+                    val request = LoginRequest(
+                        binding.emailEdit.text.toString().trim(),
+                        binding.passwordEdit.text.toString().trim()
+                    )
+                    onBoardingViewModel.performLogin(request)
                 }
             }
             R.id.forgot_pwd_text -> {

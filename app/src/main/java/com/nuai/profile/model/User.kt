@@ -13,72 +13,41 @@ class User() : BaseResponse() {
     var uuid: String? = null
 
     @JvmField
-    @SerializedName("name")
+    @SerializedName("full_name")
     var fullName: String? = null
+
+    @SerializedName("first_name")
+    var firstName: String? = null
+
+    @SerializedName("last_name")
+    var lastName: String? = null
 
     @SerializedName("email")
     var email: String? = null
 
-    @SerializedName("dial_code")
-    var dialCode: String? = null
+    @SerializedName("email_verified_at")
+    var emailVerifiedAt: String? = null
 
-    @SerializedName("country_code")
-    var countryCode: String? = null
+    @SerializedName("deleted_at")
+    var deletedAt: String? = null
 
-    @SerializedName("phone_number")
-    var phoneNumber: String? = null
+    @SerializedName("created_at")
+    var createdAt: String? = null
 
-    @SerializedName("social_type")
-    var socialType: String? = null
-
-    @SerializedName("social_id")
-    var socialId: String? = null
-
-    @SerializedName("avatar")
-    var avatar: String? = null
-
-    @SerializedName("localization")
-    var localization: String? = null
-
-    @SerializedName("phone_number_verified_at")
-    var phoneNumberVerifiedAt: String? = null
-
-    @SerializedName("has_notification")
-    var hasNotification: String? = null
-
-    @SerializedName("wallet_balance")
-    var walletBalance:Double =0.0
-
-    // Not in response
-    @SerializedName("address")
-    var address: String? = ""
-
-    // Not in response
-    @SerializedName("latitude")
-    var latitude: Double = 0.0
-
-    // Not in response
-    @SerializedName("longitude")
-    var longitude: Double = 0.0
+    @SerializedName("updated_at")
+    var updatedAt: String? = null
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readInt()
         uuid = parcel.readString()
         fullName = parcel.readString()
+        firstName = parcel.readString()
+        lastName = parcel.readString()
         email = parcel.readString()
-        dialCode = parcel.readString()
-        countryCode = parcel.readString()
-        phoneNumber = parcel.readString()
-        socialType = parcel.readString()
-        socialId = parcel.readString()
-        avatar = parcel.readString()
-        localization = parcel.readString()
-        phoneNumberVerifiedAt = parcel.readString()
-        hasNotification = parcel.readString()
-        walletBalance = parcel.readDouble()
-        address = parcel.readString()
-        latitude = parcel.readDouble()
-        longitude = parcel.readDouble()
+        emailVerifiedAt = parcel.readString()
+        deletedAt = parcel.readString()
+        createdAt = parcel.readString()
+        updatedAt = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -86,20 +55,13 @@ class User() : BaseResponse() {
         parcel.writeInt(id)
         parcel.writeString(uuid)
         parcel.writeString(fullName)
+        parcel.writeString(firstName)
+        parcel.writeString(lastName)
         parcel.writeString(email)
-        parcel.writeString(dialCode)
-        parcel.writeString(countryCode)
-        parcel.writeString(phoneNumber)
-        parcel.writeString(socialType)
-        parcel.writeString(socialId)
-        parcel.writeString(avatar)
-        parcel.writeString(localization)
-        parcel.writeString(phoneNumberVerifiedAt)
-        parcel.writeString(hasNotification)
-        parcel.writeDouble(walletBalance)
-        parcel.writeString(address)
-        parcel.writeDouble(latitude)
-        parcel.writeDouble(longitude)
+        parcel.writeString(emailVerifiedAt)
+        parcel.writeString(deletedAt)
+        parcel.writeString(createdAt)
+        parcel.writeString(updatedAt)
     }
 
     override fun describeContents(): Int {

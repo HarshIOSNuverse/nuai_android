@@ -78,4 +78,10 @@
     <string name="otp_code_sent_on_email_msg">Please enter the OTP sent to your registered email address.</string>
     <string name="didnt_received_otp">Didn\'t received the OTP?</string>
     <string name="resend">Resend</string>
+    <string name="create_a_new_password">Create a new password</string>
+    <string name="create_password">Create Password</string>
+    <string name="your_password_has_been_reset">Your password has been successfully reset!</string>
+    <string name="you_can_now_use_new_password">You can now use your new password to log in to your account.</string>
+    <string name="return_to_login">Return to Login</string>
+    <string name="please_enter_otp">Please enter OTP</string>
 </resources>

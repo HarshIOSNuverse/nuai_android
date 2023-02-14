@@ -2,7 +2,6 @@ package com.nuai.onboarding.ui.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,25 +12,24 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.nuai.R
 import com.nuai.base.BaseActivity
-import com.nuai.databinding.CreatePasswordActivityBinding
+import com.nuai.databinding.ResetPasswordActivityBinding
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
-import com.nuai.onboarding.model.api.request.RegisterRequest
+import com.nuai.onboarding.model.api.request.ResetPasswordRequest
 import com.nuai.onboarding.viewmodel.OnBoardingViewModel
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.CommonUtils
 import com.nuai.utils.IntentConstant
-import com.nuai.utils.Pref
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class CreatePasswordActivity : BaseActivity(), View.OnClickListener {
+class ResetPasswordActivity : BaseActivity(), View.OnClickListener {
     companion object {
-        fun startActivity(activity: Activity, request: RegisterRequest) {
-            Intent(activity, CreatePasswordActivity::class.java).apply {
-                putExtra(IntentConstant.REGISTER_REQUEST, request)
+        fun startActivity(activity: Activity, email: String?) {
+            Intent(activity, ResetPasswordActivity::class.java).apply {
+                putExtra(IntentConstant.EMAIL, email)
             }.run {
                 activity.startActivity(this)
                 AnimationsHandler.playActivityAnimation(
@@ -41,33 +39,27 @@ class CreatePasswordActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private lateinit var binding: CreatePasswordActivityBinding
+    private lateinit var binding: ResetPasswordActivityBinding
     private val onBoardingViewModel: OnBoardingViewModel by viewModels()
     private var isPasswordShow = false
     private var isConfirmPwdShow = false
-    private var request: RegisterRequest? = null
+    private var email: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.create_password_activity)
+        binding = DataBindingUtil.setContentView(this, R.layout.reset_password_activity)
         initClickListener()
         initObserver()
         init()
     }
 
     private fun init() {
-        intent.run {
-            request = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                getParcelableExtra(IntentConstant.REGISTER_REQUEST, RegisterRequest::class.java)
-            } else {
-                getParcelableExtra(IntentConstant.REGISTER_REQUEST)
-            }
-        }
+        email = intent.getStringExtra(IntentConstant.EMAIL)
     }
 
     private fun initObserver() {
         lifecycleScope.launch {
-            onBoardingViewModel.signupState.collect {
+            onBoardingViewModel.resetPasswordState.collect {
                 when (it.status) {
                     Status.LOADING -> {
                         showHideProgress(it.data == null)
@@ -77,13 +69,13 @@ class CreatePasswordActivity : BaseActivity(), View.OnClickListener {
                             && (it.code == ResponseStatus.STATUS_CODE_SUCCESS
                                     || it.code == ResponseStatus.STATUS_CODE_CREATED)
                         ) {
-                            Pref.accessToken = it.data.accessToken
-                            EnterActivationCodeActivity.startActivity(this@CreatePasswordActivity)
+                            CommonUtils.showToast(this@ResetPasswordActivity, it.data.message)
+                            ResetPasswordSuccessActivity.startActivity(this@ResetPasswordActivity)
                         }
                     }
                     Status.ERROR -> {
                         showHideProgress(false)
-                        CommonUtils.showToast(this@CreatePasswordActivity, it.message)
+                        CommonUtils.showToast(this@ResetPasswordActivity, it.message)
                     }
                 }
             }
@@ -152,8 +144,8 @@ class CreatePasswordActivity : BaseActivity(), View.OnClickListener {
                     binding.confirmPasswordErrorText.visibility = View.VISIBLE
                     return
                 } else {
-                    request?.password = binding.passwordEdit.text.toString().trim()
-                    onBoardingViewModel.performSignup(request!!)
+                    val request = ResetPasswordRequest(email, password)
+                    onBoardingViewModel.resetPassword(request)
                 }
             }
         }
