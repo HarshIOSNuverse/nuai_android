@@ -27,5 +27,8 @@
     <color name="divider_color">#E0E0E0</color>
     <color name="error_msg_text_color">#E13D3C</color>
     <color name="otp_timer_text_color">#E13D3C</color>
-
+    <color name="red">#DA2626</color>
+    <color name="menu_divider_color">#E6E6E6</color>
+    <color name="drawer_menu_text_color">#000000</color>
+    <color name="copy_write_text_color">#9D9D9D</color>
 </resources>

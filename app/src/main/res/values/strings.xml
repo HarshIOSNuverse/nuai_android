@@ -84,4 +84,13 @@
     <string name="you_can_now_use_new_password">You can now use your new password to log in to your account.</string>
     <string name="return_to_login">Return to Login</string>
     <string name="please_enter_otp">Please enter OTP</string>
+    <string name="are_you_sure_want_to_logout">Are you sure want to logout?</string>
+    <string name="done">Done</string>
+    <string name="health_history">Health History</string>
+    <string name="about_the_app">About the App</string>
+    <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
+    <string name="view_profile">View Profile</string>
+    <string name="no">No</string>
+    <string name="health_scan">Health Scan</string>
 </resources>

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.nuai.R" />
+
+        <variable
+            name="onClickLister"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="user"
+            type="com.nuai.profile.model.User" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/drawer_width"
+        android:layout_height="match_parent"
+        android:background="@drawable/drawer_bg">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_20"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/small_logo"
+            app:layout_constraintEnd_toStartOf="@+id/title_text"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/switzer_semibold"
+            android:onClick="@{onClickLister}"
+            android:padding="@dimen/dp_8"
+            android:text="@string/app_name"
+            android:textColor="@color/primary_text_color"
+            android:textSize="@dimen/sp_24"
+            app:layout_constraintBottom_toBottomOf="@+id/icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintTop_toTopOf="@+id/icon"
+            tools:ignore="RelativeOverlap" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cr_profile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_25"
+            android:layout_marginTop="@dimen/dp_50"
+            android:layout_marginBottom="@dimen/dp_25"
+            android:background="@drawable/drawer_profile_bg"
+            android:padding="@dimen/dp_20"
+            app:layout_constraintBottom_toTopOf="@+id/scroll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/icon">
+
+            <TextView
+                android:id="@+id/name_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/switzer_regular"
+                android:gravity="center_vertical"
+                android:text="@string/logout"
+                android:textColor="@color/primary_text_color"
+                android:textSize="@dimen/sp_20"
+                app:layout_constraintBottom_toTopOf="@+id/email_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/email_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:fontFamily="@font/switzer_regular"
+                android:gravity="center_vertical"
+                android:text="@string/logout"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name_text" />
+
+            <TextView
+                android:id="@+id/view_profile_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                android:fontFamily="@font/switzer_regular"
+                android:gravity="center_vertical"
+                android:onClick="@{onClickLister}"
+                android:paddingVertical="@dimen/dp_5"
+                android:text="@string/view_profile"
+                android:textColor="@color/blue_text_color"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email_text" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/logout_menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cr_profile">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/health_history_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:onClick="@{onClickLister}"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/drawer_menu_start_padding"
+                    android:paddingTop="@dimen/drawer_menu_vertical_padding"
+                    android:paddingEnd="@dimen/drawer_menu_end_padding"
+                    android:paddingBottom="@dimen/drawer_menu_vertical_padding"
+                    tools:ignore="RtlSymmetry,UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="@dimen/drawer_menu_icon_size"
+                        android:layout_height="@dimen/drawer_menu_icon_size"
+                        android:contentDescription="@string/todo"
+                        android:scaleType="center"
+                        app:srcCompat="@drawable/health_history_drawer_menu" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:drawablePadding="@dimen/menu_icon_spacing"
+                        android:fontFamily="@font/switzer_regular"
+                        android:gravity="center_vertical"
+                        android:paddingStart="@dimen/menu_icon_spacing"
+                        android:text="@string/health_history"
+                        android:textColor="@color/drawer_menu_text_color"
+                        android:textSize="@dimen/menu_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/settings_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F8F8F8"
+                    android:gravity="center_vertical"
+                    android:onClick="@{onClickLister}"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/drawer_menu_start_padding"
+                    android:paddingTop="@dimen/drawer_menu_vertical_padding"
+                    android:paddingEnd="@dimen/drawer_menu_end_padding"
+                    android:paddingBottom="@dimen/drawer_menu_vertical_padding"
+                    tools:ignore="RtlSymmetry,UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="@dimen/drawer_menu_icon_size"
+                        android:layout_height="@dimen/drawer_menu_icon_size"
+                        android:contentDescription="@string/todo"
+                        android:scaleType="center"
+                        app:srcCompat="@drawable/settings_drawer_menu" />
+
+                    <TextView
+                        android:id="@+id/my_offers_menu_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/switzer_regular"
+                        android:gravity="center_vertical"
+                        android:paddingStart="@dimen/menu_icon_spacing"
+                        android:text="@string/settings"
+                        android:textColor="@color/drawer_menu_text_color"
+                        android:textSize="@dimen/menu_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/about_app_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:onClick="@{onClickLister}"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/drawer_menu_start_padding"
+                    android:paddingTop="@dimen/drawer_menu_vertical_padding"
+                    android:paddingEnd="@dimen/drawer_menu_end_padding"
+                    android:paddingBottom="@dimen/drawer_menu_vertical_padding"
+                    tools:ignore="RtlSymmetry,UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="@dimen/drawer_menu_icon_size"
+                        android:layout_height="@dimen/drawer_menu_icon_size"
+                        android:contentDescription="@string/todo"
+                        android:scaleType="center"
+                        app:srcCompat="@drawable/about_app_drawer_menu" />
+
+                    <TextView
+                        android:id="@+id/about_app_menu_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:fontFamily="@font/switzer_regular"
+                        android:gravity="center_vertical"
+                        android:paddingStart="@dimen/menu_icon_spacing"
+                        android:text="@string/about_the_app"
+                        android:textColor="@color/drawer_menu_text_color"
+                        android:textSize="@dimen/menu_text_size" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/logout_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:gravity="center"
+            android:onClick="@{onClickLister}"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/drawer_menu_start_padding"
+            android:paddingTop="@dimen/drawer_menu_vertical_padding"
+            android:paddingEnd="@dimen/drawer_menu_end_padding"
+            android:paddingBottom="@dimen/drawer_menu_vertical_padding"
+            app:layout_constraintBottom_toTopOf="@+id/lbl_copy_right"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="RtlSymmetry,TooManyViews,UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="@dimen/drawer_menu_icon_size"
+                android:layout_height="@dimen/drawer_menu_icon_size"
+                android:contentDescription="@string/todo"
+                android:scaleType="center"
+                app:srcCompat="@drawable/logout_drawer_menu" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:fontFamily="@font/switzer_regular"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/menu_icon_spacing"
+                android:text="@string/logout"
+                android:textColor="@color/drawer_menu_text_color"
+                android:textSize="@dimen/menu_text_size" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/lbl_copy_right"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_30"
+            android:paddingHorizontal="@dimen/drawer_menu_start_padding"
+            android:text="@string/check_my_self_copy_right"
+            android:textColor="@color/copy_write_text_color"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

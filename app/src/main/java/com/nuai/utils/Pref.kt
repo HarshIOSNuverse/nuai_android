@@ -63,7 +63,7 @@ object Pref {
         set(value) = prefs.edit().putString(PrefConstant.USER_OBJECT, gson.toJson(value))
             .apply()
 
-//    var customSizes: ArrayList<Size1>?
+    //    var customSizes: ArrayList<Size1>?
 //        get() {
 //            return try {
 //                val gson = Gson()
@@ -83,4 +83,13 @@ object Pref {
 //            editor.apply()
 //        }
 //
+    fun logout() {
+        user = null
+        removeTokens()
+    }
+
+    private fun removeTokens() {
+        prefs.edit().remove(PrefConstant.ACCESS_TOKEN).apply()
+        NetworkUtils.clearAuthParams()
+    }
 }

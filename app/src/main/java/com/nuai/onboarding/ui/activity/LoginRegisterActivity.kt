@@ -21,6 +21,17 @@ class LoginRegisterActivity : BaseActivity(), View.OnClickListener {
                 activity.overridePendingTransition(0, 0)
             }
         }
+
+        fun clearTopAndOpenLoginSignUpActivity(activity: Activity) {
+            Intent(activity, LoginRegisterActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }.run {
+                activity.startActivity(this)
+                activity.finish()
+            }
+        }
+
     }
 
     private lateinit var binding: LoginRegisterActivityBinding

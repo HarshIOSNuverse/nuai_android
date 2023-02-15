@@ -64,4 +64,12 @@
     <dimen name="spinner_item_vertical_padding">7dp</dimen>
     <dimen name="spinner_item_padding">5dp</dimen>
     <dimen name="sp_30">30sp</dimen>
+    <dimen name="drawer_width">310dp</dimen>
+    <dimen name="drawer_menu_start_padding">25dp</dimen>
+    <dimen name="drawer_menu_vertical_padding">15dp</dimen>
+    <dimen name="drawer_menu_end_padding">10dp</dimen>
+    <dimen name="drawer_menu_icon_size">32dp</dimen>
+    <dimen name="menu_icon_spacing">15dp</dimen>
+    <dimen name="menu_divider_height">1dp</dimen>
+    <dimen name="menu_text_size">18sp</dimen>
 </resources>

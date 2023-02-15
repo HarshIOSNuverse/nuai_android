@@ -14,9 +14,11 @@ import androidx.lifecycle.lifecycleScope
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.EnterActivationCodeActivityBinding
+import com.nuai.interfaces.DialogClickListener
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
 import com.nuai.onboarding.viewmodel.OnBoardingViewModel
+import com.nuai.utils.AlertDialogManager
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.CommonUtils
 import com.nuai.utils.Pref
@@ -64,7 +66,17 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
                     }
                     Status.ERROR -> {
                         showHideProgress(false)
-                        CommonUtils.showToast(this@EnterActivationCodeActivity, it.message)
+                        AlertDialogManager.showInformationDialog(this@EnterActivationCodeActivity,
+                            icon = 0, msg = it.message,
+                            button1Message = getString(R.string.continue_),
+                            isClose = false, dialogClickListener = object : DialogClickListener {
+                                override fun onButton1Clicked() {
+                                }
+
+                                override fun onButton2Clicked() {}
+                                override fun onCloseClicked() {
+                                }
+                            })
                     }
                 }
             }
@@ -98,7 +110,17 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
                     Status.SUCCESS -> {
                         if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
                             showHideProgress(false)
-                            CommonUtils.showToast(this@EnterActivationCodeActivity, it.data.message)
+                            AlertDialogManager.showInformationDialog(this@EnterActivationCodeActivity,
+                                icon = 0, msg = it.data.message,
+                                button1Message = getString(R.string.continue_),
+                                isClose = false, dialogClickListener = object : DialogClickListener {
+                                    override fun onButton1Clicked() {
+                                    }
+
+                                    override fun onButton2Clicked() {}
+                                    override fun onCloseClicked() {
+                                    }
+                                })
                             startCountDownTimer()
                         }
                     }

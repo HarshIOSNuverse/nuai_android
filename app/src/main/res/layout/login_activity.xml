@@ -229,7 +229,7 @@
             android:onClick="@{onClickListener}"
             android:padding="@dimen/dp_5"
             android:text="@string/check_my_self_copy_right"
-            android:textColor="@color/secondary_text_color"
+            android:textColor="@color/copy_write_text_color"
             android:textSize="@dimen/sp_16"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
