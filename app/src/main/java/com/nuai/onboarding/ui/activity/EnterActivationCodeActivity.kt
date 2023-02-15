@@ -18,6 +18,7 @@ import com.nuai.interfaces.DialogClickListener
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
 import com.nuai.onboarding.viewmodel.OnBoardingViewModel
+import com.nuai.profile.viewmodel.ProfileViewModel
 import com.nuai.utils.AlertDialogManager
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.CommonUtils
@@ -43,6 +44,7 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: EnterActivationCodeActivityBinding
     private val onBoardingViewModel: OnBoardingViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +63,7 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
                     }
                     Status.SUCCESS -> {
                         if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
-                            onBoardingViewModel.getMe()
+                            profileViewModel.getMe()
                         }
                     }
                     Status.ERROR -> {
@@ -82,7 +84,7 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
             }
         }
         lifecycleScope.launch {
-            onBoardingViewModel.meApiState.collect {
+            profileViewModel.meApiState.collect {
                 when (it.status) {
                     Status.LOADING -> {
                         showHideProgress(it.data == null)
@@ -111,9 +113,11 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
                         if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
                             showHideProgress(false)
                             AlertDialogManager.showInformationDialog(this@EnterActivationCodeActivity,
-                                icon = 0, msg = it.data.message,
+                                icon = 0,
+                                msg = it.data.message,
                                 button1Message = getString(R.string.continue_),
-                                isClose = false, dialogClickListener = object : DialogClickListener {
+                                isClose = false,
+                                dialogClickListener = object : DialogClickListener {
                                     override fun onButton1Clicked() {
                                     }
 

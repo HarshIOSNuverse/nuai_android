@@ -31,4 +31,9 @@
     <color name="menu_divider_color">#E6E6E6</color>
     <color name="drawer_menu_text_color">#000000</color>
     <color name="copy_write_text_color">#9D9D9D</color>
+    <color name="bmi_text_color">#EFA0E7</color>
+    <color name="profile_top_bg_color">#F8F8F8</color>
+    <color name="bmi_bg_color">#FFF4FE</color>
+    <color name="category_bg_color">#DAFFEE</color>
+    <color name="green_text_color">#1FAF6A</color>
 </resources>

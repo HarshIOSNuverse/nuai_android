@@ -9,7 +9,6 @@ import com.nuai.network.CommonResponse
 import com.nuai.network.Status
 import com.nuai.onboarding.model.api.request.*
 import com.nuai.onboarding.model.api.response.LoginResponse
-import com.nuai.onboarding.model.api.response.MyProfileResponse
 import com.nuai.onboarding.repository.OnBoardingRepository
 import com.nuai.onboarding.ui.activity.OTPVerificationActivity
 import com.nuai.utils.CommonUtils
@@ -33,8 +32,6 @@ class OnBoardingViewModel @Inject constructor(
         MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
     val resendActivationCodeState =
         MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
-    val meApiState =
-        MutableStateFlow(ApiResponseState(Status.LOADING, MyProfileResponse()))
     val forgotPasswordState =
         MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
     val resetPasswordState =
@@ -88,32 +85,10 @@ class OnBoardingViewModel @Inject constructor(
 //        }
 //    }
 
-    fun getMe() {
-        if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
-            meApiState.value = ApiResponseState.loading()
-            viewModelScope.launch {
-                onBoardingRepository.getMe().catch {
-                    meApiState.value =
-                        ApiResponseState.error(it.message, 100)
-                }.collect {
-                    meApiState.value =
-                        if (it.data != null) ApiResponseState.success(it.data, it.code)
-                        else ApiResponseState.error(it.message, it.code)
-                }
-            }
-        } else {
-            meApiState.value =
-                ApiResponseState.error(
-                    resourcesProvider.getString(R.string.no_internet_connection),
-                    100
-                )
-        }
-    }
-
     fun forgotPassword(email: String) {
         when {
             !CommonUtils.isNetworkAvailable(resourcesProvider.context) -> {
-                meApiState.value =
+                forgotPasswordState.value =
                     ApiResponseState.error(
                         resourcesProvider.getString(R.string.no_internet_connection),
                         100

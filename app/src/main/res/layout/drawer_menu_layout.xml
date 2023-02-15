@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/switzer_regular"
                 android:gravity="center_vertical"
-                android:text="@string/logout"
+                android:text='@{user.fullName?? ""}'
                 android:textColor="@color/primary_text_color"
                 android:textSize="@dimen/sp_20"
                 app:layout_constraintBottom_toTopOf="@+id/email_text"
@@ -84,7 +84,7 @@
                 android:layout_marginTop="@dimen/dp_5"
                 android:fontFamily="@font/switzer_regular"
                 android:gravity="center_vertical"
-                android:text="@string/logout"
+                android:text='@{user.email?? ""}'
                 android:textColor="@color/secondary_text_color"
                 android:textSize="@dimen/sp_16"
                 app:layout_constraintEnd_toEndOf="parent"

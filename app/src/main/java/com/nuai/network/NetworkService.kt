@@ -69,6 +69,10 @@ constructor(
         @POST(Url.API + "signup")
         suspend fun signUp(@Body request: RegisterRequest?): Response<LoginResponse?>
 
+        @Headers("$HEADER_BEAR: true")
+        @PUT(Url.API + "profile")
+        suspend fun updateProfile(@Body request: RegisterRequest?): Response<LoginResponse?>
+
         @Headers("$HEADER_BEAR: false")
         @POST(Url.API + "verify-otp")
         suspend fun verifyOTPForgotPassword(@Body request: VerifyOTPRequest?): Response<CommonResponse?>

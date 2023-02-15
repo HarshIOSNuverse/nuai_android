@@ -8,15 +8,17 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.nuai.R
 import com.nuai.databinding.LayoutNoInternetBinding
 import com.nuai.databinding.ToolbarLayoutBinding
 import com.nuai.onboarding.ui.activity.LoginRegisterActivity
-import com.nuai.onboarding.ui.activity.SplashAnimationActivity
 import com.nuai.onboarding.ui.activity.SplashActivity
+import com.nuai.onboarding.ui.activity.SplashAnimationActivity
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.ContextWrapper
 import com.nuai.utils.CustomProgressDialog
@@ -32,6 +34,7 @@ open class BaseActivity : AppCompatActivity() {
 
     private lateinit var toolbarLayoutBinding: ToolbarLayoutBinding
     private lateinit var tvToolbarTitle: AppCompatTextView
+    private lateinit var toolbarIcon: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +67,7 @@ open class BaseActivity : AppCompatActivity() {
             setContentInsetsAbsolute(0, 0)
         }
         tvToolbarTitle = toolbarLayout.tvToolbarTitle
+        toolbarIcon = toolbarLayout.toolbarIcon
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             setDisplayShowHomeEnabled(true)
@@ -75,6 +79,16 @@ open class BaseActivity : AppCompatActivity() {
 
     protected fun changeToolBarBgColor(color: Int) {
         toolbarLayoutBinding.toolbarRoot.setBackgroundColor(ContextCompat.getColor(this, color))
+    }
+
+    protected fun showToolbarIcon(show: Boolean = false) {
+        if (show) {
+            toolbarIcon.visibility = View.VISIBLE
+            tvToolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.switzer_bold)
+        } else {
+            tvToolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.switzer_regular)
+            toolbarIcon.visibility = View.GONE
+        }
     }
 
     protected fun setToolBarTitle(title: String?) {
@@ -116,7 +130,7 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
-    protected fun enableDisableButton(button: Button, isEnabled:Boolean) {
+    protected fun enableDisableButton(button: Button, isEnabled: Boolean) {
         if (isEnabled) {
             button.isEnabled = true
             button.setBackgroundResource(R.drawable.rc_black_filled_c25)

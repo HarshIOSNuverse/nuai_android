@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.content.ContextCompat
@@ -17,7 +18,8 @@ import com.nuai.interfaces.DialogClickListener
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
 import com.nuai.onboarding.ui.activity.LoginRegisterActivity
-import com.nuai.onboarding.viewmodel.OnBoardingViewModel
+import com.nuai.profile.ui.activity.ProfileActivity
+import com.nuai.profile.viewmodel.ProfileViewModel
 import com.nuai.utils.AlertDialogManager
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.CommonUtils
@@ -43,7 +45,7 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: HomeActivityBinding
-    private val onBoardingViewModel: OnBoardingViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
     private lateinit var actionBarToggle: ActionBarDrawerToggle
 
 
@@ -52,6 +54,7 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.home_activity)
         setUpToolNewBar(binding.toolbarLayout)
         setToolBarTitle(getString(R.string.app_name))
+        showToolbarIcon(true)
         initClickListener()
         setUpDrawerView()
         initObserver()
@@ -59,11 +62,17 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
+        setUserDetails()
+    }
+
+    private fun setUserDetails() {
+        val user = Pref.user
+        binding.navigationMenuContainer.user = user
     }
 
     private fun initObserver() {
         lifecycleScope.launch {
-            onBoardingViewModel.signupState.collect {
+            profileViewModel.meApiState.collect {
                 when (it.status) {
                     Status.LOADING -> {
                         showHideProgress(it.data == null)
@@ -98,6 +107,7 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
 
             }
             R.id.view_profile_text -> {
+                ProfileActivity.startActivityForResult(this, profileLauncher)
             }
 
             R.id.health_history_menu -> {
@@ -167,4 +177,10 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
         else super.onOptionsItemSelected(item)
     }
 
+    private val profileLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                setUserDetails()
+            }
+        }
 }

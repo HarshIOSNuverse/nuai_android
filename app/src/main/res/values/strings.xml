@@ -93,4 +93,8 @@
     <string name="view_profile">View Profile</string>
     <string name="no">No</string>
     <string name="health_scan">Health Scan</string>
+    <string name="profile">Profile</string>
+    <string name="your_bmi">Your BMI</string>
+    <string name="your_category">Your Category</string>
+    <string name="save_changes">Save Changes</string>
 </resources>

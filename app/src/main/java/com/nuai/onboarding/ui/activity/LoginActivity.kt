@@ -13,10 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.LoginActivityBinding
+import com.nuai.home.ui.activity.HomeActivity
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
 import com.nuai.onboarding.model.api.request.LoginRequest
 import com.nuai.onboarding.viewmodel.OnBoardingViewModel
+import com.nuai.profile.viewmodel.ProfileViewModel
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.CommonUtils
 import com.nuai.utils.Pref
@@ -48,6 +50,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: LoginActivityBinding
     private val onBoardingViewModel: OnBoardingViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
     private var isPasswordShow: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +73,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                                     || it.code == ResponseStatus.STATUS_CODE_CREATED)
                         ) {
                             Pref.accessToken = it.data.accessToken
-                            onBoardingViewModel.getMe()
+                            profileViewModel.getMe()
                         }
                     }
                     Status.ERROR -> {
@@ -81,7 +84,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
         }
         lifecycleScope.launch {
-            onBoardingViewModel.meApiState.collect {
+            profileViewModel.meApiState.collect {
                 when (it.status) {
                     Status.LOADING -> {
                         showHideProgress(it.data == null)
@@ -90,7 +93,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
                             if (!it.data.user?.emailVerifiedAt.isNullOrEmpty()) {
                                 Pref.user = it.data.user
-                                TutorialActivity.startActivity(this@LoginActivity)
+                                HomeActivity.startActivity(this@LoginActivity)
                             } else {
                                 EnterActivationCodeActivity.startActivity(this@LoginActivity)
                             }

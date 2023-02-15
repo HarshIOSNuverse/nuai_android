@@ -5,7 +5,6 @@ import com.nuai.network.CommonResponse
 import com.nuai.network.NetworkService
 import com.nuai.onboarding.model.api.request.*
 import com.nuai.onboarding.model.api.response.LoginResponse
-import com.nuai.onboarding.model.api.response.MyProfileResponse
 import com.nuai.utils.CommonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -19,22 +18,6 @@ class OnBoardingRepository @Inject constructor(private val networkService: Netwo
     suspend fun login(request: LoginRequest): Flow<ApiResponseState<LoginResponse>> {
         return flow {
             val response = networkService.api.login(request)
-            if (response.isSuccessful) {
-                emit(ApiResponseState.success(response.body(), response.code()))
-            } else {
-                emit(
-                    ApiResponseState.error(
-                        CommonUtils.getErrorResponse(response.errorBody()).message, response.code()
-                    )
-                )
-            }
-        }.flowOn(Dispatchers.IO)
-    }
-
-
-    suspend fun getMe(): Flow<ApiResponseState<MyProfileResponse>> {
-        return flow {
-            val response = networkService.api.getMe()
             if (response.isSuccessful) {
                 emit(ApiResponseState.success(response.body(), response.code()))
             } else {
