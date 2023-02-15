@@ -57,10 +57,11 @@ object Pref {
 
     var user: User?
         get() = gson.fromJson(
-            prefs.getString(PrefConstant.USER_OBJECT, null),
+            KeyStoreHelper.decrypt(prefs.getString(PrefConstant.USER_OBJECT, null)),
             User::class.java
         )
-        set(value) = prefs.edit().putString(PrefConstant.USER_OBJECT, gson.toJson(value))
+        set(value) = prefs.edit()
+            .putString(PrefConstant.USER_OBJECT, KeyStoreHelper.encrypt(gson.toJson(value)))
             .apply()
 
     //    var customSizes: ArrayList<Size1>?

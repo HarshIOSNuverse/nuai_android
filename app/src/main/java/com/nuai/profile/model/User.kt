@@ -37,6 +37,9 @@ class User() : BaseResponse() {
     @SerializedName("updated_at")
     var updatedAt: String? = null
 
+    @SerializedName("body_info")
+    var bodyInfo: BodyInfo? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readInt()
         uuid = parcel.readString()
@@ -48,6 +51,7 @@ class User() : BaseResponse() {
         deletedAt = parcel.readString()
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
+        bodyInfo = parcel.readParcelable(BodyInfo::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -62,6 +66,7 @@ class User() : BaseResponse() {
         parcel.writeString(deletedAt)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
+        parcel.writeParcelable(bodyInfo, flags)
     }
 
     override fun describeContents(): Int {
