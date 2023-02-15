@@ -51,6 +51,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         genderList.add(getString(R.string.select_gender))
         genderList.add(getString(R.string.male))
         genderList.add(getString(R.string.female))
+        genderList.add(getString(R.string.other))
         initGenderSpinnerAdapter()
     }
 
@@ -133,12 +134,18 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                     binding.firstErrorText.text = getString(R.string.pls_enter_first_name)
                     return
                 } else {
+                    val gender = when (binding.genderSpinner.selectedItemPosition) {
+                        1 -> Enums.Gender.MALE.toString()
+                        2 -> Enums.Gender.FEMALE.toString()
+                        3 -> Enums.Gender.OTHER.toString()
+                        else -> ""
+                    }
                     val request = RegisterRequest(
                         binding.firstEdit.text.toString().trim(),
                         binding.lastEdit.text.toString().trim(),
                         binding.emailEdit.text.toString().trim(),
                         dob,
-                        if (binding.genderSpinner.selectedItemPosition == 1) Enums.Gender.MALE.toString() else Enums.Gender.FEMALE.toString(),
+                        gender,
                         binding.weightEdit.text.toString().trim().toInt(),
                         binding.heightEdit.text.toString().trim().toInt(),
                         null

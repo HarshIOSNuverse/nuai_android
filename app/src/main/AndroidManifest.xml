@@ -78,6 +78,11 @@
             android:theme="@style/Theme.Nuai.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
+            android:name=".onboarding.ui.activity.WebActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".onboarding.ui.activity.RegistrationCompletedActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Nuai.NoActionBar"
@@ -104,6 +109,11 @@
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".profile.ui.activity.ProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".settings.ui.activity.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Nuai.NoActionBar"
             tools:ignore="LockedOrientationActivity" />

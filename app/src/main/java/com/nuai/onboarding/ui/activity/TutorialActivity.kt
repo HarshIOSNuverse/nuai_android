@@ -13,6 +13,7 @@ import com.nuai.home.ui.activity.HomeActivity
 import com.nuai.onboarding.model.Tutorial
 import com.nuai.onboarding.ui.adapters.TutorialAdapter
 import com.nuai.utils.AnimationsHandler
+import com.nuai.utils.IntentConstant
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,10 +21,18 @@ class TutorialActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: TutorialActivityBinding
     private val listItem = ArrayList<Tutorial>()
+    private var from = From.SIGNUP
 
     companion object {
-        fun startActivity(activity: Activity) {
-            Intent(activity, TutorialActivity::class.java).run {
+        object From {
+            const val SIGNUP = 1
+            const val SETTINGS = 2
+        }
+
+        fun startActivity(activity: Activity, from: Int) {
+            Intent(activity, TutorialActivity::class.java).apply {
+                putExtra(IntentConstant.FROM, from)
+            }.run {
                 activity.startActivity(this)
                 AnimationsHandler.playActivityAnimation(
                     activity, AnimationsHandler.Animations.RightToLeft
@@ -35,9 +44,30 @@ class TutorialActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.tutorial_activity)
+        setUpToolNewBar(binding.toolbarLayout)
+        setToolBarTitle(getString(R.string.app_name))
+        showToolbarIcon(true)
         binding.onClickLister = this
         setViewPager()
         initClick()
+        init()
+    }
+
+    private fun init() {
+        intent?.run {
+            from = getIntExtra(IntentConstant.FROM, From.SIGNUP)
+            if (from == From.SETTINGS) {
+                binding.llToolbar.visibility = View.VISIBLE
+                binding.icon.visibility = View.GONE
+                binding.titleText.visibility = View.GONE
+                binding.getStartedBtnText.text = getString(R.string.got_it)
+            } else {
+                binding.llToolbar.visibility = View.GONE
+                binding.icon.visibility = View.VISIBLE
+                binding.titleText.visibility = View.VISIBLE
+                binding.getStartedBtnText.text = getString(R.string.get_started)
+            }
+        }
     }
 
     private fun setViewPager() {
@@ -111,7 +141,11 @@ class TutorialActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.get_started_btn_text -> {
-                HomeActivity.startActivity(this)
+                if (from == From.SETTINGS) {
+                    finish()
+                } else {
+                    HomeActivity.startActivity(this)
+                }
             }
         }
     }

@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 import com.nuai.onboarding.model.api.request.*
 import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
+import com.nuai.profile.model.api.request.UpdateProfileRequest
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -71,7 +72,7 @@ constructor(
 
         @Headers("$HEADER_BEAR: true")
         @PUT(Url.API + "profile")
-        suspend fun updateProfile(@Body request: RegisterRequest?): Response<LoginResponse?>
+        suspend fun updateProfile(@Body request: UpdateProfileRequest?): Response<LoginResponse?>
 
         @Headers("$HEADER_BEAR: false")
         @POST(Url.API + "verify-otp")

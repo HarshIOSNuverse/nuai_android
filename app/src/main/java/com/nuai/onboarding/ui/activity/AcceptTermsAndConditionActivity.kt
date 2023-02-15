@@ -3,7 +3,6 @@ package com.nuai.onboarding.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -77,13 +76,11 @@ class AcceptTermsAndConditionActivity : BaseActivity(), View.OnClickListener {
         )
         str.setSpan(object : ClickableSpan() {
             override fun onClick(widget: View) {
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://www.google.com")
-//                    Uri.parse(BuildConfig.BASE_URL + BuildConfig.TERMS_CONDITIONS)
-                ).run {
-                    startActivity(this)
-                }
+                WebActivity.startActivity(
+                    this@AcceptTermsAndConditionActivity,
+                    getString(R.string.term_of_use),
+                    "https://www.google.com"
+                )
             }
         }, i1, i1 + subtext1.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
@@ -94,13 +91,11 @@ class AcceptTermsAndConditionActivity : BaseActivity(), View.OnClickListener {
         )
         str.setSpan(object : ClickableSpan() {
             override fun onClick(widget: View) {
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://www.facebook.com")
-//                    Uri.parse(BuildConfig.BASE_URL + BuildConfig.TERMS_CONDITIONS)
-                ).run {
-                    startActivity(this)
-                }
+                WebActivity.startActivity(
+                    this@AcceptTermsAndConditionActivity,
+                    getString(R.string.privacy_policy),
+                    "https://www.facebook.com"
+                )
             }
         }, i2, i2 + subtext2.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 

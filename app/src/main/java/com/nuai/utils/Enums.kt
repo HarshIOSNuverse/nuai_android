@@ -13,6 +13,6 @@ object Enums {
     }
 
     enum class Gender {
-        MALE, FEMALE
+        MALE, FEMALE, OTHER
     }
 }

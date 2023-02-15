@@ -2,9 +2,9 @@ package com.nuai.profile.repository
 
 import com.nuai.network.ApiResponseState
 import com.nuai.network.NetworkService
-import com.nuai.onboarding.model.api.request.*
 import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
+import com.nuai.profile.model.api.request.UpdateProfileRequest
 import com.nuai.utils.CommonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -30,7 +30,7 @@ class ProfileRepository @Inject constructor(private val networkService: NetworkS
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun updateProfile(request: RegisterRequest): Flow<ApiResponseState<LoginResponse>> {
+    suspend fun updateProfile(request: UpdateProfileRequest): Flow<ApiResponseState<LoginResponse>> {
         return flow {
             val response = networkService.api.updateProfile(request)
             if (response.isSuccessful) {

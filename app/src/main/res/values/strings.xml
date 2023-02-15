@@ -50,6 +50,7 @@
     <string name="pls_enter_first_name">Please enter first name</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="other">Other</string>
     <string name="select_gender">Select Gender</string>
     <string name="enter_a_strong_password">Enter a strong password</string>
     <string name="submit">Submit</string>
@@ -97,4 +98,8 @@
     <string name="your_bmi">Your BMI</string>
     <string name="your_category">Your Category</string>
     <string name="save_changes">Save Changes</string>
+    <string name="app_walk_through">App Walkthrough</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="terms_of_service">Tems of Service</string>
+    <string name="got_it">Got it</string>
 </resources>

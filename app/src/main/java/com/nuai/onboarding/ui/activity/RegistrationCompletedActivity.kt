@@ -41,7 +41,7 @@ class RegistrationCompletedActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.continue_btn -> {
-                TutorialActivity.startActivity(this)
+                TutorialActivity.startActivity(this, TutorialActivity.Companion.From.SIGNUP)
             }
         }
     }

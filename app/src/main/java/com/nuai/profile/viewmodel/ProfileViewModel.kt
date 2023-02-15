@@ -6,9 +6,9 @@ import com.nuai.R
 import com.nuai.di.ResourcesProvider
 import com.nuai.network.ApiResponseState
 import com.nuai.network.Status
-import com.nuai.onboarding.model.api.request.*
 import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
+import com.nuai.profile.model.api.request.UpdateProfileRequest
 import com.nuai.profile.repository.ProfileRepository
 import com.nuai.utils.CommonUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,7 +48,7 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun updateProfile(request: RegisterRequest) {
+    fun updateProfile(request: UpdateProfileRequest) {
         when {
             (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
                 updateProfileState.value = ApiResponseState.error(

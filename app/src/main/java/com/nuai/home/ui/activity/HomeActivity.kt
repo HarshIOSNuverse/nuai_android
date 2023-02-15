@@ -20,6 +20,7 @@ import com.nuai.network.Status
 import com.nuai.onboarding.ui.activity.LoginRegisterActivity
 import com.nuai.profile.ui.activity.ProfileActivity
 import com.nuai.profile.viewmodel.ProfileViewModel
+import com.nuai.settings.ui.activity.SettingsActivity
 import com.nuai.utils.AlertDialogManager
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.CommonUtils
@@ -107,6 +108,7 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
 
             }
             R.id.view_profile_text -> {
+                binding.drawer.closeDrawer(binding.nv)
                 ProfileActivity.startActivityForResult(this, profileLauncher)
             }
 
@@ -114,7 +116,8 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
 
             }
             R.id.settings_menu -> {
-
+                binding.drawer.closeDrawer(binding.nv)
+                SettingsActivity.startActivity(this)
             }
             R.id.about_app_menu -> {
 

@@ -20,8 +20,8 @@ import com.nuai.base.BaseActivity
 import com.nuai.databinding.ProfileActivityBinding
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
-import com.nuai.onboarding.model.api.request.RegisterRequest
 import com.nuai.onboarding.ui.adapters.SpinnerAdapter
+import com.nuai.profile.model.api.request.UpdateProfileRequest
 import com.nuai.profile.viewmodel.ProfileViewModel
 import com.nuai.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,6 +68,7 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
         genderList.add(getString(R.string.select_gender))
         genderList.add(getString(R.string.male))
         genderList.add(getString(R.string.female))
+        genderList.add(getString(R.string.other))
         initGenderSpinnerAdapter()
         setUserDetails()
     }
@@ -177,8 +178,6 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val errorColor = ContextCompat.getColor(this, R.color.error_msg_text_color)
-        val normalColor = ContextCompat.getColor(this, R.color.et_hint_color)
         when (v!!.id) {
             R.id.ivBgImage -> {
                 finish()
@@ -188,27 +187,22 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.save_changes_btn -> {
-                binding.firstDivider.setBackgroundColor(normalColor)
-                binding.firstErrorText.visibility = View.GONE
-                binding.lastDivider.setBackgroundColor(normalColor)
-                binding.lastErrorText.visibility = View.GONE
-                val firstName = binding.firstEdit.text.toString().trim()
-                if (firstName.isEmpty()) {
-                    binding.firstErrorText.text = getString(R.string.pls_enter_first_name)
-                    return
-                } else {
-                    val request = RegisterRequest(
-                        binding.firstEdit.text.toString().trim(),
-                        binding.lastEdit.text.toString().trim(),
-                        Pref.user?.email!!,
-                        dob,
-                        if (binding.genderSpinner.selectedItemPosition == 1) Enums.Gender.MALE.toString() else Enums.Gender.FEMALE.toString(),
-                        binding.weightEdit.text.toString().trim().toInt(),
-                        binding.heightEdit.text.toString().trim().toInt(),
-                        null
-                    )
-                    profileViewModel.updateProfile(request)
+                val gender = when (binding.genderSpinner.selectedItemPosition) {
+                    1 -> Enums.Gender.MALE.toString()
+                    2 -> Enums.Gender.FEMALE.toString()
+                    3 -> Enums.Gender.OTHER.toString()
+                    else -> ""
                 }
+
+                val request = UpdateProfileRequest(
+                    binding.firstEdit.text.toString().trim(),
+                    binding.lastEdit.text.toString().trim(),
+                    dob,
+                    gender,
+                    binding.weightEdit.text.toString().trim().toInt(),
+                    binding.heightEdit.text.toString().trim().toInt()
+                )
+                profileViewModel.updateProfile(request)
             }
         }
     }
