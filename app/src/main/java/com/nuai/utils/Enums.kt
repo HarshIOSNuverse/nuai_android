@@ -15,4 +15,12 @@ object Enums {
     enum class Gender {
         MALE, FEMALE, OTHER
     }
+
+    enum class ScanType {
+        FACE, FINGER
+    }
+
+    enum class WellnessScore {
+        LOW, HIGH
+    }
 }

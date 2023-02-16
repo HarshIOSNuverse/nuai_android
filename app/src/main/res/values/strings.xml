@@ -115,4 +115,19 @@
     <string name="app_version">App Version</string>
     <string name="sdk_version">SDK Version</string>
     <string name="about_app_link_text">For more information on CheckMySelf visit us at: https://CheckMySelf/app</string>
+    <string name="no_measurement_were_taken">No measurements were\ntaken on this date</string>
+    <string name="wellness_score">Wellness Score</string>
+    <string name="breathing_rate">Breathing Rate</string>
+    <string name="heart_rate">Heart Rate</string>
+    <string name="prq">PRQ</string>
+    <string name="oxygen_saturation">Oxygen Saturation</string>
+    <string name="blood_pressure">Blood Pressure</string>
+    <string name="stress_level">Stress Level</string>
+    <string name="recovery_ability">Recovery Ability</string>
+    <string name="stress_response">Stress Response</string>
+    <string name="hrv_sdnn">HRV-SDNN</string>
+    <string name="view_more">View More</string>
+    <string name="bpm">bpm</string>
+    <string name="brpm">brpm</string>
+    <string name="ms">ms</string>
 </resources>
