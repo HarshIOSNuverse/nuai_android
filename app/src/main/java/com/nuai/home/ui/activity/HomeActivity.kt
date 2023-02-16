@@ -102,7 +102,7 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.ll_health_scan -> {
-
+                HealthScanOptionsActivity.startActivity(this)
             }
             R.id.ll_health_history -> {
 

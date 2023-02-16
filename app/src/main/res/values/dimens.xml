@@ -72,4 +72,5 @@
     <dimen name="menu_icon_spacing">15dp</dimen>
     <dimen name="menu_divider_height">1dp</dimen>
     <dimen name="menu_text_size">18sp</dimen>
+    <dimen name="dp_55">55dp</dimen>
 </resources>

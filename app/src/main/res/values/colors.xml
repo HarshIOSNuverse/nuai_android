@@ -36,4 +36,6 @@
     <color name="bmi_bg_color">#FFF4FE</color>
     <color name="category_bg_color">#DAFFEE</color>
     <color name="green_text_color">#1FAF6A</color>
+    <color name="orange_color">#F36C21</color>
+    <color name="light_orange_color">#FFF6F1</color>
 </resources>

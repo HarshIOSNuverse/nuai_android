@@ -100,6 +100,13 @@
     <string name="save_changes">Save Changes</string>
     <string name="app_walk_through">App Walkthrough</string>
     <string name="send_feedback">Send Feedback</string>
-    <string name="terms_of_service">Tems of Service</string>
+    <string name="terms_of_service">Terms of Service</string>
     <string name="got_it">Got it</string>
+    <string name="face_option_select_title">%s, ready to measure\nyour vital signs?</string>
+    <string name="face_option_select_msg">Sit still, ensure your face is evenly illuminated and there is no light source behind you.</string>
+    <string name="finger_option_select_title">Place your finger on the rear camera (not on the selfie camera).</string>
+    <string name="finger_option_select_msg">Place your finger on the camera\n(not the flashlight), applying moderate pressure. Click Measure Now.</string>
+    <string name="measure_now">Measure Now</string>
+    <string name="face">Face</string>
+    <string name="finger">Finger</string>
 </resources>
