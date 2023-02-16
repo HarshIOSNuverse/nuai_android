@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.HomeActivityBinding
+import com.nuai.history.ui.activity.HealthHistoryListActivity
 import com.nuai.interfaces.DialogClickListener
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
@@ -79,10 +80,7 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
                         showHideProgress(it.data == null)
                     }
                     Status.SUCCESS -> {
-                        if (it.data != null
-                            && (it.code == ResponseStatus.STATUS_CODE_SUCCESS
-                                    || it.code == ResponseStatus.STATUS_CODE_CREATED)
-                        ) {
+                        if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
                         }
                     }
                     Status.ERROR -> {
@@ -105,7 +103,7 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
                 HealthScanOptionsActivity.startActivity(this)
             }
             R.id.ll_health_history -> {
-
+                HealthHistoryListActivity.startActivity(this)
             }
             R.id.view_profile_text -> {
                 binding.drawer.closeDrawer(binding.nv)
@@ -113,14 +111,16 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.health_history_menu -> {
-
+                binding.drawer.closeDrawer(binding.nv)
+                HealthHistoryListActivity.startActivity(this)
             }
             R.id.settings_menu -> {
                 binding.drawer.closeDrawer(binding.nv)
                 SettingsActivity.startActivity(this)
             }
             R.id.about_app_menu -> {
-
+                binding.drawer.closeDrawer(binding.nv)
+                AboutAppActivity.startActivity(this)
             }
             R.id.logout_menu -> {
                 AlertDialogManager.showConfirmationDialog(

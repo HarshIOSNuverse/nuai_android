@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.nuai.R
@@ -169,9 +170,15 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
         binding.timerText.text = SimpleDateFormat("00:ss").format(Date(remainingTime))
     }
 
-    private fun showResendButton(show: Boolean) {
-        binding.resendText.visibility = if (show) View.VISIBLE else View.GONE
-        binding.timerText.visibility = if (show) View.GONE else View.VISIBLE
+    private fun showResendButton(isTimerCompleted: Boolean) {
+        binding.resendText.isEnabled=isTimerCompleted
+        if(isTimerCompleted){
+            binding.resendText.setTextColor(ContextCompat.getColor(this,R.color.blue_text_color))
+            binding.timerText.visibility = View.GONE
+        }else{
+            binding.resendText.setTextColor(ContextCompat.getColor(this,R.color.secondary_text_color))
+            binding.timerText.visibility = View.VISIBLE
+        }
     }
 
     private fun initClickListener() {

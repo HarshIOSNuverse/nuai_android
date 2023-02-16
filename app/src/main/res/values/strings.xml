@@ -109,4 +109,10 @@
     <string name="measure_now">Measure Now</string>
     <string name="face">Face</string>
     <string name="finger">Finger</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="are_you_sure_want_to_delete_account">Are you sure want to delete account?</string>
+    <string name="delete">Delete</string>
+    <string name="app_version">App Version</string>
+    <string name="sdk_version">SDK Version</string>
+    <string name="about_app_link_text">For more information on CheckMySelf visit us at: https://CheckMySelf/app</string>
 </resources>

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.nuai.R
 import com.nuai.di.ResourcesProvider
 import com.nuai.network.ApiResponseState
+import com.nuai.network.CommonResponse
 import com.nuai.network.Status
 import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
@@ -25,6 +26,8 @@ class ProfileViewModel @Inject constructor(
     val updateProfileState = MutableStateFlow(ApiResponseState(Status.LOADING, LoginResponse()))
     val meApiState =
         MutableStateFlow(ApiResponseState(Status.LOADING, MyProfileResponse()))
+    val deleteAccountState =
+        MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
 
     fun getMe() {
         if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
@@ -68,6 +71,28 @@ class ProfileViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun deleteAccount() {
+        if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
+            deleteAccountState.value = ApiResponseState.loading()
+            viewModelScope.launch {
+                onBoardingRepository.deleteAccount().catch {
+                    deleteAccountState.value =
+                        ApiResponseState.error(it.message, 100)
+                }.collect {
+                    deleteAccountState.value =
+                        if (it.data != null) ApiResponseState.success(it.data, it.code)
+                        else ApiResponseState.error(it.message, it.code)
+                }
+            }
+        } else {
+            deleteAccountState.value =
+                ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
         }
     }
 

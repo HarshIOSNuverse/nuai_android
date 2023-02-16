@@ -98,6 +98,9 @@ constructor(
         @POST(Url.API + "reset/password")
         suspend fun resetPassword(@Body request: ResetPasswordRequest?): Response<CommonResponse?>
 
+        @Headers("$HEADER_BEAR: true")
+        @DELETE(Url.API + "account")
+        suspend fun deleteAccount(): Response<CommonResponse?>
 
         /* @Headers("$HEADER_BEAR: true")
          @POST(Url.API + "register-device")

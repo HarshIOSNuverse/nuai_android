@@ -66,6 +66,7 @@
             android:fontFamily="@font/switzer_medium"
             android:includeFontPadding="false"
             android:inputType="numberPassword"
+            android:textColor="@color/et_text_color"
             android:textSelectHandle="@drawable/text_handle"
             android:textSize="@dimen/sp_30"
             app:bottomTextPaddingDp="@dimen/dp_1"
@@ -76,7 +77,6 @@
             app:highlightSingleFieldMode="true"
             app:isCursorEnabled="true"
             app:isCustomBackground="false"
-            android:textColor="@color/et_text_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/message_txt"
@@ -111,11 +111,11 @@
             android:gravity="center_horizontal"
             android:onClick="@{onClickListener}"
             android:padding="@dimen/dp_5"
-            android:visibility="gone"
             android:text="@string/resend_activation_code"
-            android:textColor="@color/blue_text_color"
+            android:textColor="@color/secondary_text_color"
             android:textSize="@dimen/sp_16"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/timer_text"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activate_btn" />
 
@@ -127,11 +127,11 @@
             android:layout_marginVertical="@dimen/dp_30"
             android:gravity="center_horizontal"
             android:padding="@dimen/dp_5"
-            android:text="@string/resend_activation_code"
+            android:text="00"
             android:textColor="@color/otp_timer_text_color"
             android:textSize="@dimen/sp_16"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/resend_text"
             app:layout_constraintTop_toBottomOf="@+id/activate_btn" />
 
 

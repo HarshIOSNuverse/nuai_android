@@ -68,11 +68,31 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                     }
                     Status.ERROR -> {
                         showHideProgress(false)
-                        CommonUtils.showToast(this@ForgotPasswordActivity, it.message)
+                        when (it.code) {
+                            // Email not found
+                            409 -> {
+                                showEmailError(it.message)
+                            }
+                            else -> {
+                                CommonUtils.showToast(this@ForgotPasswordActivity, it.message)
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun showEmailError(message: String?) {
+        val errorColor =
+            ContextCompat.getColor(this@ForgotPasswordActivity, R.color.error_msg_text_color)
+        binding.ivEmail.setImageResource(R.drawable.cross)
+        binding.ivEmail.visibility =
+            if (binding.emailEdit.text.toString().trim().isNotEmpty()) View.VISIBLE else View.GONE
+        binding.ivEmail.isEnabled = true
+        binding.emailDivider.setBackgroundColor(errorColor)
+        binding.emailErrorText.text = message
+        binding.emailErrorText.visibility = View.VISIBLE
     }
 
     private fun initClickListener() {
@@ -95,7 +115,6 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val errorColor = ContextCompat.getColor(this, R.color.error_msg_text_color)
         val normalColor = ContextCompat.getColor(this, R.color.et_hint_color)
         when (v!!.id) {
             R.id.ivBgImage -> {
@@ -109,17 +128,13 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.get_otp_btn -> {
                 binding.emailDivider.setBackgroundColor(normalColor)
+                binding.emailErrorText.visibility = View.GONE
                 val email = binding.emailEdit.text.toString().trim()
                 if (email.isEmpty()) {
-                    binding.emailErrorText.text = getString(R.string.pls_enter_email)
+                    showEmailError(getString(R.string.pls_enter_email))
                     return
                 } else if (!CommonUtils.isValidEmail(email)) {
-                    binding.ivEmail.setImageResource(R.drawable.cross)
-                    binding.ivEmail.visibility = View.VISIBLE
-                    binding.ivEmail.isEnabled = true
-                    binding.emailDivider.setBackgroundColor(errorColor)
-                    binding.emailErrorText.text = getString(R.string.pls_enter_valid_email)
-                    binding.emailErrorText.visibility = View.VISIBLE
+                    showEmailError(getString(R.string.pls_enter_valid_email))
                     return
                 } else {
                     Pref.accessToken = null

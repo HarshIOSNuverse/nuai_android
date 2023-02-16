@@ -78,7 +78,21 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     }
                     Status.ERROR -> {
                         showHideProgress(false)
-                        CommonUtils.showToast(this@LoginActivity, it.message)
+                        binding.emailErrorText.visibility = View.GONE
+                        binding.passwordErrorText.visibility = View.GONE
+                        when (it.code) {
+                            // Email not found
+                            409 -> {
+                                showEmailError(it.message)
+                            }
+                            // Wrong password
+                            417 -> {
+                                showPasswordError(it.message)
+                            }
+                            else -> {
+                                CommonUtils.showToast(this@LoginActivity, it.message)
+                            }
+                        }
                     }
                 }
             }
@@ -108,6 +122,32 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private fun showEmailError(message: String?) {
+        val errorColor =
+            ContextCompat.getColor(this@LoginActivity, R.color.error_msg_text_color)
+        binding.ivEmail.setImageResource(R.drawable.cross)
+        binding.ivEmail.visibility =
+            if (binding.emailEdit.text.toString().trim().isNotEmpty()) View.VISIBLE else View.GONE
+        binding.ivEmail.isEnabled = true
+        binding.emailDivider.setBackgroundColor(errorColor)
+        binding.emailErrorText.text = message
+        binding.emailErrorText.visibility = View.VISIBLE
+    }
+
+    private fun showPasswordError(message: String?) {
+        val errorColor =
+            ContextCompat.getColor(this@LoginActivity, R.color.error_msg_text_color)
+        val normalColor =
+            ContextCompat.getColor(this@LoginActivity, R.color.et_hint_color)
+        binding.emailDivider.setBackgroundColor(normalColor)
+        binding.ivEmail.setImageResource(R.drawable.tick)
+        binding.ivEmail.visibility = View.VISIBLE
+        binding.ivEmail.isEnabled = false
+        binding.passwordDivider.setBackgroundColor(errorColor)
+        binding.passwordErrorText.text = message
+        binding.passwordErrorText.visibility = View.VISIBLE
+    }
+
     private fun initClickListener() {
         binding.onClickListener = this
         binding.emailEdit.addTextChangedListener(textWatcher)
@@ -130,7 +170,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val errorColor = ContextCompat.getColor(this, R.color.error_msg_text_color)
         val normalColor = ContextCompat.getColor(this, R.color.et_hint_color)
         when (v!!.id) {
             R.id.ivBgImage -> {
@@ -157,18 +196,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 val email = binding.emailEdit.text.toString().trim()
                 val password = binding.passwordEdit.text.toString().trim()
                 if (email.isEmpty()) {
-                    binding.emailErrorText.text = getString(R.string.pls_enter_email)
+                    showEmailError(getString(R.string.pls_enter_email))
                     return
                 } else if (!CommonUtils.isValidEmail(email)) {
-                    binding.ivEmail.setImageResource(R.drawable.cross)
-                    binding.ivEmail.visibility = View.VISIBLE
-                    binding.ivEmail.isEnabled = true
-                    binding.emailDivider.setBackgroundColor(errorColor)
-                    binding.emailErrorText.text = getString(R.string.pls_enter_valid_email)
-                    binding.emailErrorText.visibility = View.VISIBLE
+                    showEmailError(getString(R.string.pls_enter_valid_email))
                     return
                 } else if (password.isEmpty()) {
-                    binding.emailErrorText.text = getString(R.string.pls_enter_password)
+                    showPasswordError(getString(R.string.pls_enter_password))
                     return
                 } else {
                     val request = LoginRequest(

@@ -48,6 +48,7 @@
             android:id="@+id/send_feedback_text"
             style="@style/TextViewStyleRegular"
             android:layout_width="0dp"
+            android:background="@color/profile_top_bg_color"
             android:drawablePadding="@dimen/dp_15"
             android:fontFamily="@font/switzer_regular"
             android:gravity="center_vertical"
@@ -55,7 +56,6 @@
             android:paddingHorizontal="@dimen/dp_25"
             android:paddingVertical="@dimen/dp_15"
             android:text="@string/send_feedback"
-            android:background="@color/profile_top_bg_color"
             app:drawableEndCompat="@drawable/right_arrow"
             app:drawableStartCompat="@drawable/send_feedback"
             app:layout_constraintEnd_toEndOf="parent"
@@ -95,6 +95,34 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/terms_of_service_text" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/delete_account_text"
+            style="@style/TextViewStyleMedium"
+            android:layout_marginTop="@dimen/dp_25"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:drawablePadding="@dimen/dp_15"
+            android:gravity="center_vertical"
+            android:onClick="@{onClickListener}"
+            android:paddingHorizontal="@dimen/dp_25"
+            android:paddingVertical="@dimen/dp_5"
+            android:text="@string/delete_account"
+            android:textColor="@color/red"
+            app:layout_constraintBottom_toTopOf="@+id/app_version_sdk_version_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/app_version_sdk_version_text"
+            style="@style/TextViewStyleRegular"
+            android:layout_marginBottom="@dimen/dp_30"
+            android:gravity="center_vertical"
+            android:text="@string/app_walk_through"
+            android:textColor="@color/copy_write_text_color"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

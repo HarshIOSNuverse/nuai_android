@@ -122,6 +122,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Nuai.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".home.ui.activity.AboutAppActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name=".history.ui.activity.HealthHistoryListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
 
         <provider
             android:name=".utils.GenericFileProvider"

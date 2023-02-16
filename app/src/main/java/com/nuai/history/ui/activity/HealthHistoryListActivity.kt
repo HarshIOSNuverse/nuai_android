@@ -1,4 +1,4 @@
-package com.nuai.onboarding.ui.activity
+package com.nuai.history.ui.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -7,17 +7,17 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.nuai.R
 import com.nuai.base.BaseActivity
-import com.nuai.databinding.RegistrationCompletedActivityBinding
+import com.nuai.databinding.HealthHistoryListActivityBinding
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.Pref
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class RegistrationCompletedActivity : BaseActivity(), View.OnClickListener {
+class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
     companion object {
         fun startActivity(activity: Activity) {
-            Intent(activity, RegistrationCompletedActivity::class.java).run {
+            Intent(activity, HealthHistoryListActivity::class.java).run {
                 activity.startActivity(this)
                 AnimationsHandler.playActivityAnimation(
                     activity, AnimationsHandler.Animations.RightToLeft
@@ -26,34 +26,31 @@ class RegistrationCompletedActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private lateinit var binding: RegistrationCompletedActivityBinding
-
+    private lateinit var binding: HealthHistoryListActivityBinding
+    private val user = Pref.user
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.registration_completed_activity)
+        binding = DataBindingUtil.setContentView(this, R.layout.health_history_list_activity)
+        setUpToolNewBar(binding.toolbarLayout)
+        setToolBarTitle(getString(R.string.app_name))
+        showToolbarIcon(true)
         initClickListener()
-        enableDisableButton(binding.continueBtn, true)
         init()
     }
 
     private fun init() {
-        val user = Pref.user
-        if (!user?.firstName.isNullOrEmpty()) {
-            binding.titleTxt.text = user?.firstName
-        }
     }
 
     private fun initClickListener() {
         binding.onClickListener = this
     }
 
+
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.continue_btn -> {
-                TutorialActivity.startActivity(this, TutorialActivity.Companion.From.SIGNUP)
+            R.id.measure_now_btn -> {
             }
         }
     }
 
-    override fun onBackPressed() {}
 }
