@@ -3,10 +3,12 @@ package com.nuai.history.ui.activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.nuai.R
 import com.nuai.base.BaseActivity
@@ -16,8 +18,11 @@ import com.nuai.home.model.HealthHistory
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.DateFormatter
 import com.nuai.utils.Enums
+import com.nuai.utils.EventDecorator
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import kotlin.collections.HashMap
 
 
 @AndroidEntryPoint
@@ -88,6 +93,22 @@ class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
             stressResponse = "N.A."
             hrvSdnn = 48
         })
+        historyList.add(HealthHistory().apply {
+            id = 3
+            scanType = Enums.ScanType.FINGER.toString()
+            wellnessScore = Enums.WellnessScore.HIGH.toString()
+            score = "8/10 | High"
+            time = "12:30 PM"
+            heartRate = 58
+            breathingRate = 10
+            prq = 2
+            oxygenSaturation = 96
+            bloodPressure = "96/60"
+            stressLevel = "Normal"
+            recoveryAbility = "High"
+            stressResponse = "N.A."
+            hrvSdnn = 48
+        })
         Handler(Looper.getMainLooper()).postDelayed({
             binding.tvFaceCount.text =
                 historyList.count { it.scanType == Enums.ScanType.FACE.toString() }.toString()
@@ -117,14 +138,32 @@ class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
 
     private fun initClickListener() {
         binding.onClickListener = this
-        binding.calenderView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            val calendar = Calendar.getInstance()
-            calendar.set(Calendar.YEAR, year)
-            calendar.set(Calendar.MONDAY, month)
-            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            selectedDate =
-                DateFormatter.getDateToString(DateFormatter.yyyy_MM_dd_DASH, calendar.time)
-            updateDateView()
+        val hashMap: HashMap<CalendarDay, Int> = hashMapOf()
+        hashMap[CalendarDay.today()] = R.color.red
+        hashMap[CalendarDay.from(2023, 2, 25)] = R.color.green_text_color
+        binding.calenderView.addDecorator(
+            EventDecorator(
+                Color.RED,
+                arrayListOf(CalendarDay.today(), CalendarDay.from(2023, 2, 25))
+            )
+        )
+        binding.calenderView.addDecorator(
+            EventDecorator(
+                ContextCompat.getColor(this, R.color.green_text_color),
+                arrayListOf(CalendarDay.from(2023, 2, 18))
+            )
+        )
+        binding.calenderView.invalidateDecorators()
+        binding.calenderView.setOnDateChangedListener { _, date, selected ->
+            if (selected) {
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.YEAR, date.year)
+                calendar.set(Calendar.MONDAY, (date.month - 1))
+                calendar.set(Calendar.DAY_OF_MONTH, date.day)
+                selectedDate =
+                    DateFormatter.getDateToString(DateFormatter.yyyy_MM_dd_DASH, calendar.time)
+                updateDateView()
+            }
         }
     }
 

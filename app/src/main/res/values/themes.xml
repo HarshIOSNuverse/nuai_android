@@ -80,6 +80,7 @@
         <item name="android:textSize">@dimen/sp_16</item>
         <item name="background">@drawable/rc_black_filled_c25</item>
     </style>
+
     <style name="DatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/theme_color</item>
     </style>
@@ -92,6 +93,24 @@
         <item name="android:fontFamily">@font/switzer_semibold</item>
         <item name="android:textSize">@dimen/sp_16</item>
         <item name="background">@drawable/rc_black_filled_c25</item>
+    </style>
+
+    <style name="MonthText">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/switzer_medium</item>
+    </style>
+
+    <style name="WeekDayText">
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="fontFamily">@font/switzer_regular</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="DateText" parent="TextAppearance.MaterialCalendarWidget.Date">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/primary_text_color</item>
     </style>
 
 </resources>

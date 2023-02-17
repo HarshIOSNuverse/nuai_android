@@ -43,13 +43,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <CalendarView
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
                     android:id="@+id/calender_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginEnd="@dimen/dp_20"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:mcv_allowClickDaysOutsideCurrentMonth="false"
+                    app:mcv_calendarMode="month"
+                    app:mcv_dateTextAppearance="@style/DateText"
+                    app:mcv_headerTextAppearance="@style/MonthText"
+                    app:mcv_leftArrow="@drawable/back_cal"
+                    app:mcv_rightArrow="@drawable/next_cal"
+                    app:mcv_selectionColor="@color/disabled_btn_bg_color"
+                    app:mcv_selectionMode="single"
+                    app:mcv_showOtherDates="none"
+                    app:mcv_showWeekDays="true"
+                    app:mcv_tileHeight="@dimen/dp_40"
+                    app:mcv_weekDayTextAppearance="@style/WeekDayText"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cr_header"

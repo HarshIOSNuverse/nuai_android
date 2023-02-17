@@ -16,6 +16,7 @@ import com.nuai.databinding.SettingsActivityBinding
 import com.nuai.interfaces.DialogClickListener
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
+import com.nuai.network.Url
 import com.nuai.onboarding.ui.activity.LoginRegisterActivity
 import com.nuai.onboarding.ui.activity.TutorialActivity
 import com.nuai.onboarding.ui.activity.WebActivity
@@ -102,14 +103,14 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                 WebActivity.startActivity(
                     this@SettingsActivity,
                     getString(R.string.terms_of_service),
-                    "https://www.google.com"
+                    Url.HOST + "terms_condition"
                 )
             }
             R.id.privacy_policy_text -> {
                 WebActivity.startActivity(
                     this@SettingsActivity,
                     getString(R.string.privacy_policy),
-                    "https://www.facebook.com"
+                    Url.HOST + "privacy_policy"
                 )
             }
             R.id.delete_account_text -> {

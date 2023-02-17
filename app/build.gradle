@@ -114,4 +114,6 @@ dependencies {
     implementation 'com.github.poovamraj:PinEditTextField:1.2.6'
     // StickyScrollView
     implementation 'com.github.didikk:sticky-nestedscrollview:1.0.1'
+    // CalendarView
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
 }

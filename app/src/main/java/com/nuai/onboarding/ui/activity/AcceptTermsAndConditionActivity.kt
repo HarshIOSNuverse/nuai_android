@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.AcceptTermsAndConditionActivityBinding
+import com.nuai.network.Url
 import com.nuai.utils.AnimationsHandler
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -79,7 +80,7 @@ class AcceptTermsAndConditionActivity : BaseActivity(), View.OnClickListener {
                 WebActivity.startActivity(
                     this@AcceptTermsAndConditionActivity,
                     getString(R.string.term_of_use),
-                    "https://www.google.com"
+                    Url.HOST + "terms_condition"
                 )
             }
         }, i1, i1 + subtext1.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -94,7 +95,7 @@ class AcceptTermsAndConditionActivity : BaseActivity(), View.OnClickListener {
                 WebActivity.startActivity(
                     this@AcceptTermsAndConditionActivity,
                     getString(R.string.privacy_policy),
-                    "https://www.facebook.com"
+                    Url.HOST + "privacy_policy"
                 )
             }
         }, i2, i2 + subtext2.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
