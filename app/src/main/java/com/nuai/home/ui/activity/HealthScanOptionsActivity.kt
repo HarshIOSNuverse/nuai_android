@@ -68,7 +68,7 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.measure_now_btn -> {
-                FaceScanActivity.startActivity(this)
+                ScanByFaceActivity.startActivity(this)
             }
         }
     }

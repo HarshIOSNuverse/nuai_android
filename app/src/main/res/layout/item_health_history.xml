@@ -22,7 +22,7 @@
         android:layout_marginVertical="@dimen/dp_8"
         android:background="@drawable/drawer_profile_bg"
         android:padding="@dimen/sp_15"
-        tools:context=".onboarding.ui.activity.SplashActivity">
+        tools:context=".history.ui.activity.HealthHistoryListActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cr_wellness_score"

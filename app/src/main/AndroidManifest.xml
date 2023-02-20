@@ -150,7 +150,7 @@
             android:theme="@style/Theme.Nuai.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".home.ui.activity.FaceScanActivity"
+            android:name=".home.ui.activity.ScanByFaceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Nuai.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
