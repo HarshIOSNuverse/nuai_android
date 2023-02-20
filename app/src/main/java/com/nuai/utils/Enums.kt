@@ -23,4 +23,12 @@ object Enums {
     enum class WellnessScore {
         LOW, HIGH
     }
+    enum class SessionMode {
+        FACE, FINGER
+    }
+
+    enum class UiState {
+        LOADING, MEASURING, IDLE
+    }
+
 }

@@ -40,4 +40,15 @@
     <color name="light_orange_color">#FFF6F1</color>
     <color name="low_score_bg_color">#FFF5EF</color>
     <color name="high_score_bg_color">#F3F6FC</color>
+
+
+    <color name="trans_white">#50FFFFFF</color>
+    <color name="trans_green">#501A434E</color>
+
+
+    <!--binah ai color-->
+    <color name="dark_green">#1A434E</color>
+    <color name="dark_green_light">#71ADBD</color>
+    <color name="dark_green_extra_light">#E9F2F4</color>
+
 </resources>

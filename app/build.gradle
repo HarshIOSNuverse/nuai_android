@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.nuai"
-        minSdk 21
+        minSdk 27
         targetSdk 33
         versionCode Integer.parseInt(version_code)
         versionName app_version
@@ -19,6 +19,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "APP_VERSION", "\"${app_version}\""
         buildConfigField "String", "API_VERSION", "\"${api_version}\""
+        buildConfigField "String", "LICENCE_KEY", "\"${licence_key}\""
         buildConfigField "String", "CLIENT_ID", "\"" + productionClientId + "\""
         buildConfigField "String", "CLIENT_SECRET", "\"" + productionClientSecret + "\""
     }
@@ -77,7 +78,7 @@ android {
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
@@ -116,4 +117,8 @@ dependencies {
     implementation 'com.github.didikk:sticky-nestedscrollview:1.0.1'
     // CalendarView
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
+    //AI lib
+    implementation project(':bnhhrlib')
+    //Certificate Transparency
+    implementation("com.appmattus.certificatetransparency:certificatetransparency-android:1.0.0")
 }

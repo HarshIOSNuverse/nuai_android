@@ -130,4 +130,10 @@
     <string name="bpm">bpm</string>
     <string name="brpm">brpm</string>
     <string name="ms">ms</string>
+    <string name="moving_or_disruption_identified_msg">Movements or other disruptions were identified. Try again, looking directly into the camera without moving until the measurement is complete.</string>
+    <string name="you_cancel_camera_permission">You cancelled camera permission</string>
+    <!--    face detect bottom sheet   -->
+    <string name="face_not_detected">Face not detected</string>
+    <string name="face_not_detected_msg">Please point the camera to your face and make sure you are not too far or too close.</string>
+
 </resources>

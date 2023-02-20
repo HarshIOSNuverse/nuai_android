@@ -6,10 +6,25 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.front.autofocus"
+        android:required="false" />
 
     <application
         android:name=".app.MyApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -17,7 +32,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nuai"
-        tools:targetApi="31">
+        tools:ignore="UnusedAttribute"
+        tools:replace="android:allowBackup">
         <activity
             android:name=".onboarding.ui.activity.SplashActivity"
             android:exported="true"
@@ -130,6 +146,11 @@
 
         <activity
             android:name=".history.ui.activity.HealthHistoryListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".home.ui.activity.FaceScanActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Nuai.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
