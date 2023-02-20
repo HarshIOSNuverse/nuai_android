@@ -68,7 +68,11 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.measure_now_btn -> {
-                ScanByFaceActivity.startActivity(this)
+                if (binding.rgType.checkedRadioButtonId == R.id.rb_face) {
+                    ScanByFaceActivity.startActivity(this)
+                } else {
+                    ScanByFingerActivity.startActivity(this)
+                }
             }
         }
     }

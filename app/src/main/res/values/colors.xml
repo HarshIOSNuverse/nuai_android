@@ -50,5 +50,6 @@
     <color name="dark_green">#1A434E</color>
     <color name="dark_green_light">#71ADBD</color>
     <color name="dark_green_extra_light">#E9F2F4</color>
-
+    <color name="faceRect">#1357EB</color>
+    <color name="colorScreenBackground">#F0F0F0</color>
 </resources>

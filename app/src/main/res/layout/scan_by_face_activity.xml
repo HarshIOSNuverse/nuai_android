@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/black">
 
         <include
             android:id="@+id/toolbarLayout"
@@ -12,11 +20,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <include
+            android:id="@+id/mainContent"
+            layout="@layout/main_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbarLayout" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cr_face_not_detect_warning"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/rc_top_white_filled_30"
             android:padding="@dimen/dp_25"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -28,6 +48,7 @@
                 android:text="@string/face_not_detected"
                 android:textColor="@color/red"
                 android:textSize="@dimen/sp_20"
+                app:layout_constraintBottom_toTopOf="@+id/tv_face_not_detect_msg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -39,9 +60,29 @@
                 android:gravity="center_horizontal"
                 android:text="@string/face_not_detected_msg"
                 android:textColor="@color/secondary_text_color"
+                app:layout_constraintBottom_toTopOf="@+id/retry_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_face_not_detect_title" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/retry_btn"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_50"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:background="@drawable/rc_black_filled_c25"
+                android:enabled="false"
+                android:fontFamily="@font/switzer_medium"
+                android:onClick="@{onClickListener}"
+                android:text="@string/retry"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_face_not_detect_msg" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

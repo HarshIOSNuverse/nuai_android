@@ -53,7 +53,7 @@ class AboutAppActivity : BaseActivity() {
                 getString(
                     R.string.sdk_version
                 )
-            }"
+            } ${ai.binah.hrv.BuildConfig.VERSION_NAME} (${ai.binah.hrv.BuildConfig.VERSION_CODE})"
 
         setSpannableColor(
             binding.linkMessageText,

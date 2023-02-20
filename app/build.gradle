@@ -121,4 +121,6 @@ dependencies {
     implementation project(':bnhhrlib')
     //Certificate Transparency
     implementation("com.appmattus.certificatetransparency:certificatetransparency-android:1.0.0")
+    // Progressbar
+    implementation 'com.github.MackHartley:RoundedProgressBar:3.0.0'
 }
