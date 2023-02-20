@@ -15,10 +15,7 @@ import com.nuai.base.BaseActivity
 import com.nuai.databinding.HealthHistoryListActivityBinding
 import com.nuai.history.ui.adapter.HealthHistoryListAdapter
 import com.nuai.home.model.HealthHistory
-import com.nuai.utils.AnimationsHandler
-import com.nuai.utils.DateFormatter
-import com.nuai.utils.Enums
-import com.nuai.utils.EventDecorator
+import com.nuai.utils.*
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -154,6 +151,9 @@ class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
             )
         )
         binding.calenderView.invalidateDecorators()
+        binding.calenderView.setOnMonthChangedListener { _, date ->
+//            CommonUtils.showToast(this, date.day.toString() + "/" + date.month)
+        }
         binding.calenderView.setOnDateChangedListener { _, date, selected ->
             if (selected) {
                 val calendar = Calendar.getInstance()
