@@ -1,0 +1,72 @@
+package com.nuai.history.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.nuai.R
+import com.nuai.di.ResourcesProvider
+import com.nuai.history.model.api.response.CalenderDateResponse
+import com.nuai.history.model.api.response.HistoryListResponse
+import com.nuai.history.repository.HistoryRepository
+import com.nuai.network.ApiResponseState
+import com.nuai.network.Status
+import com.nuai.utils.CommonUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class HistoryViewModel @Inject constructor(
+    private val resourcesProvider: ResourcesProvider,
+    private val historyRepository: HistoryRepository
+) : ViewModel() {
+    val calendarDateByMonthState =
+        MutableStateFlow(ApiResponseState(Status.LOADING, CalenderDateResponse()))
+    val historyListState = MutableStateFlow(ApiResponseState(Status.LOADING,HistoryListResponse()))
+
+    fun getCalenderDateByMonth(month: String) {
+        when {
+            (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
+                calendarDateByMonthState.value = ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
+            }
+            else -> {
+                calendarDateByMonthState.value = ApiResponseState.loading()
+                viewModelScope.launch {
+                    historyRepository.getCalenderDateByMonth(month).catch {
+                        calendarDateByMonthState.value = ApiResponseState.error(it.message, 100)
+                    }.collect {
+                        calendarDateByMonthState.value =
+                            if (it.data != null) ApiResponseState.success(it.data, it.code)
+                            else ApiResponseState.error(it.message, it.code)
+                    }
+                }
+            }
+        }
+    }
+    fun getHistoryList(date: String) {
+        when {
+            (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
+                historyListState.value = ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
+            }
+            else -> {
+                historyListState.value = ApiResponseState.loading()
+                viewModelScope.launch {
+                    historyRepository.getHistoryList(date).catch {
+                        historyListState.value = ApiResponseState.error(it.message, 100)
+                    }.collect {
+                        historyListState.value =
+                            if (it.data != null) ApiResponseState.success(it.data, it.code)
+                            else ApiResponseState.error(it.message, it.code)
+                    }
+                }
+            }
+        }
+    }
+}

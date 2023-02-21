@@ -39,36 +39,51 @@ internal class HealthHistoryListAdapter(items: ArrayList<HealthHistory>) :
         val history = items[position]
         holder.binding.history = history
         holder.binding.historyListener = selectHealthHistoryListener
-        if (!history.wellnessScore.isNullOrEmpty()) {
-            when (history.wellnessScore) {
-                Enums.WellnessScore.HIGH.toString() -> {
-                    CommonUtils.setBgColor(
-                        context,
-                        holder.binding.crHistoryRoot.background,
-                        R.color.high_score_bg_color
-                    )
-                    CommonUtils.setBgColor(
-                        context,
-                        holder.binding.ivIndicator.drawable,
-                        R.color.green_text_color
-                    )
-                }
-                Enums.WellnessScore.LOW.toString() -> {
-                    CommonUtils.setBgColor(
-                        context,
-                        holder.binding.crHistoryRoot.background,
-                        R.color.low_score_bg_color
-                    )
-                    CommonUtils.setBgColor(
-                        context,
-                        holder.binding.ivIndicator.drawable,
-                        R.color.red
-                    )
-                }
+        var wellnessScore = "${history.wellnessScore}/10 | "
+        when (history.wellnessScore) {
+            8, 9, 10 -> {
+                CommonUtils.setBgColor(
+                    context,
+                    holder.binding.crHistoryRoot.background,
+                    R.color.high_score_bg_color
+                )
+                CommonUtils.setBgColor(
+                    context,
+                    holder.binding.ivIndicator.drawable,
+                    R.color.good_dot_color
+                )
+                wellnessScore += context.getString(R.string.high)
+            }
+            4, 5, 6, 7 -> {
+                CommonUtils.setBgColor(
+                    context,
+                    holder.binding.crHistoryRoot.background,
+                    R.color.low_score_bg_color
+                )
+                CommonUtils.setBgColor(
+                    context,
+                    holder.binding.ivIndicator.drawable,
+                    R.color.medium_dot_color
+                )
+                wellnessScore += context.getString(R.string.medium)
+            }
+            else -> {
+                CommonUtils.setBgColor(
+                    context,
+                    holder.binding.crHistoryRoot.background,
+                    R.color.low_score_bg_color
+                )
+                CommonUtils.setBgColor(
+                    context,
+                    holder.binding.ivIndicator.drawable,
+                    R.color.low_dot_color
+                )
+                wellnessScore += context.getString(R.string.low)
             }
         }
-        if (!history.scanType.isNullOrEmpty()) {
-            when (history.scanType) {
+        holder.binding.tvWellnessScore.text = wellnessScore
+        if (!history.scanBy.isNullOrEmpty()) {
+            when (history.scanBy) {
                 Enums.ScanType.FACE.toString() -> {
                     holder.binding.ivMeasureType.setImageResource(R.drawable.face_blue_circle)
                 }

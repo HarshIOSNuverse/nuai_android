@@ -152,4 +152,7 @@
     <string name="type_your_feedback_here">Type Your Feedback Here</string>
     <string name="pls_enter_feedback_title">Please enter feedback title</string>
     <string name="pls_enter_feedback">Please enter feedback</string>
+    <string name="high">High</string>
+    <string name="medium">Medium</string>
+    <string name="low">Low</string>
 </resources>

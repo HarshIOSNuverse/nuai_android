@@ -8,18 +8,22 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import androidx.core.content.ContextCompat
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.HealthHistoryListActivityBinding
 import com.nuai.history.ui.adapter.HealthHistoryListAdapter
+import com.nuai.history.viewmodel.HistoryViewModel
 import com.nuai.home.model.HealthHistory
+import com.nuai.network.ResponseStatus
+import com.nuai.network.Status
 import com.nuai.utils.*
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.HashMap
 
 
 @AndroidEntryPoint
@@ -36,6 +40,7 @@ class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: HealthHistoryListActivityBinding
+    private val historyViewModel: HistoryViewModel by viewModels()
     private var selectedDate: String? = ""
     private val historyList: ArrayList<HealthHistory> = arrayListOf()
 
@@ -46,74 +51,160 @@ class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
         setToolBarTitle(getString(R.string.app_name))
         showToolbarIcon(true)
         initClickListener()
+        initObserver()
         initAdapter()
         init()
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun init() {
+        binding.calenderView.state().edit().setMaximumDate(CalendarDay.today()).commit()
         selectedDate = DateFormatter.getDateToString(
             DateFormatter.yyyy_MM_dd_DASH,
             Calendar.getInstance().time
         )
+        binding.calenderView.selectedDate = CalendarDay.today()
         updateDateView()
-        historyList.add(HealthHistory().apply {
-            id = 1
-            scanType = Enums.ScanType.FACE.toString()
-            wellnessScore = Enums.WellnessScore.LOW.toString()
-            score = "3/10 | Low"
-            time = "3:30 PM"
-            heartRate = 58
-            breathingRate = 10
-            prq = 2
-            oxygenSaturation = 96
-            bloodPressure = "96/60"
-            stressLevel = "Normal"
-            recoveryAbility = "High"
-            stressResponse = "N.A."
-            hrvSdnn = 48
-
-        })
-        historyList.add(HealthHistory().apply {
-            id = 2
-            scanType = Enums.ScanType.FINGER.toString()
-            wellnessScore = Enums.WellnessScore.HIGH.toString()
-            score = "8/10 | High"
-            time = "12:30 PM"
-            heartRate = 58
-            breathingRate = 10
-            prq = 2
-            oxygenSaturation = 96
-            bloodPressure = "96/60"
-            stressLevel = "Normal"
-            recoveryAbility = "High"
-            stressResponse = "N.A."
-            hrvSdnn = 48
-        })
-        historyList.add(HealthHistory().apply {
-            id = 3
-            scanType = Enums.ScanType.FINGER.toString()
-            wellnessScore = Enums.WellnessScore.HIGH.toString()
-            score = "8/10 | High"
-            time = "12:30 PM"
-            heartRate = 58
-            breathingRate = 10
-            prq = 2
-            oxygenSaturation = 96
-            bloodPressure = "96/60"
-            stressLevel = "Normal"
-            recoveryAbility = "High"
-            stressResponse = "N.A."
-            hrvSdnn = 48
-        })
         Handler(Looper.getMainLooper()).postDelayed({
-            binding.tvFaceCount.text =
-                historyList.count { it.scanType == Enums.ScanType.FACE.toString() }.toString()
-            binding.tvFingerCount.text =
-                historyList.count { it.scanType == Enums.ScanType.FINGER.toString() }.toString()
-            binding.adapter!!.notifyDataSetChanged()
-            setNoResult()
-        }, 1000)
+            getCalendarDateByMonth(binding.calenderView.selectedDate!!)
+            historyViewModel.getHistoryList(selectedDate!!)
+        }, 500)
+    }
+
+    private fun getCalendarDateByMonth(date: CalendarDay) {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, date.year)
+        calendar.set(Calendar.MONDAY, (date.month - 1))
+        calendar.set(Calendar.DAY_OF_MONTH, date.day)
+        val month = DateFormatter.getDateToString(DateFormatter.MMM_yyyy_DASH, calendar.time)
+        historyViewModel.getCalenderDateByMonth(month)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun initObserver() {
+        lifecycleScope.launch {
+            historyViewModel.calendarDateByMonthState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+                        showHideProgress(it.data == null)
+                    }
+                    Status.SUCCESS -> {
+                        showHideProgress(false)
+                        if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
+                            if (!it.data.info.isNullOrEmpty()) {
+                                val calendar = Calendar.getInstance()
+                                val low: ArrayList<CalendarDay> = arrayListOf()
+                                val medium: ArrayList<CalendarDay> = arrayListOf()
+                                val good: ArrayList<CalendarDay> = arrayListOf()
+                                it.data.info?.forEach { calendarDate ->
+                                    if (calendarDate.score != null) {
+                                        val date = DateFormatter.getDateByString(
+                                            DateFormatter.yyyy_MM_dd_DASH, calendarDate.date!!,
+                                            TimeZone.getDefault()
+                                        )
+                                        if (date != null) {
+                                            calendar.time = date
+                                            when (calendarDate.score) {
+                                                8, 9, 10 -> {
+                                                    good.add(
+                                                        CalendarDay.from(
+                                                            calendar.get(Calendar.YEAR),
+                                                            calendar.get(Calendar.MONTH) + 1,
+                                                            calendar.get(Calendar.DATE),
+                                                        )
+                                                    )
+                                                }
+                                                4, 5, 6, 7 -> {
+                                                    medium.add(
+                                                        CalendarDay.from(
+                                                            calendar.get(Calendar.YEAR),
+                                                            calendar.get(Calendar.MONTH) + 1,
+                                                            calendar.get(Calendar.DATE),
+                                                        )
+                                                    )
+                                                }
+                                                else -> {
+                                                    low.add(
+                                                        CalendarDay.from(
+                                                            calendar.get(Calendar.YEAR),
+                                                            calendar.get(Calendar.MONTH) + 1,
+                                                            calendar.get(Calendar.DATE),
+                                                        )
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                                if (medium.isNotEmpty()) {
+                                    binding.calenderView.addDecorator(
+                                        EventDecorator(
+                                            Color.parseColor("#FFD231"),
+                                            medium
+                                        )
+                                    )
+                                }
+                                if (good.isNotEmpty()) {
+                                    binding.calenderView.addDecorator(
+                                        EventDecorator(
+                                            Color.parseColor("#43C949"),
+                                            good
+                                        )
+                                    )
+                                }
+                                if (low.isNotEmpty()) {
+                                    binding.calenderView.addDecorator(
+                                        EventDecorator(
+                                            Color.parseColor("#FF6161"),
+                                            low
+                                        )
+                                    )
+                                }
+                                binding.calenderView.invalidateDecorators()
+                            }
+                        }
+                    }
+                    Status.ERROR -> {
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@HealthHistoryListActivity, it.message)
+                    }
+                }
+            }
+        }
+        lifecycleScope.launch {
+            historyViewModel.historyListState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+//                        showHideProgress(it.data == null)
+                        showHideProgress(false)
+                        binding.viewFlipper.displayedChild = 0
+                    }
+                    Status.SUCCESS -> {
+                        showHideProgress(false)
+                        if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
+                            historyList.clear()
+                            if (!it.data.data?.scanResults.isNullOrEmpty()) {
+                                historyList.addAll(it.data.data?.scanResults!!)
+                                binding.tvFaceCount.text =
+                                    historyList.count { face -> face.scanBy == Enums.ScanType.FACE.toString() }
+                                        .toString()
+                                binding.tvFingerCount.text =
+                                    historyList.count { finger -> finger.scanBy == Enums.ScanType.FINGER.toString() }
+                                        .toString()
+                            }
+                            binding.adapter!!.notifyDataSetChanged()
+                            setNoResult()
+                        }
+                    }
+                    Status.ERROR -> {
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@HealthHistoryListActivity, it.message)
+                    }
+                }
+            }
+        }
     }
 
     private fun setNoResult() {
@@ -135,24 +226,8 @@ class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
 
     private fun initClickListener() {
         binding.onClickListener = this
-        val hashMap: HashMap<CalendarDay, Int> = hashMapOf()
-        hashMap[CalendarDay.today()] = R.color.red
-        hashMap[CalendarDay.from(2023, 2, 25)] = R.color.green_text_color
-        binding.calenderView.addDecorator(
-            EventDecorator(
-                Color.RED,
-                arrayListOf(CalendarDay.today(), CalendarDay.from(2023, 2, 25))
-            )
-        )
-        binding.calenderView.addDecorator(
-            EventDecorator(
-                ContextCompat.getColor(this, R.color.green_text_color),
-                arrayListOf(CalendarDay.from(2023, 2, 18))
-            )
-        )
-        binding.calenderView.invalidateDecorators()
         binding.calenderView.setOnMonthChangedListener { _, date ->
-//            CommonUtils.showToast(this, date.day.toString() + "/" + date.month)
+            getCalendarDateByMonth(date)
         }
         binding.calenderView.setOnDateChangedListener { _, date, selected ->
             if (selected) {
@@ -162,6 +237,7 @@ class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
                 calendar.set(Calendar.DAY_OF_MONTH, date.day)
                 selectedDate =
                     DateFormatter.getDateToString(DateFormatter.yyyy_MM_dd_DASH, calendar.time)
+                historyViewModel.getHistoryList(selectedDate!!)
                 updateDateView()
             }
         }

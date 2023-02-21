@@ -40,6 +40,9 @@
     <color name="light_orange_color">#FFF6F1</color>
     <color name="low_score_bg_color">#FFF5EF</color>
     <color name="high_score_bg_color">#F3F6FC</color>
+    <color name="low_dot_color">#FF6161</color>
+    <color name="medium_dot_color">#FFD231</color>
+    <color name="good_dot_color">#43C949</color>
 
 
     <color name="trans_white">#50FFFFFF</color>
@@ -52,4 +55,6 @@
     <color name="dark_green_extra_light">#E9F2F4</color>
     <color name="faceRect">#1357EB</color>
     <color name="colorScreenBackground">#F0F0F0</color>
+
+
 </resources>

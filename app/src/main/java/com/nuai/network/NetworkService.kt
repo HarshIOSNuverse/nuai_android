@@ -3,6 +3,8 @@ package com.nuai.network
 import android.content.Context
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
+import com.nuai.history.model.api.response.CalenderDateResponse
+import com.nuai.history.model.api.response.HistoryListResponse
 import com.nuai.onboarding.model.api.request.*
 import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
@@ -107,6 +109,13 @@ constructor(
         @POST(Url.API + "feedback")
         suspend fun sendFeedback(@Body request: SendFeedbackRequest): Response<CommonResponse?>
 
+        @Headers("$HEADER_BEAR: true")
+        @GET(Url.API + "calendar")
+        suspend fun getCalenderDateByMonth(@Query("period") month: String?): Response<CalenderDateResponse?>
+
+        @Headers("$HEADER_BEAR: true")
+        @GET(Url.API + "scan/history")
+        suspend fun getHistoryList(@Query("date") date: String?): Response<HistoryListResponse?>
         /* @Headers("$HEADER_BEAR: true")
          @POST(Url.API + "register-device")
          suspend fun registerDeviceToken(@Body request: RegisterTokenRequest): Response<CommonResponse?>
