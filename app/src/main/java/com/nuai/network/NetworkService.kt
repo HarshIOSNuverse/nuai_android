@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 import com.nuai.onboarding.model.api.request.*
 import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
+import com.nuai.profile.model.api.request.SendFeedbackRequest
 import com.nuai.profile.model.api.request.UpdateProfileRequest
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -101,6 +102,10 @@ constructor(
         @Headers("$HEADER_BEAR: true")
         @DELETE(Url.API + "account")
         suspend fun deleteAccount(): Response<CommonResponse?>
+
+        @Headers("$HEADER_BEAR: true")
+        @POST(Url.API + "feedback")
+        suspend fun sendFeedback(@Body request: SendFeedbackRequest): Response<CommonResponse?>
 
         /* @Headers("$HEADER_BEAR: true")
          @POST(Url.API + "register-device")

@@ -9,6 +9,7 @@ import com.nuai.network.CommonResponse
 import com.nuai.network.Status
 import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
+import com.nuai.profile.model.api.request.SendFeedbackRequest
 import com.nuai.profile.model.api.request.UpdateProfileRequest
 import com.nuai.profile.repository.ProfileRepository
 import com.nuai.utils.CommonUtils
@@ -27,6 +28,8 @@ class ProfileViewModel @Inject constructor(
     val meApiState =
         MutableStateFlow(ApiResponseState(Status.LOADING, MyProfileResponse()))
     val deleteAccountState =
+        MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
+    val sendFeedbackState =
         MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
 
     fun getMe() {
@@ -89,6 +92,28 @@ class ProfileViewModel @Inject constructor(
             }
         } else {
             deleteAccountState.value =
+                ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
+        }
+    }
+
+    fun sendFeedback(request: SendFeedbackRequest) {
+        if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
+            sendFeedbackState.value = ApiResponseState.loading()
+            viewModelScope.launch {
+                onBoardingRepository.sendFeedback(request).catch {
+                    sendFeedbackState.value =
+                        ApiResponseState.error(it.message, 100)
+                }.collect {
+                    sendFeedbackState.value =
+                        if (it.data != null) ApiResponseState.success(it.data, it.code)
+                        else ApiResponseState.error(it.message, it.code)
+                }
+            }
+        } else {
+            sendFeedbackState.value =
                 ApiResponseState.error(
                     resourcesProvider.getString(R.string.no_internet_connection),
                     100

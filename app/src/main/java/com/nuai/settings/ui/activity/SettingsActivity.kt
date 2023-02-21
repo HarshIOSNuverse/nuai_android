@@ -93,11 +93,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                 TutorialActivity.startActivity(this, TutorialActivity.Companion.From.SETTINGS)
             }
             R.id.send_feedback_text -> {
-                WebActivity.startActivity(
-                    this@SettingsActivity,
-                    getString(R.string.send_feedback),
-                    "https://www.facebook.com"
-                )
+                SendFeedbackActivity.startActivity(this)
             }
             R.id.terms_of_service_text -> {
                 WebActivity.startActivity(

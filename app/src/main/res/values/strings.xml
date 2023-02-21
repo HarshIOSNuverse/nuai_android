@@ -144,4 +144,12 @@
     <string name="no_finger_detected">Place your finger on the rear camera</string>
     <string name="finger_scan_hint">Place your finger on the rear camera (not on the selfie camera).</string>
     <string name="finger_scanning_msg">Make sure that your finger completely covers the camera.</string>
+    <string name="feedback_form">Feedback Form</string>
+    <string name="rate_your_experience_with">Rate your experience with</string>
+    <string name="feedback_title">Feedback Title</string>
+    <string name="ex_works_beautifully">Ex. Works Beautifully!</string>
+    <string name="write_your_feedback">Write Your Feedback</string>
+    <string name="type_your_feedback_here">Type Your Feedback Here</string>
+    <string name="pls_enter_feedback_title">Please enter feedback title</string>
+    <string name="pls_enter_feedback">Please enter feedback</string>
 </resources>
