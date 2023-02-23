@@ -39,15 +39,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-            <!-- <ImageView
+             <ImageView
                  android:layout_width="@dimen/dp_200"
                  android:layout_height="@dimen/dp_200"
                  android:layout_marginTop="90dp"
                  android:src="@drawable/ic_finger_white_elipse"
-                 android:background="#FFF5EF"
                  app:layout_constraintEnd_toEndOf="parent"
                  app:layout_constraintStart_toStartOf="parent"
-                 app:layout_constraintTop_toTopOf="parent" />-->
+                 app:layout_constraintTop_toTopOf="parent" />
 
             <include
                 android:id="@+id/measurementsLayout"

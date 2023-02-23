@@ -22,22 +22,30 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.nuai.BuildConfig
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.MeasurementsLayoutBinding
 import com.nuai.databinding.ScanByFaceActivityBinding
+import com.nuai.history.viewmodel.HistoryViewModel
+import com.nuai.home.model.ScanningResultData
+import com.nuai.home.model.api.request.SendScanRequest
+import com.nuai.network.ResponseStatus
+import com.nuai.network.Status
 import com.nuai.onboarding.ui.activity.TutorialActivity
-import com.nuai.profile.viewmodel.ProfileViewModel
-import com.nuai.utils.AnimationsHandler
-import com.nuai.utils.Enums
+import com.nuai.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -47,6 +55,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     ImageListener,
     AlertsListener {
     companion object {
+        val tag: String = ScanByFaceActivity::class.java.simpleName
         fun startActivity(activity: Activity) {
             Intent(activity, ScanByFaceActivity::class.java).run {
                 activity.startActivity(this)
@@ -58,12 +67,27 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     }
 
     private lateinit var binding: ScanByFaceActivityBinding
-    private val profileViewModel: ProfileViewModel by viewModels()
+    private val historyViewModel: HistoryViewModel by viewModels()
     private var mManager: HealthMonitorManager? = null
     private var mSession: HealthMonitorSession? = null
     private var mTestMode: Enums.SessionMode = Enums.SessionMode.FACE
     private var mLicenseEnabledVitalSigns = HealthMonitorEnabledVitalSigns()
     private var mLicenseByActivation = false
+
+    private var mTime = 0
+    private var mTimeCountHandler: Handler? = null
+    private var mWarningDialogTimeoutHandler: Handler? = null
+    private var mMessageDialog: AlertDialog? = null
+    private var progressPercent: Double = 0.0
+
+
+    private var mDeviceEnabledVitalSigns: HealthMonitorEnabledVitalSigns? = null
+
+    private var handlerPublishReport: Handler? = null
+    private var isResultPublishedTimePassed = false
+    private var isStopDialogVisible = false
+    private var faceResultID = 0
+    private var scanningResultData: ScanningResultData? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,17 +96,17 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         setUpToolNewBar(binding.toolbarLayout)
         setToolBarTitle(getString(R.string.app_name))
         showToolbarIcon(true)
+        initObserver()
         initClickListener()
         init()
     }
 
     @SuppressLint("SetTextI18n")
     private fun init() {
-        binding.mainContent.measurementsLayout.readingProgressBar.setProgressPercentage(25.0, true)
+        binding.mainContent.measurementsLayout.readingProgressBar.setProgressPercentage(0.0, true)
         // Asking the user for Camera permission. without it, the SDK can't operate
         if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
+                this, Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
@@ -92,14 +116,49 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         }
     }
 
+    private fun initObserver() {
+        lifecycleScope.launch {
+            historyViewModel.sendScanResultState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+                        showHideProgress(it.data == null)
+                    }
+                    Status.SUCCESS -> {
+                        if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
+                            finish()
+                        }
+                    }
+                    Status.ERROR -> {
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@ScanByFaceActivity, it.message)
+                    }
+                }
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        createSession()
+        if (handlerPublishReport == null && isResultPublishedTimePassed) {
+            showResultScreen(faceResultID)
+        }
+        if (ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            createSession()
+        }
     }
 
     override fun onPause() {
         super.onPause()
         closeSession()
+        updateUi(Enums.UiState.SCREEN_PAUSED)
+        if (handlerPublishReport != null) {
+            handlerPublishReport = null
+            isResultPublishedTimePassed = false
+            isStopDialogVisible = false
+        }
     }
 
     // HealthMonitorManager callbacks ============================================================
@@ -143,19 +202,45 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         runOnUiThread {
             when (warningData.code) {
                 HealthMonitorCodes.MEASUREMENT_CODE_UNSUPPORTED_ORIENTATION_WARNING -> if (mSession != null && mSession?.state == SessionState.MEASURING) {
-//                    showWarning(warningData.code)
+                    showWarning("" + warningData.code)
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_WARNING -> {
                     resetMeasurements()
-//                    showWarning(warningData.code)
+                    showWarning("" + warningData.code)
                 }
-//                else -> //showWarning(warningData.code)
+                else -> showWarning("" + warningData.code)
             }
         }
     }
 
     override fun onError(errorData: ErrorData) {
-        runOnUiThread { showErrorDialog(errorData.code) }
+        runOnUiThread {
+            when (errorData.code) {
+                HealthMonitorCodes.MEASUREMENT_CODE_UNSUPPORTED_ORIENTATION_WARNING -> if (mSession != null && mSession!!.state == SessionState.MEASURING) {
+                    showWarning(getString(R.string.orientation_not_supported))
+                }
+                HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_ERROR -> {
+                    stopMeasuring()
+                    updateUi(Enums.UiState.MANUALLY_STOPPED)
+                }
+                HealthMonitorCodes.MEASUREMENT_CODE_INVALID_RECENT_DETECTION_RATE_ERROR -> {
+                    stopMeasuring()
+                    updateUi(Enums.UiState.MANUALLY_STOPPED)
+                }
+                HealthMonitorCodes.MEASUREMENT_CODE_LICENSE_ACTIVATION_FAILED_ERROR -> {
+                    stopMeasuring()
+                    updateUi(Enums.UiState.MANUALLY_STOPPED)
+                }
+                HealthMonitorCodes.DEVICE_CODE_TORCH_SHUT_DOWN_ERROR -> {
+                    stopMeasuring()
+                    updateUi(Enums.UiState.MANUALLY_STOPPED)
+                }
+                HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_WARNING -> {
+                    resetMeasurements()
+                    showWarning(getString(R.string.error_warning), errorData.code)
+                }
+            }
+        }
     }
 
     override fun onImage(imageData: ImageData) {
@@ -170,50 +255,23 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         runOnUiThread {
             if (state == SessionState.ACTIVE) {
                 updateUi(Enums.UiState.IDLE)
+            } else if (state == SessionState.STOPPING) {
+                stopMeasuring()
             }
         }
     }
-
-    // User Actions ===============================================================================
-    fun startStopButtonClicked(view: View?) {
-        if (mSession == null) {
-            return
-        }
-        if (mSession?.state == SessionState.MEASURING) {
-            stopMeasuring()
-        } else {
-            startMeasuring()
-        }
-    }
-
-    fun changeModeClicked(view: View?) {
-        try {
-            closeSession()
-            mTestMode =
-                if (mTestMode == Enums.SessionMode.FACE) Enums.SessionMode.FINGER else Enums.SessionMode.FACE
-            createSession()
-        } catch (e: IllegalStateException) {
-//            showWarning(getString(R.string.change_session_mode_error))
-        }
-    }
-
-    // Implementation =============================================================================
 
     // Implementation =============================================================================
     private fun handleVitalSign(vitalSign: VitalSign) {
         val measurementLayout: MeasurementsLayoutBinding = binding.mainContent.measurementsLayout
+        Log.i(
+            tag,
+            "onVitalSign Message Type: " + vitalSign.type + " message: " + vitalSign.value
+        )
         when (vitalSign.type) {
             VitalSignTypes.HEART_RATE -> {
                 val heartRate = (vitalSign as VitalSignHeartRate).value
                 measurementLayout.tvReading.text = heartRate?.toString() ?: "--"
-            }
-            VitalSignTypes.OXYGEN_SATURATION -> {
-                val saturation = (vitalSign as VitalSignOxygenSaturation).value
-//                measurementLayout.saturation.value.text = saturation?.toString() ?: "--"
-            }
-            VitalSignTypes.BREATHING_RATE -> {
-                val respiration = (vitalSign as VitalSignBreathingRate).value
-//                measurementLayout.breathingRate.value.text = respiration?.toString() ?: "--"
             }
         }
     }
@@ -224,7 +282,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             updateUi(Enums.UiState.LOADING)
             mManager = HealthMonitorManager(this, LicenseData(BuildConfig.LICENCE_KEY), this)
         } catch (e: HealthMonitorException) {
-            showErrorDialog(e.errorCode)
+            showErrorDialog(e.errorCode, "HearMotionManager Error: (" + e.errorCode + ")")
         }
     }
 
@@ -235,29 +293,39 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         updateUi(Enums.UiState.LOADING)
         try {
             if (mTestMode == Enums.SessionMode.FINGER) {
-                mSession = mManager?.createFingerSessionBuilder(baseContext, 120)
-                    ?.withSessionStateListener(this@ScanByFaceActivity)
+                mSession = mManager?.createFingerSessionBuilder(
+                    baseContext,
+                    AppConstant.BINAH_AI_SCANNING_TIME_SECONDS
+                )?.withSessionStateListener(this@ScanByFaceActivity)
                     ?.withImageListener(this@ScanByFaceActivity)
                     ?.withVitalSignsListener(this@ScanByFaceActivity)
                     ?.withAlertsListener(this@ScanByFaceActivity)
                     ?.build()
+//                mDeviceEnabledVitalSigns = mManager.getFingerEvaluationResult();
+                Log.e(
+                    tag,
+                    "createSession called mDeviceEnabledVitalSigns: $mDeviceEnabledVitalSigns"
+                )
             } else {
-                /*
-                 SubjectDemographic:
-                 For accurate vital signs calculation the user's parameters should be provided.
-                 The following is an example of how the parameters are passed to the SDK.
-                 When measuring a new user then a new session must be created using the new user's parameters.
-                 The parameters are used locally on the device only for the vital sign calculation, and deleted when the session is terminated.
-                 */
                 val subjectDemographic = SubjectDemographic(Gender.MALE, 35.0, 75.0)
-                mSession = mManager?.createFaceSessionBuilder(baseContext, 120)
+                mSession = mManager?.createFaceSessionBuilder(
+                    baseContext,
+                    AppConstant.BINAH_AI_SCANNING_TIME_SECONDS
+                )
                     ?.withStateListener(this@ScanByFaceActivity)
                     ?.withImageListener(this@ScanByFaceActivity)
                     ?.withVitalSignsListener(this@ScanByFaceActivity)
                     ?.withAlertsListener(this@ScanByFaceActivity)
                     ?.withSubjectDemographic(subjectDemographic)
                     ?.build()
+                mDeviceEnabledVitalSigns = null
             }
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (mSession?.state != SessionState.MEASURING)
+                    startMeasuring()
+//                startTimeCount()
+//                binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
+            }, 300)
         } catch (e: HealthMonitorException) {
             showErrorDialog(e.errorCode)
         }
@@ -276,44 +344,120 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             mSession?.start()
             updateUi(Enums.UiState.MEASURING)
         } catch (e: HealthMonitorException) {
-            showErrorDialog(e.errorCode)
+            when (e.errorCode) {
+                HealthMonitorCodes.DEVICE_CODE_MINIMUM_BATTERY_LEVEL_ERROR -> showErrorDialog(
+                    e.errorCode,
+                    getString(R.string.low_battery_error)
+                )
+                HealthMonitorCodes.DEVICE_CODE_LOW_POWER_MODE_ENABLED_ERROR -> showErrorDialog(
+                    e.errorCode,
+                    getString(R.string.power_save_error)
+                )
+                else -> showErrorDialog(e.errorCode, getString(R.string.cannot_start_session))
+            }
         } catch (e: java.lang.IllegalStateException) {
-//            showWarning("Start Error - Session in illegal state")
+            showWarning("Start Error - Session in illegal state")
         } catch (e: NullPointerException) {
-//            showWarning("Start Error - Session not initialized")
+            showWarning("Start Error - Session not initialized")
         }
     }
 
     private fun stopMeasuring() {
         try {
-            mSession?.stop()
+            if (mSession != null && mSession?.state == SessionState.MEASURING) {
+                mSession?.stop()
+            }
         } catch (e: java.lang.IllegalStateException) {
-//            showWarning("Stop Error - Session in illegal state")
+            showWarning("Stop Error - Session in illegal state")
         } catch (ignore: NullPointerException) {
+            ignore.printStackTrace()
         }
     }
 
-    fun updateUi(state: Enums.UiState?) {
+    private fun updateUi(state: Enums.UiState?) {
         when (state) {
-            Enums.UiState.LOADING -> {
-                binding.mainContent.cameraView.visibility = View.INVISIBLE
-            }
-            Enums.UiState.MEASURING -> {
-                resetMeasurements()
-//                binding.mainContent.playStopButton.setBackgroundResource(R.drawable.ic_stop_button)
-                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-                binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
-            }
             Enums.UiState.IDLE -> {
-                if (binding.mainContent.cameraView.visibility === View.INVISIBLE) {
+                if (binding.mainContent.cameraView.visibility == View.INVISIBLE) {
                     binding.mainContent.cameraView.visibility = View.VISIBLE
                     clearCanvas()
                 }
-//                binding.mainContent.playStopButton.isEnabled = true
-//                binding.mainContent.playStopButton.setBackgroundResource(R.drawable.ic_play_button)
-                if (mLicenseByActivation) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                stopTimeCount()
+            }
+            Enums.UiState.LOADING -> {
+                binding.mainContent.cameraView.visibility = View.INVISIBLE
+                stopTimeCount()
+            }
+            Enums.UiState.MEASURING -> {
+                setupResultsUi()
+                resetMeasurements()
+                startTimeCount()
+                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
+            }
+            Enums.UiState.MANUALLY_STOPPED -> {
+//                binding.rippleStart.setVisibility(View.VISIBLE)
+//                binding.simpleProgressBar.setVisibility(View.GONE)
+//                binding.layoutCamera.setVisibility(View.VISIBLE)
+//                binding.layoutMeasurementFace.setVisibility(View.GONE)
+                if (mTestMode === Enums.SessionMode.FACE) {
+//                    if (binding.roiWarning.getVisibility() === View.VISIBLE) {
+//                        binding.roiWarning.setVisibility(View.GONE)
+//                    }
+                } else {
+                    Log.e(tag, "Show finger ui")
                 }
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                stopTimeCount()
+            }
+            Enums.UiState.MEASUREMENT_COMPLETED -> {
+                stopMeasuring()
+//                binding.rippleStart.setVisibility(View.VISIBLE)
+//                binding.simpleProgressBar.setVisibility(View.GONE)
+//                binding.layoutCamera.setVisibility(View.VISIBLE)
+//                binding.layoutMeasurementFace.setVisibility(View.GONE)
+//                if (mTestMode === SessionMode.FACE) {
+//                    if (binding.roiWarning.getVisibility() === View.VISIBLE) {
+//                        binding.roiWarning.setVisibility(View.GONE)
+//                    }
+//                } else {
+//                    Log.e(com.nuai.ui.fragments.FragmentFace.tag, "Show finger ui")
+//                }
+                window
+                    .clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                stopTimeCount()
+            }
+            Enums.UiState.SCREEN_PAUSED -> {
+//                binding.rippleStart.setVisibility(View.VISIBLE)
+//                binding.simpleProgressBar.setVisibility(View.GONE)
+//                binding.layoutCamera.setVisibility(View.VISIBLE)
+//                binding.layoutMeasurementFace.setVisibility(View.GONE)
+//                if (mTestMode === SessionMode.FACE) {
+//                    if (binding.roiWarning.getVisibility() === View.VISIBLE) {
+//                        binding.roiWarning.setVisibility(View.GONE)
+//                    }
+//                } else {
+//                    Log.e(com.nuai.ui.fragments.FragmentFace.tag, "Show finger ui")
+//                }
+//                if (binding.warningLayout.getVisibility() === View.VISIBLE) {
+//                    binding.warningLayout.setVisibility(View.GONE)
+//                }
+            }
+            Enums.UiState.SCREEN_RESUMED -> {
+//                binding.rippleStart.setVisibility(View.GONE)
+//                binding.simpleProgressBar.setVisibility(View.VISIBLE)
+//                binding.layoutCamera.setVisibility(View.VISIBLE)
+//                binding.layoutMeasurementFace.setVisibility(View.VISIBLE)
+//                if (mTestMode === SessionMode.FACE) {
+//                    if (binding.roiWarning.getVisibility() === View.VISIBLE) {
+//                        binding.roiWarning.setVisibility(View.GONE)
+//                    }
+//                } else {
+//                    Log.e(com.nuai.ui.fragments.FragmentFace.tag, "Show finger ui")
+//                }
+//                if (binding.warningLayout.getVisibility() === View.VISIBLE) {
+//                    binding.warningLayout.setVisibility(View.GONE)
+//                }
             }
             else -> {
 
@@ -337,105 +481,192 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         val measurementsBinding: MeasurementsLayoutBinding = binding.mainContent.measurementsLayout
         measurementsBinding.tvReading.text =
             if (mLicenseEnabledVitalSigns.isHeartRateEnabled) "--" else "N/A"
-//        measurementsBinding.saturation.value.text =
-//            if (mLicenseEnabledVitalSigns.isOxygenSaturationEnabled) "--" else "N/A"
-//        measurementsBinding.breathingRate.value.text =
-//            if (mLicenseEnabledVitalSigns.isBreathingRateEnabled) "--" else "N/A"
-//        measurementsBinding.sdnn.value.text =
-//            if (mLicenseEnabledVitalSigns.isSdnnEnabled) "--" else "N/A"
-//        measurementsBinding.stressLevel.value.text =
-//            if (mLicenseEnabledVitalSigns.isStressLevelEnabled) "--" else "N/A"
-//        measurementsBinding.bloodPressure.value.text =
-//            if (mLicenseEnabledVitalSigns.isBloodPressureEnabled) "--" else "N/A"
     }
 
+    /*
+       Method to check if device is enabled to capture vital signs or not
+    */
+    private fun setupResultsUi() {
+        val enabledVitalSigns: HealthMonitorEnabledVitalSigns = resolveEnabledVitalSigns() ?: return
+    }
+
+    @SuppressLint("SetTextI18n")
     private fun handleFinalResults(finalResults: VitalSignsResults) {
+        val enabledVitalSigns = resolveEnabledVitalSigns()
         val measurementsLayout: MeasurementsLayoutBinding = binding.mainContent.measurementsLayout
-        if (mLicenseEnabledVitalSigns.isHeartRateEnabled) {
+        if (enabledVitalSigns!!.isHeartRateEnabled) {
             val heartRate = finalResults.getResult(VitalSignTypes.HEART_RATE)
-           measurementsLayout.tvReading.text =  if (heartRate == null) {
-                "--"
+            if (heartRate?.value == null) {
+                measurementsLayout.tvReading.text = "-"
             } else {
-                heartRate.value.toString()
+                measurementsLayout.tvReading.text = "" + heartRate.value
             }
         }
-//        if (mLicenseEnabledVitalSigns.isOxygenSaturationEnabled) {
-//            val oxygenSaturation = finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION)
-//            if (oxygenSaturation == null) {
-//                measurementsLayout.saturation.value.text = "--"
-//            } else {
-//                measurementsLayout.saturation.value.text = oxygenSaturation.value.toString()
-//            }
-//        }
-//        if (mLicenseEnabledVitalSigns.isBreathingRateEnabled) {
-//            val breathingRate = finalResults.getResult(VitalSignTypes.BREATHING_RATE)
-//            if (breathingRate == null) {
-//                measurementsLayout.breathingRate.value.text = "--"
-//            } else {
-//                measurementsLayout.breathingRate.value.text = breathingRate.value.toString()
-//            }
-//        }
-//        if (mLicenseEnabledVitalSigns.isSdnnEnabled) {
-//            val sdnn = finalResults.getResult(VitalSignTypes.SDNN)
-//            if (sdnn == null) {
-//                measurementsLayout.sdnn.value.text = "--"
-//            } else {
-//                measurementsLayout.sdnn.value.text = sdnn.value.toString()
-//            }
-//        }
-//        if (mLicenseEnabledVitalSigns.isStressLevelEnabled) {
-//            val stressLevel =
-//                finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel?
-//            if (stressLevel == null) {
-//                measurementsLayout.stressLevel.value.text = "--"
-//            } else {
-//                measurementsLayout.stressLevel.value.text = stressLevel.value.toString()
-//            }
-//        }
-//        if (mLicenseEnabledVitalSigns.isBloodPressureEnabled) {
-//            val bloodPressure =
-//                finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE) as VitalSignBloodPressure?
-//            if (bloodPressure == null) {
-//                measurementsLayout.bloodPressure.value.text = "--"
-//            } else {
-//                measurementsLayout.bloodPressure.value.text = String.format(
-//                    getString(R.string.blood_pressure_value),
-//                    bloodPressure.value.systolic,
-//                    bloodPressure.value.diastolic
-//                )
-//            }
-//        }
         binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
-        updateUi(Enums.UiState.IDLE)
+
+        scanningResultData = ScanningResultData()
+
+
+        if (finalResults.getResult(VitalSignTypes.HEART_RATE)?.value == null) {
+            scanningResultData?.heartRate = "0"
+        } else {
+            scanningResultData?.heartRate =
+                "" + finalResults.getResult(VitalSignTypes.HEART_RATE).value
+        }
+
+        if (finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION)?.value == null) {
+            scanningResultData?.oxygenSaturation = ("0")
+        } else {
+            scanningResultData?.oxygenSaturation =
+                ("" + finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION).value)
+        }
+
+        if (finalResults.getResult(VitalSignTypes.BREATHING_RATE)?.value == null) {
+            scanningResultData?.respiration = ("0")
+        } else {
+            scanningResultData?.respiration =
+                ("" + finalResults.getResult(VitalSignTypes.BREATHING_RATE).value)
+        }
+
+        if (finalResults.getResult(VitalSignTypes.HEMOGLOBIN)?.value == null) {
+            scanningResultData?.hemoglobin = ("0")
+        } else {
+            scanningResultData?.hemoglobin =
+                ("" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN).value)
+        }
+
+        if (finalResults.getResult(VitalSignTypes.HEMOGLOBIN_A1C)?.value == null) {
+            scanningResultData?.hba1c = ("0")
+        } else {
+            scanningResultData?.hba1c =
+                ("" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN_A1C).value)
+        }
+
+        if (finalResults.getResult(VitalSignTypes.SDNN)?.value == null) {
+            scanningResultData?.hrvSdnn = ("0")
+        } else {
+            scanningResultData?.hrvSdnn = ("" + finalResults.getResult(VitalSignTypes.SDNN).value)
+        }
+        if (finalResults.getResult(VitalSignTypes.STRESS_LEVEL)?.value == null
+            || (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal == 0
+        ) {
+            scanningResultData?.stressLevel = (0)
+            scanningResultData?.stressFiveLevels = ("")
+        } else {
+            scanningResultData?.stressLevel =
+                ((finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal)
+            scanningResultData?.stressFiveLevels =
+                CustomFunction.capitalizeWords(
+                    (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.name
+                )
+        }
+
+        if (finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE)?.value == null) {
+            scanningResultData?.bloodPressure = ("0")
+        } else {
+            val bloodPressureValue =
+                finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE) as VitalSignBloodPressure
+            scanningResultData?.bloodPressure =
+                "" + bloodPressureValue.value.systolic + "/" + bloodPressureValue.value.diastolic
+        }
+
+        scanningResultData?.latitude = 0.0
+        scanningResultData?.longitude = 0.0
+
+        if (handlerPublishReport != null) {
+            handlerPublishReport!!.removeCallbacksAndMessages(null)
+        }
+        handlerPublishReport = Handler(Looper.getMainLooper())
+        handlerPublishReport!!.postDelayed({
+            isResultPublishedTimePassed = true
+            if (handlerPublishReport != null) {
+                val request = SendScanRequest(
+                    scanningResultData!!.bloodPressure,
+                    scanningResultData!!.hba1c,
+                    scanningResultData!!.heartRate,
+                    scanningResultData!!.hemoglobin,
+                    scanningResultData!!.hrvSdnn,
+                    scanningResultData!!.oxygenSaturation,
+                    scanningResultData!!.respiration,
+                    Enums.SessionMode.FACE.toString(),
+                    scanningResultData!!.stressLevel,
+                    "0", "0",
+                    0.0,
+                    0.0
+                )
+                historyViewModel.sendScanResult(request)
+            }
+        }, AppConstant.RESULT_SCREEN_DELAY_TIME.toLong())
     }
 
 
     private fun showErrorDialog(code: Int) {
-//        if (mMessageDialog != null && mMessageDialog.isShowing()) {
-//            return
-//        }
-        val mMessageDialog = AlertDialog.Builder(this)
+        if (mMessageDialog != null && mMessageDialog!!.isShowing) {
+            return
+        }
+        mMessageDialog = AlertDialog.Builder(this)
             .setMessage(String.format(getString(R.string.error_message), code))
             .setPositiveButton(R.string.ok, null)
             .show()
     }
 
-//    private fun showWarning(text: String) {
-//        if (binding.mainContent.warningLayout.getVisibility() === View.VISIBLE) {
-//            return
-//        }
-//        if (mWarningDialogTimeoutHandler != null) {
-//            mWarningDialogTimeoutHandler.removeCallbacksAndMessages(null)
-//        }
-//        binding.mainContent.warningMessage.setText(text)
-//        binding.mainContent.warningLayout.setVisibility(View.VISIBLE)
-//        mWarningDialogTimeoutHandler = Handler(mainLooper)
-//        mWarningDialogTimeoutHandler.postDelayed(Runnable {
-//            binding.mainContent.warningLayout.setVisibility(
-//                View.INVISIBLE
-//            )
-//        }, 5000)
-//    }
+    /*
+       Method called to show error popup
+    */
+    private fun showErrorDialog(errorCode: Int, message: String) {
+        /*Toast.makeText(requireActivity(), "ERROR: " + message, Toast.LENGTH_LONG).show();*/
+        if (mMessageDialog != null && mMessageDialog!!.isShowing) {
+            return
+        }
+        mMessageDialog =
+            AlertDialog.Builder(this) //                .setMessage(message)
+                .setMessage(
+                    String.format(
+                        getString(R.string.error_message),
+                        message,
+                        errorCode
+                    )
+                )
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    //                        updateUi(UiState.SCREEN_PAUSED);
+                }
+                .show()
+    }
+
+    private fun showWarning(text: String) {
+        if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
+            return
+        }
+        if (mWarningDialogTimeoutHandler != null) {
+            mWarningDialogTimeoutHandler?.removeCallbacksAndMessages(null)
+        }
+        binding.tvFaceNotDetectMsg.text = text
+        binding.crFaceNotDetectWarning.visibility = View.VISIBLE
+        mWarningDialogTimeoutHandler = Handler(mainLooper)
+        mWarningDialogTimeoutHandler?.postDelayed({
+            binding.crFaceNotDetectWarning.visibility = View.INVISIBLE
+        }, 5000)
+    }
+
+    private fun showWarning(text: String, errorCode: Int?) {
+        var text: String? = text
+        if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
+            return
+        }
+        if (mWarningDialogTimeoutHandler != null) {
+            mWarningDialogTimeoutHandler!!.removeCallbacksAndMessages(null)
+        }
+        if (errorCode != null) {
+            text += " ($errorCode)"
+        }
+        binding.tvFaceNotDetectMsg.text = text
+        binding.crFaceNotDetectWarning.visibility = View.VISIBLE
+        mWarningDialogTimeoutHandler = Handler(Looper.getMainLooper())
+        mWarningDialogTimeoutHandler!!.postDelayed(
+            { binding.crFaceNotDetectWarning.visibility = View.INVISIBLE },
+            2000
+        )
+    }
 
     private fun handleImage(bitmap: Bitmap?, faceRect: RectF?) {
         if (bitmap == null) {
@@ -482,7 +713,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         canvas.drawPath(path, paint)
     }
 
-    private fun rescaleFaceRect(bitmap: Bitmap, faceRect: RectF): RectF? {
+    private fun rescaleFaceRect(bitmap: Bitmap, faceRect: RectF): RectF {
         val rect = RectF(faceRect)
         val width = bitmap.width.toFloat()
         val height = bitmap.height.toFloat()
@@ -498,12 +729,33 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 
     private fun clearCanvas() {
         val canvas: Canvas? = binding.mainContent.cameraView.lockCanvas()
-        if (canvas != null) {
-            canvas.drawColor(ContextCompat.getColor(baseContext, R.color.colorScreenBackground))
-        }
+        canvas?.drawColor(ContextCompat.getColor(baseContext, R.color.colorScreenBackground))
         if (canvas != null)
-            binding.mainContent.cameraView.unlockCanvasAndPost(canvas!!)
+            binding.mainContent.cameraView.unlockCanvasAndPost(canvas)
     }
+
+    /*
+       Method to enable vital signs
+    */
+    private fun resolveEnabledVitalSigns(): HealthMonitorEnabledVitalSigns? {
+        if (mDeviceEnabledVitalSigns == null) {
+            mDeviceEnabledVitalSigns =
+                HealthMonitorEnabledVitalSigns(true, true, true, true, true, true, true, true)
+        }
+        return if (mLicenseEnabledVitalSigns == null) {
+            mDeviceEnabledVitalSigns
+        } else HealthMonitorEnabledVitalSigns(
+            mDeviceEnabledVitalSigns!!.isHeartRateEnabled && mLicenseEnabledVitalSigns.isHeartRateEnabled,
+            mDeviceEnabledVitalSigns!!.isBreathingRateEnabled && mLicenseEnabledVitalSigns.isBreathingRateEnabled,
+            mDeviceEnabledVitalSigns!!.isOxygenSaturationEnabled && mLicenseEnabledVitalSigns.isOxygenSaturationEnabled,
+            mDeviceEnabledVitalSigns!!.isSdnnEnabled && mLicenseEnabledVitalSigns.isSdnnEnabled,
+            mDeviceEnabledVitalSigns!!.isStressLevelEnabled && mLicenseEnabledVitalSigns.isStressLevelEnabled,
+            mDeviceEnabledVitalSigns!!.isRRIntervalEnabled && mLicenseEnabledVitalSigns.isRRIntervalEnabled,
+            mDeviceEnabledVitalSigns!!.isBloodPressureEnabled && mLicenseEnabledVitalSigns.isBloodPressureEnabled,
+            mDeviceEnabledVitalSigns!!.isStressIndexEnabled && mLicenseEnabledVitalSigns.isStressIndexEnabled
+        )
+    }
+
 
     //    private fun showWarning(code: Int) {
 //        showWarning(String.format(getString(R.string.warning_message), code))
@@ -518,11 +770,60 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 TutorialActivity.startActivity(this, TutorialActivity.Companion.From.SETTINGS)
             }
             R.id.stop_btn -> {
+                stopTimeCount()
                 stopMeasuring()
                 closeSession()
                 finish()
             }
         }
+    }
+
+    private fun showResultScreen(id: Int) {
+
+        run {
+//            openResultScreen(id, scanningResultData)
+            isResultPublishedTimePassed = false
+            isStopDialogVisible = false
+        }
+    }
+
+
+    /*
+       Method to show progress or timer when scanning is started
+    */
+    private fun startTimeCount() {
+        Log.e(tag, "startTimeCount called")
+        binding.mainContent.measurementsLayout.readingProgressBar.visibility = View.VISIBLE
+        if (mTimeCountHandler != null) {
+            mTimeCountHandler?.removeCallbacksAndMessages(null)
+        }
+        mTime = 0
+        progressPercent = 0.0
+        mTimeCountHandler = Handler(Looper.getMainLooper())
+        mTimeCountHandler?.post(object : Runnable {
+            override fun run() {
+
+                mTime++
+                try {
+                    progressPercent =
+                        ((mTime.toDouble() / AppConstant.BINAH_AI_SCANNING_TIME_SECONDS) * 100)
+                    binding.mainContent.measurementsLayout.readingProgressBar.setProgressPercentage(
+                        progressPercent, true
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                mTimeCountHandler?.postDelayed(this, 1000)
+            }
+        })
+    }
+
+    /*
+       Method to hide progress or timer when scanning is stopped
+    */
+    private fun stopTimeCount() {
+        binding.mainContent.measurementsLayout.readingProgressBar.visibility = View.GONE
+        mTimeCountHandler?.removeCallbacksAndMessages(null)
     }
 
     override fun onRequestPermissionsResult(

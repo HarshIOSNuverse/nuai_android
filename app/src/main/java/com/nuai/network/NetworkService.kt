@@ -5,6 +5,8 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.nuai.history.model.api.response.CalenderDateResponse
 import com.nuai.history.model.api.response.HistoryListResponse
+import com.nuai.home.model.ScanningResultData
+import com.nuai.home.model.api.request.SendScanRequest
 import com.nuai.onboarding.model.api.request.*
 import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
@@ -116,6 +118,11 @@ constructor(
         @Headers("$HEADER_BEAR: true")
         @GET(Url.API + "scan/history")
         suspend fun getHistoryList(@Query("date") date: String?): Response<HistoryListResponse?>
+
+        @Headers("$HEADER_BEAR: true")
+        @POST(Url.API + "scan")
+        suspend fun sendScanResult(@Body request: SendScanRequest): Response<CommonResponse?>
+
         /* @Headers("$HEADER_BEAR: true")
          @POST(Url.API + "register-device")
          suspend fun registerDeviceToken(@Body request: RegisterTokenRequest): Response<CommonResponse?>

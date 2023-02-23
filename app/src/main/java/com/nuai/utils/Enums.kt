@@ -28,7 +28,7 @@ object Enums {
     }
 
     enum class UiState {
-        LOADING, MEASURING, IDLE
+        LOADING, MEASURING, IDLE, MANUALLY_STOPPED, MEASUREMENT_COMPLETED, SCREEN_PAUSED, SCREEN_RESUMED
     }
 
 }

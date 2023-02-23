@@ -50,6 +50,7 @@
     <dimen name="dp_180">180dp</dimen>
     <dimen name="dp_200">200dp</dimen>
     <dimen name="dp_270">270dp</dimen>
+    <dimen name="dp_300">300dp</dimen>
     <dimen name="dp_400">400dp</dimen>
 
     <dimen name="line_space">5dp</dimen>

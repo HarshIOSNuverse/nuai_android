@@ -2,13 +2,10 @@ package com.nuai.history.repository
 
 import com.nuai.history.model.api.response.CalenderDateResponse
 import com.nuai.history.model.api.response.HistoryListResponse
+import com.nuai.home.model.api.request.SendScanRequest
 import com.nuai.network.ApiResponseState
 import com.nuai.network.CommonResponse
 import com.nuai.network.NetworkService
-import com.nuai.onboarding.model.api.response.LoginResponse
-import com.nuai.onboarding.model.api.response.MyProfileResponse
-import com.nuai.profile.model.api.request.SendFeedbackRequest
-import com.nuai.profile.model.api.request.UpdateProfileRequest
 import com.nuai.utils.CommonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -37,6 +34,20 @@ class HistoryRepository @Inject constructor(private val networkService: NetworkS
     suspend fun getHistoryList(date: String): Flow<ApiResponseState<HistoryListResponse>> {
         return flow {
             val response = networkService.api.getHistoryList(date)
+            if (response.isSuccessful) {
+                emit(ApiResponseState.success(response.body(), response.code()))
+            } else {
+                emit(
+                    ApiResponseState.error(
+                        CommonUtils.getErrorResponse(response.errorBody()).message, response.code()
+                    )
+                )
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+    fun sendScanResult(request: SendScanRequest): Flow<ApiResponseState<CommonResponse>> {
+        return flow {
+            val response = networkService.api.sendScanResult(request)
             if (response.isSuccessful) {
                 emit(ApiResponseState.success(response.body(), response.code()))
             } else {

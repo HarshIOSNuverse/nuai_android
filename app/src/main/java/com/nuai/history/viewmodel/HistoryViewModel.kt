@@ -7,7 +7,9 @@ import com.nuai.di.ResourcesProvider
 import com.nuai.history.model.api.response.CalenderDateResponse
 import com.nuai.history.model.api.response.HistoryListResponse
 import com.nuai.history.repository.HistoryRepository
+import com.nuai.home.model.api.request.SendScanRequest
 import com.nuai.network.ApiResponseState
+import com.nuai.network.CommonResponse
 import com.nuai.network.Status
 import com.nuai.utils.CommonUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +25,8 @@ class HistoryViewModel @Inject constructor(
 ) : ViewModel() {
     val calendarDateByMonthState =
         MutableStateFlow(ApiResponseState(Status.LOADING, CalenderDateResponse()))
-    val historyListState = MutableStateFlow(ApiResponseState(Status.LOADING,HistoryListResponse()))
+    val historyListState = MutableStateFlow(ApiResponseState(Status.LOADING, HistoryListResponse()))
+    val sendScanResultState = MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
 
     fun getCalenderDateByMonth(month: String) {
         when {
@@ -47,6 +50,7 @@ class HistoryViewModel @Inject constructor(
             }
         }
     }
+
     fun getHistoryList(date: String) {
         when {
             (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
@@ -62,6 +66,29 @@ class HistoryViewModel @Inject constructor(
                         historyListState.value = ApiResponseState.error(it.message, 100)
                     }.collect {
                         historyListState.value =
+                            if (it.data != null) ApiResponseState.success(it.data, it.code)
+                            else ApiResponseState.error(it.message, it.code)
+                    }
+                }
+            }
+        }
+    }
+
+    fun sendScanResult(request: SendScanRequest) {
+        when {
+            (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
+                sendScanResultState.value = ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
+            }
+            else -> {
+                sendScanResultState.value = ApiResponseState.loading()
+                viewModelScope.launch {
+                    historyRepository.sendScanResult(request).catch {
+                        sendScanResultState.value = ApiResponseState.error(it.message, 100)
+                    }.collect {
+                        sendScanResultState.value =
                             if (it.data != null) ApiResponseState.success(it.data, it.code)
                             else ApiResponseState.error(it.message, it.code)
                     }
