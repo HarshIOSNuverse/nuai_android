@@ -5,10 +5,6 @@ import com.google.gson.annotations.Expose
 import java.io.Serializable
 
 class ScanningResultData : Serializable {
-    @SerializedName("id")
-    @Expose
-    var id = 0
-
     @SerializedName("scan_by")
     @Expose
     var scanBy: String? = null
@@ -27,11 +23,7 @@ class ScanningResultData : Serializable {
 
     @SerializedName("stress_level")
     @Expose
-    var stressLevel = 0
-
-    @SerializedName("stress_five_levels")
-    @Expose
-    var stressFiveLevels = ""
+    var stressLevel:String? = ""
 
     @SerializedName("hrv_sdnn")
     @Expose
@@ -41,22 +33,6 @@ class ScanningResultData : Serializable {
     @Expose
     var bloodPressure = "0"
 
-    @SerializedName("bmi")
-    @Expose
-    var bmi = ""
-
-    @SerializedName("bmi_category")
-    @Expose
-    var bmiCategory = ""
-
-    @SerializedName("result_date")
-    @Expose
-    var resultDate: String? = null
-
-    @SerializedName("result_time")
-    @Expose
-    var resultTime: String? = null
-
     @SerializedName("hemoglobin")
     @Expose
     var hemoglobin: String? = null
@@ -64,6 +40,22 @@ class ScanningResultData : Serializable {
     @SerializedName("hba1c")
     @Expose
     var hba1c: String? = null
+
+    @SerializedName("prq")
+    @Expose
+    var prq: String? = "0"
+
+    @SerializedName("breathing_rate")
+    @Expose
+    var breathingRate: String? = "0"
+
+    @SerializedName("stress_response")
+    @Expose
+    var stressResponse: String? = ""
+
+    @SerializedName("wellness_score")
+    @Expose
+    var wellnessScore: String? = ""
     var latitude = 0.0
     var longitude = 0.0
 }

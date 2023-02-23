@@ -82,7 +82,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         binding.passwordErrorText.visibility = View.GONE
                         when (it.code) {
                             // Email not found
-                            409 -> {
+                            409,424 -> {
                                 showEmailError(it.message)
                             }
                             // Wrong password

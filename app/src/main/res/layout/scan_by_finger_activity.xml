@@ -39,24 +39,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-             <ImageView
-                 android:layout_width="@dimen/dp_200"
-                 android:layout_height="@dimen/dp_200"
-                 android:layout_marginTop="90dp"
-                 android:src="@drawable/ic_finger_white_elipse"
-                 app:layout_constraintEnd_toEndOf="parent"
-                 app:layout_constraintStart_toStartOf="parent"
-                 app:layout_constraintTop_toTopOf="parent" />
 
-            <include
-                android:id="@+id/measurementsLayout"
-                layout="@layout/measurements_layout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <ImageView
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:layout_marginTop="90dp"
+                android:src="@drawable/ic_finger_white_elipse"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cr_finger_hint"
@@ -102,7 +94,15 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_hint_msg" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+            <include
+                android:id="@+id/measurementsLayout"
+                layout="@layout/measurements_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

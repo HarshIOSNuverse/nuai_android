@@ -86,9 +86,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     private var handlerPublishReport: Handler? = null
     private var isResultPublishedTimePassed = false
     private var isStopDialogVisible = false
-    private var faceResultID = 0
-    private var scanningResultData: ScanningResultData? = null
-
+    private var faceResultID: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,7 +122,10 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                         showHideProgress(it.data == null)
                     }
                     Status.SUCCESS -> {
+                        showHideProgress(false)
                         if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
+                            faceResultID = it.data.id
+                            CommonUtils.showToast(this@ScanByFaceActivity, it.data.message)
                             finish()
                         }
                     }
@@ -201,8 +202,11 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     override fun onWarning(warningData: WarningData) {
         runOnUiThread {
             when (warningData.code) {
-                HealthMonitorCodes.MEASUREMENT_CODE_UNSUPPORTED_ORIENTATION_WARNING -> if (mSession != null && mSession?.state == SessionState.MEASURING) {
-                    showWarning("" + warningData.code)
+                HealthMonitorCodes.MEASUREMENT_CODE_UNSUPPORTED_ORIENTATION_WARNING -> {
+                    if (mSession != null && mSession?.state == SessionState.MEASURING) {
+                        showWarning("" + warningData.code)
+                    }
+                    binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_error)
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_WARNING -> {
                     resetMeasurements()
@@ -214,10 +218,14 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     }
 
     override fun onError(errorData: ErrorData) {
+        binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_normal)
         runOnUiThread {
             when (errorData.code) {
-                HealthMonitorCodes.MEASUREMENT_CODE_UNSUPPORTED_ORIENTATION_WARNING -> if (mSession != null && mSession!!.state == SessionState.MEASURING) {
-                    showWarning(getString(R.string.orientation_not_supported))
+                HealthMonitorCodes.MEASUREMENT_CODE_UNSUPPORTED_ORIENTATION_WARNING -> {
+                    if (mSession != null && mSession!!.state == SessionState.MEASURING) {
+                        showWarning(getString(R.string.orientation_not_supported))
+                    }
+                    binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_error)
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_ERROR -> {
                     stopMeasuring()
@@ -236,6 +244,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                     updateUi(Enums.UiState.MANUALLY_STOPPED)
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_WARNING -> {
+                    binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_error)
                     resetMeasurements()
                     showWarning(getString(R.string.error_warning), errorData.code)
                 }
@@ -307,7 +316,26 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                     "createSession called mDeviceEnabledVitalSigns: $mDeviceEnabledVitalSigns"
                 )
             } else {
-                val subjectDemographic = SubjectDemographic(Gender.MALE, 35.0, 75.0)
+                val user = Pref.user
+                var gender = Gender.MALE
+                var age = 35.0
+                var weight = 75.0
+                if (user?.bodyInfo != null) {
+                    gender = when (user.bodyInfo!!.gender!!.lowercase()) {
+                        Enums.Gender.MALE.toString().lowercase() -> {
+                            Gender.MALE
+                        }
+                        Enums.Gender.FEMALE.toString().lowercase() -> {
+                            Gender.FEMALE
+                        }
+                        else -> {
+                            Gender.UNSPECIFIED
+                        }
+                    }
+                    if (user.bodyInfo?.weight != null)
+                        weight = user.bodyInfo?.weight!!
+                }
+                val subjectDemographic = SubjectDemographic(gender, age, weight)
                 mSession = mManager?.createFaceSessionBuilder(
                     baseContext,
                     AppConstant.BINAH_AI_SCANNING_TIME_SECONDS
@@ -323,8 +351,6 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             Handler(Looper.getMainLooper()).postDelayed({
                 if (mSession?.state != SessionState.MEASURING)
                     startMeasuring()
-//                startTimeCount()
-//                binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
             }, 300)
         } catch (e: HealthMonitorException) {
             showErrorDialog(e.errorCode)
@@ -393,6 +419,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 resetMeasurements()
                 startTimeCount()
                 window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_normal)
                 binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
             }
             Enums.UiState.MANUALLY_STOPPED -> {
@@ -471,6 +498,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         }
         if (detected) {
             binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
+            binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_normal)
         } else {
             binding.mainContent.measurementsLayout.root.visibility = View.INVISIBLE
 //            binding.mainContent.roiWarningText.setText(getString(if (mTestMode == Enums.SessionMode.FACE) R.string.no_face_detected else R.string.no_finger_detected))
@@ -504,74 +532,93 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         }
         binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
 
-        scanningResultData = ScanningResultData()
+        val scanningResultData = ScanningResultData()
 
 
         if (finalResults.getResult(VitalSignTypes.HEART_RATE)?.value == null) {
-            scanningResultData?.heartRate = "0"
+            scanningResultData.heartRate = "0"
         } else {
-            scanningResultData?.heartRate =
+            scanningResultData.heartRate =
                 "" + finalResults.getResult(VitalSignTypes.HEART_RATE).value
         }
 
         if (finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION)?.value == null) {
-            scanningResultData?.oxygenSaturation = ("0")
+            scanningResultData.oxygenSaturation = "0"
         } else {
-            scanningResultData?.oxygenSaturation =
-                ("" + finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION).value)
+            scanningResultData.oxygenSaturation =
+                "" + finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION).value
         }
 
         if (finalResults.getResult(VitalSignTypes.BREATHING_RATE)?.value == null) {
-            scanningResultData?.respiration = ("0")
+            scanningResultData.respiration = "0"
         } else {
-            scanningResultData?.respiration =
-                ("" + finalResults.getResult(VitalSignTypes.BREATHING_RATE).value)
+            scanningResultData.respiration =
+                "" + finalResults.getResult(VitalSignTypes.BREATHING_RATE).value
         }
 
         if (finalResults.getResult(VitalSignTypes.HEMOGLOBIN)?.value == null) {
-            scanningResultData?.hemoglobin = ("0")
+            scanningResultData.hemoglobin = "0"
         } else {
-            scanningResultData?.hemoglobin =
-                ("" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN).value)
+            scanningResultData.hemoglobin =
+                "" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN).value
         }
 
         if (finalResults.getResult(VitalSignTypes.HEMOGLOBIN_A1C)?.value == null) {
-            scanningResultData?.hba1c = ("0")
+            scanningResultData.hba1c = "0"
         } else {
-            scanningResultData?.hba1c =
-                ("" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN_A1C).value)
+            scanningResultData.hba1c =
+                "" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN_A1C).value
         }
 
         if (finalResults.getResult(VitalSignTypes.SDNN)?.value == null) {
-            scanningResultData?.hrvSdnn = ("0")
+            scanningResultData.hrvSdnn = "0"
         } else {
-            scanningResultData?.hrvSdnn = ("" + finalResults.getResult(VitalSignTypes.SDNN).value)
+            scanningResultData.hrvSdnn = "" + finalResults.getResult(VitalSignTypes.SDNN).value
         }
-        if (finalResults.getResult(VitalSignTypes.STRESS_LEVEL)?.value == null
-            || (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal == 0
-        ) {
-            scanningResultData?.stressLevel = (0)
-            scanningResultData?.stressFiveLevels = ("")
+        if (finalResults.getResult(VitalSignTypes.STRESS_INDEX)?.value == null) {
+            scanningResultData.stressLevel = "0"
         } else {
-            scanningResultData?.stressLevel =
-                ((finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal)
-            scanningResultData?.stressFiveLevels =
-                CustomFunction.capitalizeWords(
-                    (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.name
-                )
+            scanningResultData.stressLevel =
+                "" + (finalResults.getResult(VitalSignTypes.STRESS_INDEX) as VitalSignStressLevel).value
+        }
+
+        if (finalResults.getResult(VitalSignTypes.STRESS_LEVEL)?.value == null) {
+            scanningResultData.stressResponse = ""
+        } else {
+            scanningResultData.stressResponse =
+                "" + (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value
         }
 
         if (finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE)?.value == null) {
-            scanningResultData?.bloodPressure = ("0")
+            scanningResultData.bloodPressure = "0"
         } else {
             val bloodPressureValue =
                 finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE) as VitalSignBloodPressure
-            scanningResultData?.bloodPressure =
+            scanningResultData.bloodPressure =
                 "" + bloodPressureValue.value.systolic + "/" + bloodPressureValue.value.diastolic
         }
+        if (finalResults.getResult(VitalSignTypes.PRQ)?.value == null) {
+            scanningResultData.prq = "0"
+        } else {
+            scanningResultData.prq =
+                "" + finalResults.getResult(VitalSignTypes.PRQ).value
+        }
 
-        scanningResultData?.latitude = 0.0
-        scanningResultData?.longitude = 0.0
+        if (finalResults.getResult(VitalSignTypes.BREATHING_RATE)?.value == null) {
+            scanningResultData.breathingRate = "0"
+        } else {
+            scanningResultData.breathingRate =
+                "" + finalResults.getResult(VitalSignTypes.BREATHING_RATE).value
+        }
+        if (finalResults.getResult(VitalSignTypes.WELLNESS_INDEX)?.value == null) {
+            scanningResultData.wellnessScore = "0"
+        } else {
+            scanningResultData.wellnessScore =
+                "" + finalResults.getResult(VitalSignTypes.WELLNESS_INDEX).value
+        }
+
+        scanningResultData.latitude = 0.0
+        scanningResultData.longitude = 0.0
 
         if (handlerPublishReport != null) {
             handlerPublishReport!!.removeCallbacksAndMessages(null)
@@ -581,16 +628,19 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             isResultPublishedTimePassed = true
             if (handlerPublishReport != null) {
                 val request = SendScanRequest(
-                    scanningResultData!!.bloodPressure,
-                    scanningResultData!!.hba1c,
-                    scanningResultData!!.heartRate,
-                    scanningResultData!!.hemoglobin,
-                    scanningResultData!!.hrvSdnn,
-                    scanningResultData!!.oxygenSaturation,
-                    scanningResultData!!.respiration,
+                    scanningResultData.bloodPressure,
+                    scanningResultData.hba1c,
+                    scanningResultData.heartRate,
+                    scanningResultData.hemoglobin,
+                    scanningResultData.hrvSdnn,
+                    scanningResultData.oxygenSaturation,
+                    scanningResultData.respiration,
                     Enums.SessionMode.FACE.toString(),
-                    scanningResultData!!.stressLevel,
-                    "0", "0",
+                    scanningResultData.stressLevel,
+                    scanningResultData.stressResponse,
+                    scanningResultData.breathingRate,
+                    scanningResultData.prq,
+                    scanningResultData.wellnessScore,
                     0.0,
                     0.0
                 )
@@ -634,18 +684,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     }
 
     private fun showWarning(text: String) {
-        if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
-            return
-        }
-        if (mWarningDialogTimeoutHandler != null) {
-            mWarningDialogTimeoutHandler?.removeCallbacksAndMessages(null)
-        }
-        binding.tvFaceNotDetectMsg.text = text
-        binding.crFaceNotDetectWarning.visibility = View.VISIBLE
-        mWarningDialogTimeoutHandler = Handler(mainLooper)
-        mWarningDialogTimeoutHandler?.postDelayed({
-            binding.crFaceNotDetectWarning.visibility = View.INVISIBLE
-        }, 5000)
+        showWarning(text, null)
     }
 
     private fun showWarning(text: String, errorCode: Int?) {
@@ -762,6 +801,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 //    }
     private fun initClickListener() {
         binding.onClickListener = this
+        binding.mainContent.measurementsLayout.onClickListener = this
     }
 
     override fun onClick(v: View?) {
@@ -778,7 +818,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         }
     }
 
-    private fun showResultScreen(id: Int) {
+    private fun showResultScreen(id: String?) {
 
         run {
 //            openResultScreen(id, scanningResultData)

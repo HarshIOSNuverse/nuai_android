@@ -18,7 +18,7 @@ class BodyInfo() : Parcelable {
     var dateOfBirth: String? = null
 
     @SerializedName("weight")
-    var weight: Int = 0
+    var weight: Double = 0.0
 
     @SerializedName("height")
     var height: Int = 0
@@ -34,7 +34,7 @@ class BodyInfo() : Parcelable {
         userId = parcel.readLong()
         gender = parcel.readString()
         dateOfBirth = parcel.readString()
-        weight = parcel.readInt()
+        weight = parcel.readDouble()
         height = parcel.readInt()
         bmiIndex = parcel.readDouble()
         category = parcel.readString()
@@ -45,7 +45,7 @@ class BodyInfo() : Parcelable {
         parcel.writeLong(userId)
         parcel.writeString(gender)
         parcel.writeString(dateOfBirth)
-        parcel.writeInt(weight)
+        parcel.writeDouble(weight)
         parcel.writeInt(height)
         parcel.writeDouble(bmiIndex)
         parcel.writeString(category)

@@ -70,7 +70,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                         showHideProgress(false)
                         when (it.code) {
                             // Email not found
-                            409 -> {
+                            409, 424 -> {
                                 showEmailError(it.message)
                             }
                             else -> {

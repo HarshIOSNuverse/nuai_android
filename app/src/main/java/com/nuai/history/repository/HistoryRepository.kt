@@ -2,6 +2,7 @@ package com.nuai.history.repository
 
 import com.nuai.history.model.api.response.CalenderDateResponse
 import com.nuai.history.model.api.response.HistoryListResponse
+import com.nuai.history.model.api.response.SendScanResponse
 import com.nuai.home.model.api.request.SendScanRequest
 import com.nuai.network.ApiResponseState
 import com.nuai.network.CommonResponse
@@ -45,7 +46,7 @@ class HistoryRepository @Inject constructor(private val networkService: NetworkS
             }
         }.flowOn(Dispatchers.IO)
     }
-    fun sendScanResult(request: SendScanRequest): Flow<ApiResponseState<CommonResponse>> {
+    fun sendScanResult(request: SendScanRequest): Flow<ApiResponseState<SendScanResponse>> {
         return flow {
             val response = networkService.api.sendScanResult(request)
             if (response.isSuccessful) {

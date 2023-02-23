@@ -11,9 +11,14 @@ data class SendScanRequest(
     @SerializedName("oxygen_saturation") val oxygenSaturation: String?,
     @SerializedName("respiration") val respiration: String?,
     @SerializedName("scan_by") val scanBy: String?,
-    @SerializedName("stress_level") val stressLevel: Int,
+    @SerializedName("stress_level") val stressLevel: String?,
+    @SerializedName("stressResponse") val stress_response: String?,
     @SerializedName("breathing_rate") val breathingRate:String?,
     @SerializedName("prq") val prq:String?,
+    @SerializedName("wellness_score") val wellnessScore:String?,
     @SerializedName("latitude") val latitude: Double,
     @SerializedName("longitude") val longitude: Double,
 )
+{
+//    "recovery_ability": "",
+}

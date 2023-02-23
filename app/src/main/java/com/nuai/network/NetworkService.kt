@@ -5,6 +5,7 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.nuai.history.model.api.response.CalenderDateResponse
 import com.nuai.history.model.api.response.HistoryListResponse
+import com.nuai.history.model.api.response.SendScanResponse
 import com.nuai.home.model.ScanningResultData
 import com.nuai.home.model.api.request.SendScanRequest
 import com.nuai.onboarding.model.api.request.*
@@ -121,7 +122,7 @@ constructor(
 
         @Headers("$HEADER_BEAR: true")
         @POST(Url.API + "scan")
-        suspend fun sendScanResult(@Body request: SendScanRequest): Response<CommonResponse?>
+        suspend fun sendScanResult(@Body request: SendScanRequest): Response<SendScanResponse?>
 
         /* @Headers("$HEADER_BEAR: true")
          @POST(Url.API + "register-device")

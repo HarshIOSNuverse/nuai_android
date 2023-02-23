@@ -6,6 +6,7 @@ import com.nuai.R
 import com.nuai.di.ResourcesProvider
 import com.nuai.history.model.api.response.CalenderDateResponse
 import com.nuai.history.model.api.response.HistoryListResponse
+import com.nuai.history.model.api.response.SendScanResponse
 import com.nuai.history.repository.HistoryRepository
 import com.nuai.home.model.api.request.SendScanRequest
 import com.nuai.network.ApiResponseState
@@ -26,7 +27,7 @@ class HistoryViewModel @Inject constructor(
     val calendarDateByMonthState =
         MutableStateFlow(ApiResponseState(Status.LOADING, CalenderDateResponse()))
     val historyListState = MutableStateFlow(ApiResponseState(Status.LOADING, HistoryListResponse()))
-    val sendScanResultState = MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
+    val sendScanResultState = MutableStateFlow(ApiResponseState(Status.LOADING, SendScanResponse()))
 
     fun getCalenderDateByMonth(month: String) {
         when {
