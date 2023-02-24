@@ -19,7 +19,7 @@ class HealthHistory() : Parcelable {
     var breathingRate: Long = 0
 
     @SerializedName("prq")
-    var prq: Long = 0
+    var prq: Double = 0.0
 
     @SerializedName("oxygen_saturation")
     var oxygenSaturation: Long = 0
@@ -71,7 +71,7 @@ class HealthHistory() : Parcelable {
         scanBy = parcel.readString()
         heartRate = parcel.readLong()
         breathingRate = parcel.readLong()
-        prq = parcel.readLong()
+        prq = parcel.readDouble()
         oxygenSaturation = parcel.readLong()
         bloodPressure = parcel.readString()
         recoveryAbility = parcel.readString()
@@ -94,7 +94,7 @@ class HealthHistory() : Parcelable {
         parcel.writeString(scanBy)
         parcel.writeLong(heartRate)
         parcel.writeLong(breathingRate)
-        parcel.writeLong(prq)
+        parcel.writeDouble(prq)
         parcel.writeLong(oxygenSaturation)
         parcel.writeString(bloodPressure)
         parcel.writeString(recoveryAbility)

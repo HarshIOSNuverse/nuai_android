@@ -501,4 +501,18 @@ object CommonUtils {
     fun scrollToView(view: View) {
         view.parent.requestChildFocus(view, view)
     }
+
+    fun getWellnessLevel(context: Context, wellnessScore: Int): String {
+        return when (wellnessScore) {
+            8, 9, 10 -> {
+                context.getString(R.string.high)
+            }
+            4, 5, 6, 7 -> {
+                context.getString(R.string.medium)
+            }
+            else -> {
+                context.getString(R.string.low)
+            }
+        }
+    }
 }

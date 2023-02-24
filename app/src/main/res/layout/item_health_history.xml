@@ -364,7 +364,7 @@
             android:id="@+id/tv_view_more"
             style="@style/TextViewStyleRegular"
             android:layout_marginTop="@dimen/dp_10"
-            android:onClick="@{()->historyListener.onHealthHistoryClick(history)}"
+            android:onClick="@{()->historyListener.onViewMoreClick(history)}"
             android:padding="@dimen/dp_5"
             android:text="@string/view_more"
             android:textColor="@color/blue_text_color"

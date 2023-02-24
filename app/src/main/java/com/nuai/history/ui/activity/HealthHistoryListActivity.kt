@@ -17,6 +17,7 @@ import com.nuai.databinding.HealthHistoryListActivityBinding
 import com.nuai.history.ui.adapter.HealthHistoryListAdapter
 import com.nuai.history.viewmodel.HistoryViewModel
 import com.nuai.home.model.HealthHistory
+import com.nuai.home.ui.activity.MeasurementResultActivity
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
 import com.nuai.utils.*
@@ -48,8 +49,7 @@ class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.health_history_list_activity)
         setUpToolNewBar(binding.toolbarLayout)
-        setToolBarTitle(getString(R.string.app_name))
-        showToolbarIcon(true)
+        setToolBarTitle(getString(R.string.health_history))
         initClickListener()
         initObserver()
         initAdapter()
@@ -254,8 +254,12 @@ class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
         binding.adapter = HealthHistoryListAdapter(historyList).apply {
             selectHealthHistoryListener =
                 object : HealthHistoryListAdapter.SelectHealthHistoryListener {
-                    override fun onHealthHistoryClick(history: HealthHistory?) {
-
+                    override fun onViewMoreClick(history: HealthHistory?) {
+                        if (history != null)
+                            MeasurementResultActivity.startActivity(
+                                this@HealthHistoryListActivity,
+                                history.id
+                            )
                     }
                 }
         }

@@ -4,6 +4,7 @@ import com.nuai.BuildConfig
 import com.nuai.utils.Pref
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class OkHttpClientFactory {
@@ -87,6 +88,7 @@ class OkHttpClientFactory {
             requestBuilder.addHeader("Content", "application/json")
             requestBuilder.addHeader("x-platform", "APP")
             requestBuilder.addHeader("x-os", "ANDROID")
+            requestBuilder.addHeader("X-Timezone", TimeZone.getDefault().id)
             // For guest user
             val uuid = Pref.uuid
             if (!uuid.isNullOrEmpty()) {

@@ -23,7 +23,7 @@ class ScanningResultData : Serializable {
 
     @SerializedName("stress_level")
     @Expose
-    var stressLevel:String? = ""
+    var stressLevel:Int = 0
 
     @SerializedName("hrv_sdnn")
     @Expose

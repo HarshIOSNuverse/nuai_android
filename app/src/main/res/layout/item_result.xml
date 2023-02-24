@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="reading"
+            type="com.nuai.home.model.Reading" />
+
+        <variable
+            name="resultListener"
+            type="com.nuai.home.ui.adapters.ResultListAdapter.ResultListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cr_reading_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_25"
+        android:layout_marginVertical="@dimen/dp_8"
+        android:background="@drawable/drawer_profile_bg"
+        android:padding="@dimen/sp_15">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_reading_title"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:paddingHorizontal="@dimen/dp_7"
+            android:text='@{reading.title?? ""}'
+            android:textColor="@color/secondary_text_color"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintEnd_toStartOf="@+id/iv_reading_indicator"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cr_wellness_score"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_reading_indicator"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:src="@drawable/wellness_score_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/tv_reading_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_view_more"
+            style="@style/TextViewStyleRegular"
+            android:onClick="@{()->resultListener.onLearnMoreClick(reading)}"
+            android:paddingHorizontal="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_5"
+            android:text="@string/learn_more"
+            android:textColor="@color/blue_text_color"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_observed_value"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_observed_value"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/dp_15"
+            android:paddingHorizontal="@dimen/dp_7"
+            android:text='@{reading.observedValue?? "N/A"}'
+            android:textColor="@color/secondary_text_color"
+            android:textSize="@dimen/sp_30"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_reading_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_unit"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="0dp"
+            android:text='@{reading.unit?? ""}'
+            android:textColor="@color/secondary_text_color"
+            android:textSize="@dimen/sp_20"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_observed_value"
+            app:layout_constraintStart_toEndOf="@+id/tv_observed_value" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cr_wellness_score"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rc_white_filled_c15"
+            android:padding="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_observed_value">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lbl_title"
+                style="@style/TextViewStyleRegular"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/dp_10"
+                android:text='@{reading.title?? ""}'
+                android:textSize="@dimen/sp_15"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_short_desc"
+                style="@style/TextViewStyleRegular"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_2"
+                android:text='@{reading.shortDesc?? ""}'
+                android:textColor="@color/secondary_text_color"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

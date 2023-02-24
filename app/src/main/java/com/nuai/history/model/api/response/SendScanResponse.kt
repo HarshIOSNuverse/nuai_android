@@ -7,5 +7,5 @@ import com.nuai.profile.model.CalendarDate
 class SendScanResponse : CommonResponse() {
 
     @SerializedName("id")
-    var id: String? = null
+    var id: Long = 0
 }

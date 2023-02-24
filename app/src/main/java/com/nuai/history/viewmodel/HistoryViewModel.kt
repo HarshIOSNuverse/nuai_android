@@ -9,6 +9,7 @@ import com.nuai.history.model.api.response.HistoryListResponse
 import com.nuai.history.model.api.response.SendScanResponse
 import com.nuai.history.repository.HistoryRepository
 import com.nuai.home.model.api.request.SendScanRequest
+import com.nuai.home.model.api.response.MeasurementResponse
 import com.nuai.network.ApiResponseState
 import com.nuai.network.CommonResponse
 import com.nuai.network.Status
@@ -29,6 +30,7 @@ class HistoryViewModel @Inject constructor(
     val historyListState = MutableStateFlow(ApiResponseState(Status.LOADING, HistoryListResponse()))
     val sendScanResultState = MutableStateFlow(ApiResponseState(Status.LOADING, SendScanResponse()))
 
+    val getScanInfoState = MutableStateFlow(ApiResponseState(Status.LOADING, MeasurementResponse()))
     fun getCalenderDateByMonth(month: String) {
         when {
             (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
@@ -90,6 +92,29 @@ class HistoryViewModel @Inject constructor(
                         sendScanResultState.value = ApiResponseState.error(it.message, 100)
                     }.collect {
                         sendScanResultState.value =
+                            if (it.data != null) ApiResponseState.success(it.data, it.code)
+                            else ApiResponseState.error(it.message, it.code)
+                    }
+                }
+            }
+        }
+    }
+
+    fun getScanInfo(id: Long) {
+        when {
+            (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
+                getScanInfoState.value = ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
+            }
+            else -> {
+                getScanInfoState.value = ApiResponseState.loading()
+                viewModelScope.launch {
+                    historyRepository.getScanInfo(id).catch {
+                        getScanInfoState.value = ApiResponseState.error(it.message, 100)
+                    }.collect {
+                        getScanInfoState.value =
                             if (it.data != null) ApiResponseState.success(it.data, it.code)
                             else ApiResponseState.error(it.message, it.code)
                     }

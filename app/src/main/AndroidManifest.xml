@@ -164,6 +164,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Nuai.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".home.ui.activity.MeasurementResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
 
 
         <provider

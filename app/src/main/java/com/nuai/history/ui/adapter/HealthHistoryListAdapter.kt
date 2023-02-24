@@ -39,14 +39,31 @@ internal class HealthHistoryListAdapter(items: ArrayList<HealthHistory>) :
         val history = items[position]
         holder.binding.history = history
         holder.binding.historyListener = selectHealthHistoryListener
+        val bgColor = when (position % 4) {
+            0 -> {
+                R.color.history_bg_color_0
+            }
+            1 -> {
+                R.color.history_bg_color_1
+            }
+            2 -> {
+                R.color.history_bg_color_2
+            }
+            3 -> {
+                R.color.history_bg_color_3
+            }
+            else -> {
+                R.color.history_bg_color_0
+            }
+        }
+        CommonUtils.setBgColor(
+            context,
+            holder.binding.crHistoryRoot.background,
+            bgColor
+        )
         var wellnessScore = "${history.wellnessScore}/10 | "
         when (history.wellnessScore) {
             8, 9, 10 -> {
-                CommonUtils.setBgColor(
-                    context,
-                    holder.binding.crHistoryRoot.background,
-                    R.color.high_score_bg_color
-                )
                 CommonUtils.setBgColor(
                     context,
                     holder.binding.ivIndicator.drawable,
@@ -57,22 +74,12 @@ internal class HealthHistoryListAdapter(items: ArrayList<HealthHistory>) :
             4, 5, 6, 7 -> {
                 CommonUtils.setBgColor(
                     context,
-                    holder.binding.crHistoryRoot.background,
-                    R.color.low_score_bg_color
-                )
-                CommonUtils.setBgColor(
-                    context,
                     holder.binding.ivIndicator.drawable,
                     R.color.medium_dot_color
                 )
                 wellnessScore += context.getString(R.string.medium)
             }
             else -> {
-                CommonUtils.setBgColor(
-                    context,
-                    holder.binding.crHistoryRoot.background,
-                    R.color.low_score_bg_color
-                )
                 CommonUtils.setBgColor(
                     context,
                     holder.binding.ivIndicator.drawable,
@@ -100,7 +107,7 @@ internal class HealthHistoryListAdapter(items: ArrayList<HealthHistory>) :
     }
 
     interface SelectHealthHistoryListener {
-        fun onHealthHistoryClick(history: HealthHistory?)
+        fun onViewMoreClick(history: HealthHistory?)
     }
 
 }

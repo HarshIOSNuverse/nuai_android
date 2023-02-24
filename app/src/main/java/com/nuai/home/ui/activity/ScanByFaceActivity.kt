@@ -86,7 +86,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     private var handlerPublishReport: Handler? = null
     private var isResultPublishedTimePassed = false
     private var isStopDialogVisible = false
-    private var faceResultID: String? = null
+    private var faceResultID: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,8 +125,13 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                         showHideProgress(false)
                         if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
                             faceResultID = it.data.id
+                            MeasurementResultActivity.startActivity(this@ScanByFaceActivity, faceResultID)
                             CommonUtils.showToast(this@ScanByFaceActivity, it.data.message)
                             finish()
+                            AnimationsHandler.playActivityAnimation(
+                                this@ScanByFaceActivity,
+                                AnimationsHandler.Animations.RightToLeft
+                            )
                         }
                     }
                     Status.ERROR -> {
@@ -575,16 +580,20 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         } else {
             scanningResultData.hrvSdnn = "" + finalResults.getResult(VitalSignTypes.SDNN).value
         }
-        if (finalResults.getResult(VitalSignTypes.STRESS_INDEX)?.value == null) {
-            scanningResultData.stressLevel = "0"
-        } else {
-            scanningResultData.stressLevel =
-                "" + (finalResults.getResult(VitalSignTypes.STRESS_INDEX) as VitalSignStressLevel).value
-        }
+//        if (finalResults.getResult(VitalSignTypes.STRESS_INDEX)?.value == null) {
+//            scanningResultData.stressLevel = 0
+//        } else {
+//            scanningResultData.stressLevel =
+//               (finalResults.getResult(VitalSignTypes.STRESS_INDEX) as VitalSignStressIndex).value
+//        }
 
-        if (finalResults.getResult(VitalSignTypes.STRESS_LEVEL)?.value == null) {
+        if (finalResults.getResult(VitalSignTypes.STRESS_LEVEL)?.value == null
+            || (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal == 0) {
+            scanningResultData.stressLevel = 0
             scanningResultData.stressResponse = ""
         } else {
+            scanningResultData.stressLevel =
+                (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal
             scanningResultData.stressResponse =
                 "" + (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value
         }
@@ -818,7 +827,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         }
     }
 
-    private fun showResultScreen(id: String?) {
+    private fun showResultScreen(id: Long) {
 
         run {
 //            openResultScreen(id, scanningResultData)

@@ -38,8 +38,10 @@
     <color name="green_text_color">#1FAF6A</color>
     <color name="orange_color">#F36C21</color>
     <color name="light_orange_color">#FFF6F1</color>
-    <color name="low_score_bg_color">#FFF5EF</color>
-    <color name="high_score_bg_color">#F3F6FC</color>
+    <color name="history_bg_color_0">#FFF5EF</color>
+    <color name="history_bg_color_1">#F3F6FC</color>
+    <color name="history_bg_color_2">#DAFFEE</color>
+    <color name="history_bg_color_3">#FFF0FD</color>
     <color name="low_dot_color">#FF6161</color>
     <color name="medium_dot_color">#FFD231</color>
     <color name="good_dot_color">#43C949</color>

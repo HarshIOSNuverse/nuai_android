@@ -81,7 +81,6 @@
                     android:layout_marginTop="@dimen/dp_100"
                     android:layout_marginBottom="@dimen/dp_20"
                     android:background="@drawable/rc_black_filled_c25"
-                    android:enabled="false"
                     android:fontFamily="@font/switzer_medium"
                     android:onClick="@{onClickListener}"
                     android:text="@string/stop"

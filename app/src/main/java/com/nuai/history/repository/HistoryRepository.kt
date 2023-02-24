@@ -4,6 +4,7 @@ import com.nuai.history.model.api.response.CalenderDateResponse
 import com.nuai.history.model.api.response.HistoryListResponse
 import com.nuai.history.model.api.response.SendScanResponse
 import com.nuai.home.model.api.request.SendScanRequest
+import com.nuai.home.model.api.response.MeasurementResponse
 import com.nuai.network.ApiResponseState
 import com.nuai.network.CommonResponse
 import com.nuai.network.NetworkService
@@ -49,6 +50,21 @@ class HistoryRepository @Inject constructor(private val networkService: NetworkS
     fun sendScanResult(request: SendScanRequest): Flow<ApiResponseState<SendScanResponse>> {
         return flow {
             val response = networkService.api.sendScanResult(request)
+            if (response.isSuccessful) {
+                emit(ApiResponseState.success(response.body(), response.code()))
+            } else {
+                emit(
+                    ApiResponseState.error(
+                        CommonUtils.getErrorResponse(response.errorBody()).message, response.code()
+                    )
+                )
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getScanInfo(id: Long): Flow<ApiResponseState<MeasurementResponse>> {
+        return flow {
+            val response = networkService.api.getScanInfo(id)
             if (response.isSuccessful) {
                 emit(ApiResponseState.success(response.body(), response.code()))
             } else {

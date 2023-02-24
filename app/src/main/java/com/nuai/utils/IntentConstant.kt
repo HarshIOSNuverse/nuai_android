@@ -7,4 +7,5 @@ object IntentConstant {
     const val URL = "URL"
     const val TYPE = "TYPE"
     const val FROM = "FROM"
+    const val ID = "ID"
 }
