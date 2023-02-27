@@ -180,4 +180,5 @@
     <string name="energy">Energy</string>
     <string name="heart_rate_variability">Heart Rate Variability</string>
     <string name="learn_more">Learn More</string>
+    <string name="view_your_abnormal_results"> View Your Abnormal Results</string>
 </resources>
