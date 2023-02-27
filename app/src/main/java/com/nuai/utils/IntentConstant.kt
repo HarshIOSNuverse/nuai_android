@@ -8,4 +8,5 @@ object IntentConstant {
     const val TYPE = "TYPE"
     const val FROM = "FROM"
     const val ID = "ID"
+    const val READING = "READING"
 }

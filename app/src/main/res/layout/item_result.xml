@@ -63,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/dp_15"
             android:paddingHorizontal="@dimen/dp_7"
-            android:text='@{reading.observedValue?? "N/A"}'
+            android:text='@{reading.observedValue!=null  &amp;&amp; reading.observedValue.length()>0? reading.observedValue: "N/A"}'
             android:textColor="@color/secondary_text_color"
             android:textSize="@dimen/sp_30"
             app:layout_constraintStart_toStartOf="parent"
@@ -93,11 +93,10 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/lbl_title"
+                android:id="@+id/tv_title"
                 style="@style/TextViewStyleRegular"
                 android:layout_width="0dp"
                 android:layout_marginStart="@dimen/dp_10"
-                android:text='@{reading.title?? ""}'
                 android:textSize="@dimen/sp_15"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -109,13 +108,12 @@
                 android:layout_width="0dp"
                 android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_2"
-                android:text='@{reading.shortDesc?? ""}'
                 android:textColor="@color/secondary_text_color"
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lbl_title" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

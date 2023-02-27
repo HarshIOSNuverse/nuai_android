@@ -196,6 +196,7 @@ class MeasurementResultActivity : BaseActivity(), View.OnClickListener {
                 measurementListener =
                     object : MeasurementScreenAdapter.MeasurementListener {
                         override fun onLearnMoreClick(reading: Reading) {
+                            LearnMoreActivity.startActivity(this@MeasurementResultActivity, reading)
                         }
 
                         override fun onCategoryClick(index: Int) {

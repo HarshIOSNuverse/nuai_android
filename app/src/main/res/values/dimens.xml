@@ -77,4 +77,5 @@
     <dimen name="menu_text_size">18sp</dimen>
     <dimen name="dp_55">55dp</dimen>
     <dimen name="divider_height">1dp</dimen>
+    <dimen name="sp_17">17sp</dimen>
 </resources>

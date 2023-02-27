@@ -66,6 +66,19 @@ internal class ResultListAdapter(items: ArrayList<Reading>) :
             holder.binding.crReadingRoot.background,
             bgColor
         )
+        if (reading.observedValue.isNullOrEmpty()) {
+            holder.binding.tvTitle.text =
+                String.format(context.getString(R.string.reading_not_recorded_msg), reading.title)
+            holder.binding.tvShortDesc.text =
+                context.getString(R.string.no_enough_data_was_recorded)
+        } else {
+            holder.binding.tvTitle.text = String.format(
+                context.getString(R.string.reading_name_title_msg),
+                reading.title,
+                reading.level?.lowercase()?.replace("_", " ")
+            )
+            holder.binding.tvShortDesc.text = reading.shortDesc
+        }
         holder.binding.resultListener = resultListener
         holder.binding.executePendingBindings()
     }

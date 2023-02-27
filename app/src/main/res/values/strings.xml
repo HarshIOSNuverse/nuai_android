@@ -185,4 +185,93 @@
     <string name="delete_result">Delete Result</string>
     <string name="are_you_sure_want_to_delete_measurement">Are you sure you want to delete this measurement?</string>
     <string name="yes">Yes</string>
+    <string name="heart_rate_title_msg">Your heart rate is %s</string>
+    <string name="stress_level_msg_0">Stress is the body\'s reaction to a challenge or demand. There are five levels of Stress:</string>
+    <string name="heart_rate_msg_1">This is the number of times your heart beats per minute. The normal resting rate is 60 to 100 beats for a healthy adult.</string>
+    <string name="heart_rate_msg_2">Think of your heart as a pump that pushes blood through your body. With every beat, the heart pumps blood containing oxygen and nutrients around the body and brings back waste products. A healthy heart supplies the body with the right amount of blood at a rate proportionate to whatever activity the body is undertaking.
+\n\n
+Normal resting rates can differ between people. Furthermore, heart rates are lower when at rest and increase during exercise. Moreover, this rate can change with different situations such as the weather, body position, emotions, body size, medication, and  participate in athletics.
+\n\n
+Tracking Heart Rate can provide insight into fitness levels, heart health, and emotional health. Moreover, for individuals taking medication for cardiovascular conditions, daily Heart Rate measurements can assist the doctor in advising on the proper course of treatment.
+\n\n
+A healthy heartbeat is important in protecting cardiac health. If you feel that your heart is beating out of rhythm (too fast or too slow), speak to a doctor about your symptoms.</string>
+    <string name="hrv_sdnn_title_msg">Your HRV SDNN is below %s</string>
+    <string name="hrv_sdnn_msg_1">SDNN is a calculated parameter of Heart Rate Variability (HRV) that represents the standard deviation of normal-to-normal R-R-intervals. SDNN is expressed in milliseconds, and a normal value for this is over 50. However, SDNN values are also dependent on age and gender and normally get lower with age.
+\n\n
+An individual\'s heartbeats do not occur at constant intervals, but rather with a small variance between them. HRV measures the variation in time between the heartbeats.</string>
+    <string name="hrv_sdnn_msg_2">High levels of HRV generally indicate aerobic and general fitness. Athletes may track HRV to adjust their training program. They can learn when the body is being overworked, which often results in a drop in HRV, and can learn how fast they recover. Moreover, persons with high HRV may be more resilient to stress.
+\n\n
+HRV measurements provide feedback about your lifestyle and can help inspire taking steps toward a healthier life. If you are implementing changes in your lifestyle such as meditation, better sleep, better nutrition, and participation in sports and physical activity, you may notice changes in the HRV. In addition, this could help to track your nervous system\'s reactions to the environment, emotions, thoughts, and feelings.
+\n\n
+The sympathetic system (Stress Response) is activated when the body is under stress, causing the heart to beat faster and more regularly, and causing HRV to decrease. The parasympathetic system (Recovery Ability) manages the heart\'s activity to help the body reach a relaxed state and to recover from a stressful event. This relaxation response results in a slower and less regular heartbeat and is indicated by a higher HRV.
+
+If you have questions about your results, seek a doctor\'s advice and they will let you know what\'s normal for your specific condition.</string>
+    <string name="stress_level_title_msg">Your stress level is %s</string>
+    <string name="stress_level_msg_1">Stress is the body\'s reaction to a challenge or demand. There are five levels of Stress:</string>
+    <string name="stress_level_msg_2">The human body is designed to experience stress
+and react to it. When you deal with challenges and changes, your body produces physical and mental responses. Stress might be positive, keeping us alert, motivated, and ready to avoid danger. However, stress becomes a problem when stressors continue without relief or periods of relaxation.
+\n\n
+The application\'s Stress Level measurement is based on Baevsky\'s Stress Index which is approved for use in the US and in Europe. The index is calculated using Heart Rate Variability (HRV) measurements.</string>
+    <string name="stress_level_msg_3">It\'s important to note that Stress Levels are indicative only and need to be corroborated with other parameters by a doctor before making a valid diagnosis. Stress Levels are highly dynamic and should be monitored over longer periods to detect abnormal trends.</string>
+    <string name="recovery_ability_title_msg">Your recovery ability is %s</string>
+    <string name="recovery_ability_msg_1">The Recovery Ability that is also known as "rest and digest" response refers to the body\'s ability to recover, accumulate energy, and regulate bodily functions after stressful occurrences. This is part of the autonomic system that consists of two sub-systems, the sympathetic (Stress Response) system and the parasympathetic (Recovery Ability) system. Your Heart Rate Variability is reflected in the balance between these two sub-systems.
+\n\n
+There are three zones of Recovery Ability:</string>
+    <string name="recovery_ability_msg_2">The normal and high zones are more desirable than the low zone. In the normal and high zones, the body is able to effectively conserve energy, relax, or recover from a stressful occurrence.
+\n\n
+The parasympathetic metric measures the activity of the PNS and indicates how capable a person is of relaxing or recovering after stressful events. A low zone would indicate a stressful state, while a high zone would suggest calmness.
+\n\n
+The system plays an important role in alleviating stress and promoting recovery. It does so by inhibiting the activity of the sympathetic nervous system and ceasing the production of stress hormones. It returns bodily functions to their resting state by slowing the heart rate, lowering blood pressure, reducing muscle tension, and restoring regular breathing, digestion, and glandular activity.
+\n\n
+The Recovery Ability is derived from the parasympathetic nervous system (PNS) index.
+The PNS Index calculation is based on the following three parameters: Mean RRI, RMSSD, and SD1.
+\n\n
+These zones should be used as a guide only. Seek a doctor\'s advice in order to obtain a valid diagnosis.</string>
+    <string name="stress_response_title_msg">Your Stress response is %s</string>
+    <string name="stress_response_msg_1">The Stress Response, which is also known as "fight or flight" response, refers to a physiological reaction to imminent danger that occurs when we are scared, anxious, stressed, attacked, or threatened. Essentially, it prepares our body to either deal with a threat or to run for safety. This is part of the autonomic system that consists of two sub-systems, the sympathetic (Stress Response) system and the parasympathetic (recovery ability) system. Your Heart Rate Variability is reflected in the balance between those two sub-systems.
+\n\n
+There are three zones of Stress Response:</string>
+    <string name="stress_response_msg_2">The normal and low zones are more desirable than the high zone. In the normal and low zones, the body is able to effectively respond to stressful situations and emergencies.
+\n\n
+When preparing for an emergency, the sympathetic nervous system (SNS) activates numerous complex pathways and components. These physiological activities help to achieve a faster heart rate, breathing rate, and blood pressure. Noticeable changes include blood flow that moves away from the skin and stomach, and is redirected from the intestines to the brain, heart, and muscles, as well as sweating, "goose-bumps", dilation of the pupils, and a host of other feelings that appear during the Stress Response. In addition, there is a psychological aspect to the Stress Response. Automated responses include quick thinking and focusing on salient targets such as the source of the threat and escape options.
+\n\n
+The stress created by a situation is helpful and increases the chances of coping effectively with the threat. This type of stress can help you perform better in situations where you are under pressure to do well.
+\n\n
+This Stress Response is derived from the sympathetic nervous system (SNS) Index. The SNS Index is calculated based on the following three parameters: Heart Rate, Baevsky\'s Stress Index, and SD2.
+\n\n
+These zones should be used as a guide only. Seek a doctor\'s advice in order to obtain a valid diagnosis.</string>
+    <string name="oxygen_saturation_title_msg">Your oxygen saturation is %s</string>
+    <string name="oxygen_saturation_msg_1">Oxygen Saturation, or SpO2, is a measure of how much oxygen the red blood cells are carrying from the lungs to the rest of the body. Normal SpO2 for healthy lungs ranges between 95%-100%. For individuals with chronic conditions or lung diseases could be lower than 95%.</string>
+    <string name="oxygen_saturation_msg_2">A low level of oxygen in the blood is called hypoxemia. Typically, an Oxygen Saturation level lower than 90% is considered hypoxemia, which can be caused by chronic pulmonary diseases (COPD, COVID-19, Asthma, Lung Fibrosis, pulmonary hypertension), heart failure, sleep apnea, anemia, and high-altitude exposure (insufficient oxygen in the air) and medications that suppress breathing control.
+\n\n
+Common symptoms of hypoxemia include headache, rapid heart rate, coughing, shortness of breath, wheezing, confusion, and blueness of the skin and mucus membranes (cyanosis). Oxygen Saturation levels can also be used by athletes to understand whether a decrease in performance is a result of altitude changes or ability.
+\n\n
+If you feel that your Oxygen Saturation is low, speak to a doctor about your symptoms. They
+will let you know what is normal for your specific condition.</string>
+    <string name="prq_title_msg">Your PRQ is %s</string>
+    <string name="prq_msg_1">The Pulse-Respiration Quotient (PRQ) indicates the state of cardiorespiratory activity. The normal quotient range is 4 to 5. PRQ readings are affected by one\'s age, sex, physiological constitution, physical activity, psychophysical and cognitive activity, body posture, environmental influences, and state of health.
+\n\n
+The PRQ is calculated by dividing the Heart Rate by the Breathing Rate. It provides additional knowledge that cannot be obtained when analyzing the Heart Rate and the Breathing Rate separately.</string>
+    <string name="prq_msg_2">The Pulse-Respiration Quotient (PRQ) reflects emergent properties of the complex interplay between cardiac and respiratory activities. The pulse-respiration quotient metric measures to what extent this interplay is functioning normally. A low or high score would indicate that your HR and/or BR are working disproportionately, which may indicate that both the heart and the lungs are working inefficiently. Moreover, a person\'s pathophysiological state (the functional changes associated with or resulting from disease or injury) is indicated by abnormal PRQ readings.
+\n\n
+These results should be used as a guide only. Seek doctor\'s advice in order to obtain a valid diagnosis.</string>
+    <string name="breath_rate_title_msg">Your breathing rate is %s</string>
+    <string name="breath_rate_msg_1">The number of breaths you take per minute. The normal at-rest Breathing Rate is 12 to 20 breaths per minute for a healthy adult. In general, breathing rates are slightly faster in women than men.</string>
+    <string name="breath_rate_msg_2">When you inhale, oxygen enters your lungs and circulates to the various internal organs. When you exhale, carbon dioxide moves out of the body. A normal Breathing Rate plays a critical role in keeping the balance of oxygen and carbon dioxide even in the body. If the oxygen level in the blood is low, or if the carbon dioxide level in the blood is high, your Breathing Rate increases.
+\n\n
+Various factors affect the Breathing Rate, including injuries, exercise, fever, anxiety, emotions, mood, alcohol, medication, metabolic issues, and medical conditions. A high or low rate might be the result of an activity, and therefore does not indicate that there is anything wrong. However, in other cases, such as various diseases, injuries, dehydration or heart problems, a change in the Breathing Rate may occur that can be considered abnormal, thereby necessitating medical attention.
+\n\n
+Knowing your Breathing Rate can help your doctor provide you with medical advice. If your Breathing Rate changes or if you feel that your breathing is too fast or too slow, speak to a doctor about your symptoms.</string>
+    <string name="blood_pressure_title_msg">Your blood pressure is %s</string>
+    <string name="blood_pressure_msg_1">The pressure of blood exerted on the walls of the arteries, which carry blood from the heart to other parts of the body. Normal systolic pressure is from
+100 to 129.</string>
+    <string name="blood_pressure_msg_2">Blood Pressure measures the pressure of circulating blood against artery walls, and it is measured by two numbers. The first number, or systolic pressure, refers to the pressure inside the artery when the heart contracts and pumps blood throughout the body. The second number, or diastolic pressure, refers to the pressure inside the artery when the heart is at rest and is filling with blood.
+\n\n
+Most people don\'t know if they have high Blood Pressure - especially since there may be no noticeable warning signs or symptoms - and therefore the Blood Pressure must be measured. Blood Pressure changes in response to different activities and is recommended to be measured while at rest. Consistently high blood pressure readings may result in a diagnosis of high blood pressure (hypertension), which poses a higher risk for health problems such as heart disease, heart attack, and stroke. In most cases, high blood pressure has no defined cause, and it is called primary hypertension. However, it is related to unhealthy lifestyles such as physical inactivity, stressful life, obesity, shift work, pregnancy, etc. It should be emphasized that Blood Pressure can be managed through diagnosis, lifestyle changes, medication and long-term monitoring.
+\n\n
+Blood Pressure is categorized as low, normal, or elevated: low blood pressure is defined as systolic pressure of less than 100, normal blood pressure is defined as systolic pressure of 100 to 129, while elevated blood pressure is defined as systolic pressure of 130 or higher.
+\n\nThese numbers should be used as a guide only. A single Blood Pressure measurement that is higher than normal is not necessarily an indication of a problem. Your doctor will want to see multiple Blood Pressure measurements over several days or weeks before making a diagnosis of high blood pressure and commencing treatment.</string>
+    <string name="reading_name_title_msg">Your %s is %s</string>
+    <string name="reading_not_recorded_msg">%s is not recorded</string>
+    <string name="no_enough_data_was_recorded">Not enough data was recorded to calculate a valid result.</string>
 </resources>
