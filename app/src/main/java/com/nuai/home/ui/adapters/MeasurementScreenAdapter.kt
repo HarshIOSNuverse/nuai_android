@@ -8,6 +8,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.nuai.R
 import com.nuai.databinding.ItemMeasurementHeaderBinding
+import com.nuai.databinding.ItemResultDeleteBinding
 import com.nuai.databinding.ItemResultWrapperBinding
 import com.nuai.home.model.HealthHistory
 import com.nuai.home.model.Reading
@@ -43,6 +44,12 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.item_result_wrapper, parent, false)
                 )
+            DELETE ->
+                BindingViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_result_delete, parent, false)
+                )
+
             else ->
                 BindingViewHolder(
                     LayoutInflater.from(parent.context)
@@ -123,6 +130,10 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
                     }
                 }
             }
+        } else if (holder.binding is ItemResultDeleteBinding) {
+            holder.binding.tvResultDelete.setOnClickListener {
+                measurementListener?.onDeleteClicked()
+            }
         }
 
         holder.binding.executePendingBindings()
@@ -135,6 +146,8 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
     override fun getItemViewType(position: Int): Int {
         return if (items[position] is HealthHistory) {
             HEADER
+        } else if (items[position] is String) {
+            DELETE
         } else {
             LIST
         }
@@ -143,6 +156,7 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
     interface MeasurementListener {
         fun onLearnMoreClick(reading: Reading)
         fun onCategoryClick(index: Int)
+        fun onDeleteClicked()
     }
 
     @SuppressLint("DiscouragedApi")
@@ -159,5 +173,6 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
     companion object {
         private const val HEADER = 1
         private const val LIST = 2
+        private const val DELETE = 3
     }
 }

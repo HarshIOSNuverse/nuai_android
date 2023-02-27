@@ -31,6 +31,7 @@ class HistoryViewModel @Inject constructor(
     val sendScanResultState = MutableStateFlow(ApiResponseState(Status.LOADING, SendScanResponse()))
 
     val getScanInfoState = MutableStateFlow(ApiResponseState(Status.LOADING, MeasurementResponse()))
+    val deleteMeasurementState = MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
     fun getCalenderDateByMonth(month: String) {
         when {
             (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
@@ -115,6 +116,29 @@ class HistoryViewModel @Inject constructor(
                         getScanInfoState.value = ApiResponseState.error(it.message, 100)
                     }.collect {
                         getScanInfoState.value =
+                            if (it.data != null) ApiResponseState.success(it.data, it.code)
+                            else ApiResponseState.error(it.message, it.code)
+                    }
+                }
+            }
+        }
+    }
+
+    fun deleteMeasurement(id: Long) {
+        when {
+            (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
+                deleteMeasurementState.value = ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
+            }
+            else -> {
+                deleteMeasurementState.value = ApiResponseState.loading()
+                viewModelScope.launch {
+                    historyRepository.deleteMeasurement(id).catch {
+                        deleteMeasurementState.value = ApiResponseState.error(it.message, 100)
+                    }.collect {
+                        deleteMeasurementState.value =
                             if (it.data != null) ApiResponseState.success(it.data, it.code)
                             else ApiResponseState.error(it.message, it.code)
                     }

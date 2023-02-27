@@ -128,6 +128,10 @@ constructor(
         @GET(Url.API + "scan/{id}")
         suspend fun getScanInfo(@Path("id") id: Long): Response<MeasurementResponse?>
 
+        @Headers("$HEADER_BEAR: true")
+        @DELETE(Url.API + "scan/{id}")
+        suspend fun deleteMeasurement(@Path("id") id: Long): Response<CommonResponse?>
+
         /* @Headers("$HEADER_BEAR: true")
          @POST(Url.API + "register-device")
          suspend fun registerDeviceToken(@Body request: RegisterTokenRequest): Response<CommonResponse?>

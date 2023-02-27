@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -256,12 +257,20 @@ class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
                 object : HealthHistoryListAdapter.SelectHealthHistoryListener {
                     override fun onViewMoreClick(history: HealthHistory?) {
                         if (history != null)
-                            MeasurementResultActivity.startActivity(
+                            MeasurementResultActivity.startActivityForResult(
                                 this@HealthHistoryListActivity,
-                                history.id
-                            )
+                                history.id,
+                                detailLauncher
+                                )
                     }
                 }
         }
     }
+
+    private val detailLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                historyViewModel.getHistoryList(selectedDate!!)
+            }
+        }
 }

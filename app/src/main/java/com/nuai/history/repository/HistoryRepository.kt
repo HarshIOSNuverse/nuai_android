@@ -76,4 +76,18 @@ class HistoryRepository @Inject constructor(private val networkService: NetworkS
             }
         }.flowOn(Dispatchers.IO)
     }
+    suspend fun deleteMeasurement(id: Long): Flow<ApiResponseState<CommonResponse>> {
+        return flow {
+            val response = networkService.api.deleteMeasurement(id)
+            if (response.isSuccessful) {
+                emit(ApiResponseState.success(response.body(), response.code()))
+            } else {
+                emit(
+                    ApiResponseState.error(
+                        CommonUtils.getErrorResponse(response.errorBody()).message, response.code()
+                    )
+                )
+            }
+        }.flowOn(Dispatchers.IO)
+    }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="adapter"
+            type="com.nuai.home.ui.adapters.ResultListAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cr_history_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingVertical="@dimen/dp_15"
+        tools:context=".history.ui.activity.HealthHistoryListActivity">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_result_delete"
+            style="@style/TextViewStyleMedium"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            android:text="@string/delete_result"
+            android:textColor="@color/red"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

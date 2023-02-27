@@ -682,7 +682,6 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 .setMessage(
                     String.format(
                         getString(R.string.error_message),
-                        message,
                         errorCode
                     )
                 )
@@ -737,7 +736,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 null
             )
             if (mTestMode == Enums.SessionMode.FACE && faceRect != null) {
-                paintRect(canvas, rescaleFaceRect(bitmap, faceRect)!!)
+                paintRect(canvas, rescaleFaceRect(bitmap, faceRect))
             }
             binding.mainContent.cameraView.unlockCanvasAndPost(canvas)
         }

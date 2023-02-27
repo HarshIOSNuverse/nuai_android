@@ -85,9 +85,9 @@ class OkHttpClientFactory {
             )
             requestBuilder.addHeader(NetworkService.HEADER_API_VERSION, BuildConfig.API_VERSION)
             requestBuilder.addHeader("language-code", Pref.appLocale)
-            requestBuilder.addHeader("Content", "application/json")
-            requestBuilder.addHeader("x-platform", "APP")
-            requestBuilder.addHeader("x-os", "ANDROID")
+            requestBuilder.addHeader("Content-Type", "application/json")
+            requestBuilder.addHeader("Accept", "application/json")
+            requestBuilder.addHeader("platform", "ANDROID")
             requestBuilder.addHeader("X-Timezone", TimeZone.getDefault().id)
             // For guest user
             val uuid = Pref.uuid

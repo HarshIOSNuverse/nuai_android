@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="onClickLister"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="adapter"
+            type="com.nuai.home.ui.adapters.MeasurementScreenAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/line_View"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_15"
+            android:background="#E8E8E8"
+            app:layout_constraintBottom_toTopOf="@+id/lbl_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/lbl_title"
+            style="@style/TextViewStyleRegular"
+            android:layout_margin="@dimen/dp_15"
+            android:fontFamily="@font/switzer_regular"
+            android:gravity="center"
+            android:text="@string/your_abnormal_results"
+            android:textSize="@dimen/sp_20"
+            app:layout_constraintBottom_toTopOf="@+id/view_flipper"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line_View"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="RelativeOverlap" />
+
+        <ViewFlipper
+            android:id="@+id/view_flipper"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHeight_percent="0.88"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_title"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adapter="@{adapter}"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </ViewFlipper>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

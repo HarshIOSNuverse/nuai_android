@@ -117,4 +117,14 @@
         <item name="colorControlNormal">@color/secondary_text_color</item>
         <item name="colorControlActivated">#ff9900</item>
     </style>
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/white_top_rounded_bg</item>
+    </style>
+
 </resources>

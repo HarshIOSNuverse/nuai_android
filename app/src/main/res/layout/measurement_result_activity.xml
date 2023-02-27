@@ -37,6 +37,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:paddingBottom="@dimen/dp_70"
             app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,19 +46,21 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rc_top_white_filled_30"
             android:padding="@dimen/dp_20"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_time"
+                android:id="@+id/tv_abnormal_result"
                 style="@style/TextViewStyleRegular"
-                android:layout_width="0dp"
                 android:layout_marginStart="@dimen/dp_10"
+                android:drawablePadding="@dimen/dp_10"
                 android:onClick="@{onClickListener}"
                 android:padding="@dimen/dp_10"
                 android:text="@string/view_your_abnormal_results"
-                android:textColor="@color/secondary_text_color"
+                android:textColor="@color/blue_text_color"
+                app:drawableStartCompat="@drawable/ic_info_blue"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

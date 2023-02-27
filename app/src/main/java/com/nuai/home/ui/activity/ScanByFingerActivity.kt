@@ -678,7 +678,6 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                 .setMessage(
                     String.format(
                         getString(R.string.error_message),
-                        message,
                         errorCode
                     )
                 )
