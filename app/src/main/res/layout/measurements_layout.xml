@@ -37,6 +37,7 @@
             android:gravity="center_horizontal"
             android:text="0"
             android:textSize="@dimen/sp_30"
+            android:layout_marginEnd="@dimen/dp_8"
             app:layout_constraintBottom_toTopOf="@+id/reading_progress_bar"
             app:layout_constraintEnd_toStartOf="@+id/tv_reading_unit"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -46,7 +47,6 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_reading_unit"
             style="@style/TextViewStyleRegular"
-            android:layout_marginStart="@dimen/dp_8"
             android:gravity="center_horizontal"
             android:text="@string/bpm"
             android:textColor="@color/secondary_text_color"

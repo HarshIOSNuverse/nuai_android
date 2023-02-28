@@ -139,6 +139,7 @@
     <string name="stop">Stop</string>
     <string name="blood_pressure_value">%d / %d</string>
     <string name="error_message">Error (%d)</string>
+    <string name="error_code_message">Error (%d) - %s</string>
     <string name="warning_message">Warning (%d)</string>
     <string name="ok">Ok</string>
     <string name="no_finger_detected">Place your finger on the rear camera</string>
@@ -264,4 +265,6 @@ Blood Pressure is categorized as low, normal, or elevated: low blood pressure is
     <string name="reading_name_title_msg">Your %s is %s</string>
     <string name="reading_not_recorded_msg">%s is not recorded</string>
     <string name="no_enough_data_was_recorded">Not enough data was recorded to calculate a valid result.</string>
+    <string name="could_not_collect_data_over_seconds">Could not collect data for over 0.5 seconds.</string>
+    <string name="pls_dont_remove_your_finger">Please do not move your finger</string>
 </resources>

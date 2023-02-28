@@ -79,7 +79,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
     private var mWarningDialogTimeoutHandler: Handler? = null
     private var mMessageDialog: AlertDialog? = null
     private var progressPercent: Double = 0.0
-
+    private var mWarningDialog: AlertDialog? = null
 
     private var mDeviceEnabledVitalSigns: HealthMonitorEnabledVitalSigns? = null
 
@@ -111,7 +111,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
         } else {
             createHealthMonitorManager()
-            createSession()
+//            createSession()
         }
     }
 
@@ -212,13 +212,13 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         runOnUiThread {
             when (warningData.code) {
                 HealthMonitorCodes.MEASUREMENT_CODE_UNSUPPORTED_ORIENTATION_WARNING -> if (mSession != null && mSession?.state == SessionState.MEASURING) {
-                    showWarning("" + warningData.code)
+                    showWarning(warningData.code)
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_WARNING -> {
                     resetMeasurements()
-                    showWarning("" + warningData.code)
+                    showWarning(warningData.code)
                 }
-                else -> showWarning("" + warningData.code)
+                else -> showWarning(warningData.code)
             }
         }
     }
@@ -497,11 +497,47 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         if (mSession == null || mSession!!.state != SessionState.MEASURING) {
             return
         }
+        binding.measurementsLayout.root.visibility = View.VISIBLE
+        binding.crFingerHint.visibility = View.GONE
         if (detected) {
             binding.measurementsLayout.root.visibility = View.VISIBLE
+            binding.ivFingerMask.setImageResource(R.drawable.ic_finger_white_elipse)
+            binding.measurementsLayout.tvFaceScanningMsg.text =
+                getString(R.string.finger_scanning_msg)
+            binding.measurementsLayout.tvReading.visibility = View.VISIBLE
+            binding.measurementsLayout.tvReadingUnit.text = getString(R.string.bpm)
+            binding.measurementsLayout.tvReadingUnit.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.secondary_text_color
+                )
+            )
+            binding.measurementsLayout.readingProgressBar.setProgressDrawableColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.green_text_color
+                )
+            )
         } else {
-            binding.measurementsLayout.root.visibility = View.INVISIBLE
-//            binding.roiWarningText.setText(getString(if (mTestMode == Enums.SessionMode.FACE) R.string.no_face_detected else R.string.no_finger_detected))
+//            binding.measurementsLayout.root.visibility = View.INVISIBLE
+            binding.ivFingerMask.setImageResource(R.drawable.ic_finger_red_elipse)
+            binding.measurementsLayout.tvFaceScanningMsg.text =
+                getString(R.string.could_not_collect_data_over_seconds)
+            binding.measurementsLayout.tvReading.visibility = View.INVISIBLE
+            binding.measurementsLayout.tvReadingUnit.text =
+                getString(R.string.pls_dont_remove_your_finger)
+            binding.measurementsLayout.tvReadingUnit.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.error_msg_text_color
+                )
+            )
+            binding.measurementsLayout.readingProgressBar.setProgressDrawableColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.error_msg_text_color
+                )
+            )
         }
     }
 
@@ -672,22 +708,27 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
        Method called to show error popup
     */
     private fun showErrorDialog(errorCode: Int, message: String) {
-        /*Toast.makeText(requireActivity(), "ERROR: " + message, Toast.LENGTH_LONG).show();*/
         if (mMessageDialog != null && mMessageDialog!!.isShowing) {
             return
         }
         mMessageDialog =
-            AlertDialog.Builder(this) //                .setMessage(message)
-                .setMessage(
-                    String.format(
-                        getString(R.string.error_message),
-                        errorCode
-                    )
+            AlertDialog.Builder(this).setMessage(
+                String.format(
+                    getString(R.string.error_code_message), errorCode, message
                 )
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    //                        updateUi(UiState.SCREEN_PAUSED);
-                }
-                .show()
+            ).setPositiveButton(R.string.ok) { _, _ ->
+                //                        updateUi(UiState.SCREEN_PAUSED);
+            }.show()
+    }
+
+    private fun showWarning(code: Int) {
+        if (mWarningDialog != null && mWarningDialog!!.isShowing) {
+            return
+        }
+        mWarningDialog = AlertDialog.Builder(this)
+            .setMessage(String.format(getString(R.string.error_message), code))
+            .setPositiveButton(R.string.ok, null)
+            .show()
     }
 
     private fun showWarning(text: String) {
@@ -696,22 +737,24 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
 
     private fun showWarning(text1: String, errorCode: Int?) {
         var text: String? = text1
-        if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
-            return
-        }
         if (mWarningDialogTimeoutHandler != null) {
             mWarningDialogTimeoutHandler!!.removeCallbacksAndMessages(null)
         }
         if (errorCode != null) {
             text += " ($errorCode)"
         }
-        binding.tvFaceNotDetectTitle.text = getString(R.string.app_name)
-        binding.tvFaceNotDetectMsg.text = text
-        binding.crFaceNotDetectWarning.visibility = View.VISIBLE
+        if (mWarningDialog != null && mWarningDialog!!.isShowing) {
+            return
+        }
+        mWarningDialog = AlertDialog.Builder(this)
+            .setMessage(String.format(getString(R.string.warning_message), text))
+            .setPositiveButton(R.string.ok, null)
+            .show()
         mWarningDialogTimeoutHandler = Handler(Looper.getMainLooper())
         mWarningDialogTimeoutHandler!!.postDelayed(
-            { binding.crFaceNotDetectWarning.visibility = View.INVISIBLE },
-            2000
+            {
+                mWarningDialog?.dismiss()
+            }, 1000
         )
     }
 
@@ -803,10 +846,6 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         )
     }
 
-
-    //    private fun showWarning(code: Int) {
-//        showWarning(String.format(getString(R.string.warning_message), code))
-//    }
     private fun initClickListener() {
         binding.onClickListener = this
         binding.measurementsLayout.onClickListener = this
@@ -870,7 +909,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
        Method to hide progress or timer when scanning is stopped
     */
     private fun stopTimeCount() {
-        binding.measurementsLayout.readingProgressBar.visibility = View.GONE
+//        binding.measurementsLayout.readingProgressBar.visibility = View.GONE
         mTimeCountHandler?.removeCallbacksAndMessages(null)
     }
 
@@ -882,7 +921,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             createHealthMonitorManager()
-            createSession()
+//            createSession()
         }
     }
 
