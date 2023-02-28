@@ -62,83 +62,84 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
         holder: BindingViewHolder<ViewDataBinding>,
         position: Int
     ) {
-        if (holder.binding is ItemMeasurementHeaderBinding) {
-            val basicInfo = items[position] as HealthHistory
-            holder.binding.history = basicInfo
-            if (basicInfo.scanBy.isNullOrEmpty()) {
-                when (basicInfo.scanBy) {
-                    Enums.ScanType.FACE.toString() -> {
-                        holder.binding.ivMeasureType.setImageResource(R.drawable.face_blue_circle)
-                    }
-                    Enums.ScanType.FINGER.toString() -> {
-                        holder.binding.ivMeasureType.setImageResource(R.drawable.finger_blue_circle)
-                    }
-                }
-            }
-            holder.binding.tvWellnessLevel.text =
-                CommonUtils.getWellnessLevel(context, basicInfo.wellnessScore)
-            holder.binding.crWellnessScoreReading.setBackgroundResource(
-                getWellnessImage(context, basicInfo.wellnessScore)
-            )
-            val categoryList: ArrayList<String> = arrayListOf()
-            categoryList.add(Enums.ResultCategory.VITAL_SIGNS.toString())
-            categoryList.add(Enums.ResultCategory.BLOOD.toString())
-            categoryList.add(Enums.ResultCategory.STRESS_LEVEL.toString())
-            categoryList.add(Enums.ResultCategory.ENERGY.toString())
-            categoryList.add(Enums.ResultCategory.HEART_RATE_VARIABILITY.toString())
-            holder.binding.resultCategoryAdapter =
-                ResultCategorySelectListAdapter(categoryList).apply {
-                    selectCategoryListener =
-                        object : ResultCategorySelectListAdapter.SelectCategoryListener {
-                            @SuppressLint("NotifyDataSetChanged")
-                            override fun onItemClick(categoryName: String) {
-                                holder.binding.resultCategoryAdapter!!.selectedCategory =
-                                    categoryName
-                                holder.binding.resultCategoryAdapter!!.notifyDataSetChanged()
-                                val index = categoryList.indexOf(categoryName)
-                                measurementListener?.onCategoryClick(index)
-                            }
+        when (holder.binding) {
+            is ItemMeasurementHeaderBinding -> {
+                val basicInfo = items[position] as HealthHistory
+                holder.binding.history = basicInfo
+                if (!basicInfo.scanBy.isNullOrEmpty()) {
+                    when (basicInfo.scanBy) {
+                        Enums.ScanType.FACE.toString() -> {
+                            holder.binding.ivMeasureType.setImageResource(R.drawable.face_blue_circle)
                         }
+                        Enums.ScanType.FINGER.toString() -> {
+                            holder.binding.ivMeasureType.setImageResource(R.drawable.finger_blue_circle)
+                        }
+                    }
                 }
-
-        } else if (holder.binding is ItemResultWrapperBinding) {
-            val wrapper = items[position] as ResultWrapper
-            holder.binding.tvResultCategoryName.text = when (wrapper.resultCategoryName) {
-                Enums.ResultCategory.VITAL_SIGNS.toString() -> {
-                    context.getString(R.string.vital_signs)
-                }
-                Enums.ResultCategory.BLOOD.toString() -> {
-                    context.getString(R.string.blood)
-                }
-                Enums.ResultCategory.STRESS_LEVEL.toString() -> {
-                    context.getString(R.string.stress_level)
-                }
-                Enums.ResultCategory.ENERGY.toString() -> {
-                    context.getString(R.string.energy)
-                }
-                Enums.ResultCategory.HEART_RATE_VARIABILITY.toString() -> {
-                    context.getString(R.string.heart_rate_variability)
-                }
-                else -> {
-                    wrapper.resultCategoryName
-                }
+                holder.binding.tvWellnessLevel.text =
+                    CommonUtils.getWellnessLevel(context, basicInfo.wellnessScore)
+                holder.binding.crWellnessScoreReading.setBackgroundResource(
+                    getWellnessImage(context, basicInfo.wellnessScore)
+                )
+                val categoryList: ArrayList<String> = arrayListOf()
+                categoryList.add(Enums.ResultCategory.VITAL_SIGNS.toString())
+                categoryList.add(Enums.ResultCategory.BLOOD.toString())
+                categoryList.add(Enums.ResultCategory.STRESS_LEVEL.toString())
+                categoryList.add(Enums.ResultCategory.ENERGY.toString())
+                categoryList.add(Enums.ResultCategory.HEART_RATE_VARIABILITY.toString())
+                holder.binding.resultCategoryAdapter =
+                    ResultCategorySelectListAdapter(categoryList).apply {
+                        selectCategoryListener =
+                            object : ResultCategorySelectListAdapter.SelectCategoryListener {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun onItemClick(categoryName: String) {
+                                    holder.binding.resultCategoryAdapter!!.selectedCategory =
+                                        categoryName
+                                    holder.binding.resultCategoryAdapter!!.notifyDataSetChanged()
+                                    val index = categoryList.indexOf(categoryName)
+                                    measurementListener?.onCategoryClick(index)
+                                }
+                            }
+                    }
             }
-            holder.binding.adapter = ResultListAdapter(wrapper.readingList!!).apply {
-                resultListener = object : ResultListAdapter.ResultListener {
-                    override fun onLearnMoreClick(reading: Reading) {
-                        measurementListener?.onLearnMoreClick(reading)
+            is ItemResultWrapperBinding -> {
+                val wrapper = items[position] as ResultWrapper
+                holder.binding.tvResultCategoryName.text = when (wrapper.resultCategoryName) {
+                    Enums.ResultCategory.VITAL_SIGNS.toString() -> {
+                        context.getString(R.string.vital_signs)
+                    }
+                    Enums.ResultCategory.BLOOD.toString() -> {
+                        context.getString(R.string.blood)
+                    }
+                    Enums.ResultCategory.STRESS_LEVEL.toString() -> {
+                        context.getString(R.string.stress_level)
+                    }
+                    Enums.ResultCategory.ENERGY.toString() -> {
+                        context.getString(R.string.energy)
+                    }
+                    Enums.ResultCategory.HEART_RATE_VARIABILITY.toString() -> {
+                        context.getString(R.string.heart_rate_variability)
+                    }
+                    else -> {
+                        wrapper.resultCategoryName
+                    }
+                }
+                holder.binding.adapter = ResultListAdapter(wrapper.readingList!!).apply {
+                    resultListener = object : ResultListAdapter.ResultListener {
+                        override fun onLearnMoreClick(reading: Reading) {
+                            measurementListener?.onLearnMoreClick(reading)
+                        }
                     }
                 }
             }
-        } else if (holder.binding is ItemResultDeleteBinding) {
-            holder.binding.tvResultDelete.setOnClickListener {
-                measurementListener?.onDeleteClicked()
+            is ItemResultDeleteBinding -> {
+                holder.binding.tvResultDelete.setOnClickListener {
+                    measurementListener?.onDeleteClicked()
+                }
             }
         }
-
         holder.binding.executePendingBindings()
     }
-
     override fun getItemCount(): Int {
         return items.size
     }

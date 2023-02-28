@@ -319,7 +319,6 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
             } else {
                 val user = Pref.user
                 var gender = Gender.MALE
-                var age = 35.0
                 var weight = 75.0
                 if (user?.bodyInfo != null) {
                     gender = when (user.bodyInfo!!.gender!!.lowercase()) {
@@ -336,7 +335,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                     if (user.bodyInfo?.weight != null)
                         weight = user.bodyInfo?.weight!!
                 }
-                val subjectDemographic = SubjectDemographic(gender, age, weight)
+                val subjectDemographic = SubjectDemographic(gender, 35.0, weight)
                 mSession = mManager?.createFaceSessionBuilder(
                     baseContext,
                     AppConstant.BINAH_AI_SCANNING_TIME_SECONDS
@@ -434,7 +433,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
 //                        binding.roiWarning.setVisibility(View.GONE)
 //                    }
                 } else {
-                    Log.e(ScanByFingerActivity.tag, "Show finger ui")
+                    Log.e(tag, "Show finger ui")
                 }
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 stopTimeCount()
@@ -649,7 +648,11 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                     0.0,
                     0.0
                 )
-                historyViewModel.sendScanResult(request)
+                if (request.bloodPressure == "0" && request.heartRate == "0" && request.oxygenSaturation == "0" && request.prq == "0") {
+                    CommonUtils.showToast(this, getString(R.string.no_result_found))
+                } else {
+                    historyViewModel.sendScanResult(request)
+                }
             }
         }, AppConstant.RESULT_SCREEN_DELAY_TIME.toLong())
     }
@@ -691,8 +694,8 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         showWarning(text, null)
     }
 
-    private fun showWarning(text: String, errorCode: Int?) {
-        var text: String? = text
+    private fun showWarning(text1: String, errorCode: Int?) {
+        var text: String? = text1
         if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
             return
         }
@@ -733,7 +736,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                 null
             )
             if (mTestMode == Enums.SessionMode.FACE && faceRect != null) {
-                paintRect(canvas, rescaleFaceRect(bitmap, faceRect)!!)
+                paintRect(canvas, rescaleFaceRect(bitmap, faceRect))
             }
             binding.cameraView.unlockCanvasAndPost(canvas)
         }
@@ -837,7 +840,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
        Method to show progress or timer when scanning is started
     */
     private fun startTimeCount() {
-        Log.e(ScanByFingerActivity.tag, "startTimeCount called")
+        Log.e(tag, "startTimeCount called")
         binding.measurementsLayout.readingProgressBar.visibility = View.VISIBLE
         if (mTimeCountHandler != null) {
             mTimeCountHandler?.removeCallbacksAndMessages(null)

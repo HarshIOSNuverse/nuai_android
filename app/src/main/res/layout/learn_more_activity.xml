@@ -33,13 +33,13 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/dp_25">
+                android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cr_reading_root"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp_25"
                     android:layout_marginTop="@dimen/dp_30"
                     android:background="@drawable/drawer_profile_bg"
                     android:padding="@dimen/sp_15"
@@ -97,30 +97,108 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_title_1"
                     style="@style/TextViewStyleRegular"
+                    android:layout_marginHorizontal="@dimen/dp_25"
                     android:layout_marginTop="@dimen/dp_20"
-                    android:text="@string/heart_rate_title_msg"
+                    android:text="@string/reading_name_title_msg"
                     android:textSize="@dimen/sp_17"
                     app:layout_constraintBottom_toTopOf="@+id/progress_bar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cr_reading_root" />
 
-                <ProgressBar
+                <SeekBar
                     android:id="@+id/progress_bar"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/dp_10"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:text="@string/heart_rate_title_msg"
                     style="?android:attr/progressBarStyleHorizontal"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_msg_1"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_12"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:background="@null"
+                    android:indeterminate="false"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/progress_bg_4"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/thumb_red"
+                    app:layout_constraintBottom_toTopOf="@+id/ll_progressbar_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title_1" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/ll_progressbar_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp_25"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_msg_1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/progress_bar">
+
+                    <View
+                        android:id="@+id/view_1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_value_1"
+                        style="@style/TextViewStyleRegular"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_value_2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view_2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_value_2"
+                        style="@style/TextViewStyleRegular"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_value_3"
+                        app:layout_constraintStart_toEndOf="@+id/tv_value_1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view_3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_value_3"
+                        style="@style/TextViewStyleRegular"
+                        android:textSize="@dimen/sp_14"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tv_value_2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view_4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="visible" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_msg_1"
                     style="@style/TextViewStyleRegular"
                     android:layout_width="0dp"
+                    android:layout_marginHorizontal="@dimen/dp_25"
                     android:layout_marginTop="@dimen/dp_20"
                     android:text='@string/heart_rate_msg_1'
                     android:textColor="@color/secondary_text_color"
@@ -128,13 +206,15 @@
                     app:layout_constraintBottom_toTopOf="@+id/iv_image_1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
+                    app:layout_constraintTop_toBottomOf="@+id/ll_progressbar_text" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_image_1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp_25"
                     android:layout_marginTop="@dimen/dp_30"
+                    android:scaleType="fitXY"
                     android:src="@drawable/heart_rate_img_1"
                     app:layout_constraintBottom_toTopOf="@+id/tv_msg_2"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -145,6 +225,7 @@
                     android:id="@+id/tv_msg_2"
                     style="@style/TextViewStyleRegular"
                     android:layout_width="0dp"
+                    android:layout_marginHorizontal="@dimen/dp_25"
                     android:layout_marginTop="@dimen/dp_30"
                     android:layout_marginBottom="@dimen/dp_30"
                     android:text='@string/heart_rate_msg_1'
@@ -159,7 +240,9 @@
                     android:id="@+id/iv_image_2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp_25"
                     android:layout_marginBottom="@dimen/dp_30"
+                    android:scaleType="fitXY"
                     android:src="@drawable/stress_level_img_2"
                     app:layout_constraintBottom_toTopOf="@+id/tv_msg_3"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -170,6 +253,7 @@
                     android:id="@+id/tv_msg_3"
                     style="@style/TextViewStyleRegular"
                     android:layout_width="0dp"
+                    android:layout_marginHorizontal="@dimen/dp_25"
                     android:layout_marginBottom="@dimen/dp_30"
                     android:paddingBottom="@dimen/dp_30"
                     android:text='@string/heart_rate_msg_1'

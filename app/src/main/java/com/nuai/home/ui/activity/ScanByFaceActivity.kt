@@ -125,7 +125,10 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                         showHideProgress(false)
                         if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
                             faceResultID = it.data.id
-                            MeasurementResultActivity.startActivity(this@ScanByFaceActivity, faceResultID)
+                            MeasurementResultActivity.startActivity(
+                                this@ScanByFaceActivity,
+                                faceResultID
+                            )
                             CommonUtils.showToast(this@ScanByFaceActivity, it.data.message)
                             finish()
                             AnimationsHandler.playActivityAnimation(
@@ -323,7 +326,6 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             } else {
                 val user = Pref.user
                 var gender = Gender.MALE
-                var age = 35.0
                 var weight = 75.0
                 if (user?.bodyInfo != null) {
                     gender = when (user.bodyInfo!!.gender!!.lowercase()) {
@@ -340,7 +342,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                     if (user.bodyInfo?.weight != null)
                         weight = user.bodyInfo?.weight!!
                 }
-                val subjectDemographic = SubjectDemographic(gender, age, weight)
+                val subjectDemographic = SubjectDemographic(gender, 35.0, weight)
                 mSession = mManager?.createFaceSessionBuilder(
                     baseContext,
                     AppConstant.BINAH_AI_SCANNING_TIME_SECONDS
@@ -588,7 +590,8 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 //        }
 
         if (finalResults.getResult(VitalSignTypes.STRESS_LEVEL)?.value == null
-            || (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal == 0) {
+            || (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal == 0
+        ) {
             scanningResultData.stressLevel = 0
             scanningResultData.stressResponse = ""
         } else {
@@ -653,7 +656,11 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                     0.0,
                     0.0
                 )
-                historyViewModel.sendScanResult(request)
+                if (request.bloodPressure == "0" && request.heartRate == "0" && request.oxygenSaturation == "0" && request.prq == "0") {
+                    CommonUtils.showToast(this, getString(R.string.no_result_found))
+                } else {
+                    historyViewModel.sendScanResult(request)
+                }
             }
         }, AppConstant.RESULT_SCREEN_DELAY_TIME.toLong())
     }
@@ -695,8 +702,8 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         showWarning(text, null)
     }
 
-    private fun showWarning(text: String, errorCode: Int?) {
-        var text: String? = text
+    private fun showWarning(text1: String, errorCode: Int?) {
+        var text: String? = text1
         if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
             return
         }
