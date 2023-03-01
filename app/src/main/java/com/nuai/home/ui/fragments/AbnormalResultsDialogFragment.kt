@@ -17,13 +17,14 @@ import com.nuai.home.ui.adapters.MeasurementScreenAdapter
 import com.nuai.utils.Enums
 import dagger.hilt.android.AndroidEntryPoint
 import com.nuai.home.model.api.response.Result
+import com.nuai.home.ui.activity.LearnMoreActivity
 
 @AndroidEntryPoint
 class AbnormalResultsDialogFragment : BottomSheetDialogFragment(), View.OnClickListener {
 
     private lateinit var binding: AbnormalResultsBottomSheetBinding
     private val abnormalResultList: ArrayList<Any> = arrayListOf()
-    private var result: com.nuai.home.model.api.response.Result? = null
+    private var result: Result? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +104,9 @@ class AbnormalResultsDialogFragment : BottomSheetDialogFragment(), View.OnClickL
             measurementListener =
                 object : MeasurementScreenAdapter.MeasurementListener {
                     override fun onLearnMoreClick(reading: Reading) {
+                        LearnMoreActivity.startActivity(
+                            this@AbnormalResultsDialogFragment.requireActivity(), reading
+                        )
                     }
 
                     override fun onCategoryClick(index: Int) {
