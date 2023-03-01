@@ -54,6 +54,9 @@ internal class ResultCategorySelectListAdapter(items: ArrayList<String>) :
             Enums.ResultCategory.HEART_RATE_VARIABILITY.toString() -> {
                 context.getString(R.string.heart_rate_variability)
             }
+            Enums.ResultCategory.BLOOD_TEST.toString() -> {
+                context.getString(R.string.blood_test)
+            }
             else -> {
                 nameEnum
             }

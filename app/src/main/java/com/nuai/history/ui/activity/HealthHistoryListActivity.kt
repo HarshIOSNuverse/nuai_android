@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -29,7 +28,7 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
+class HealthHistoryListActivity : BaseActivity() {
     companion object {
         fun startActivity(activity: Activity) {
             Intent(activity, HealthHistoryListActivity::class.java).run {
@@ -226,7 +225,6 @@ class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initClickListener() {
-        binding.onClickListener = this
         binding.calenderView.setOnMonthChangedListener { _, date ->
             getCalendarDateByMonth(date)
         }
@@ -240,13 +238,6 @@ class HealthHistoryListActivity : BaseActivity(), View.OnClickListener {
                     DateFormatter.getDateToString(DateFormatter.yyyy_MM_dd_DASH, calendar.time)
                 historyViewModel.getHistoryList(selectedDate!!)
                 updateDateView()
-            }
-        }
-    }
-
-    override fun onClick(v: View?) {
-        when (v!!.id) {
-            R.id.measure_now_btn -> {
             }
         }
     }

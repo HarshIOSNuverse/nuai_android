@@ -162,6 +162,12 @@ class MeasurementResultActivity : BaseActivity(), View.OnClickListener {
                         readingList = result.heartRateVariability
                     })
                 }
+                if (!result.bloodTest.isNullOrEmpty()) {
+                    screenList.add(ResultWrapper().apply {
+                        resultCategoryName = Enums.ResultCategory.BLOOD_TEST.toString()
+                        readingList = result.bloodTest
+                    })
+                }
                 screenList.add(getString(R.string.delete))
             }
             binding.adapter!!.notifyDataSetChanged()

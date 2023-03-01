@@ -572,66 +572,50 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
 
 
         if (finalResults.getResult(VitalSignTypes.HEART_RATE)?.value == null) {
-            scanningResultData.heartRate = "0"
+            scanningResultData.heartRate = ""
         } else {
             scanningResultData.heartRate =
                 "" + finalResults.getResult(VitalSignTypes.HEART_RATE).value
         }
 
         if (finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION)?.value == null) {
-            scanningResultData.oxygenSaturation = "0"
+            scanningResultData.oxygenSaturation = ""
         } else {
             scanningResultData.oxygenSaturation =
                 "" + finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION).value
         }
 
-        if (finalResults.getResult(VitalSignTypes.BREATHING_RATE)?.value == null) {
-            scanningResultData.respiration = "0"
-        } else {
-            scanningResultData.respiration =
-                "" + finalResults.getResult(VitalSignTypes.BREATHING_RATE).value
-        }
-
         if (finalResults.getResult(VitalSignTypes.HEMOGLOBIN)?.value == null) {
-            scanningResultData.hemoglobin = "0"
+            scanningResultData.hemoglobin = ""
         } else {
             scanningResultData.hemoglobin =
                 "" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN).value
         }
 
         if (finalResults.getResult(VitalSignTypes.HEMOGLOBIN_A1C)?.value == null) {
-            scanningResultData.hba1c = "0"
+            scanningResultData.hba1c = ""
         } else {
             scanningResultData.hba1c =
                 "" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN_A1C).value
         }
 
         if (finalResults.getResult(VitalSignTypes.SDNN)?.value == null) {
-            scanningResultData.hrvSdnn = "0"
+            scanningResultData.hrvSdnn = ""
         } else {
             scanningResultData.hrvSdnn = "" + finalResults.getResult(VitalSignTypes.SDNN).value
         }
-//        if (finalResults.getResult(VitalSignTypes.STRESS_INDEX)?.value == null) {
-//            scanningResultData.stressLevel = 0
-//        } else {
-//            scanningResultData.stressLevel =
-//                (finalResults.getResult(VitalSignTypes.STRESS_INDEX) as VitalSignStressIndex).value
-//        }
 
         if (finalResults.getResult(VitalSignTypes.STRESS_LEVEL)?.value == null
             || (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal == 0
         ) {
             scanningResultData.stressLevel = 0
-            scanningResultData.stressResponse = ""
         } else {
             scanningResultData.stressLevel =
                 (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal
-            scanningResultData.stressResponse =
-                "" + (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value
         }
 
         if (finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE)?.value == null) {
-            scanningResultData.bloodPressure = "0"
+            scanningResultData.bloodPressure = ""
         } else {
             val bloodPressureValue =
                 finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE) as VitalSignBloodPressure
@@ -639,24 +623,39 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                 "" + bloodPressureValue.value.systolic + "/" + bloodPressureValue.value.diastolic
         }
         if (finalResults.getResult(VitalSignTypes.PRQ)?.value == null) {
-            scanningResultData.prq = "0"
+            scanningResultData.prq = ""
         } else {
             scanningResultData.prq =
                 "" + finalResults.getResult(VitalSignTypes.PRQ).value
         }
 
         if (finalResults.getResult(VitalSignTypes.BREATHING_RATE)?.value == null) {
-            scanningResultData.breathingRate = "0"
+            scanningResultData.breathingRate = ""
         } else {
             scanningResultData.breathingRate =
                 "" + finalResults.getResult(VitalSignTypes.BREATHING_RATE).value
         }
         if (finalResults.getResult(VitalSignTypes.WELLNESS_INDEX)?.value == null) {
-            scanningResultData.wellnessScore = "0"
+            scanningResultData.wellnessScore = ""
         } else {
             scanningResultData.wellnessScore =
                 "" + finalResults.getResult(VitalSignTypes.WELLNESS_INDEX).value
         }
+
+        if (finalResults.getResult(VitalSignTypes.SNS_ZONE)?.value == null) {
+            scanningResultData.stressResponse = ""
+        } else {
+            scanningResultData.stressResponse =
+                getStressResponseAndRecoveryAbility(finalResults.getResult(VitalSignTypes.SNS_ZONE).value as Int)
+        }
+
+        if (finalResults.getResult(VitalSignTypes.PNS_ZONE)?.value == null) {
+            scanningResultData.recoveryAbility = ""
+        } else {
+            scanningResultData.recoveryAbility =
+                getStressResponseAndRecoveryAbility(finalResults.getResult(VitalSignTypes.PNS_ZONE).value as Int)
+        }
+
         scanningResultData.latitude = 0.0
         scanningResultData.longitude = 0.0
 
@@ -674,17 +673,17 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                     scanningResultData.hemoglobin,
                     scanningResultData.hrvSdnn,
                     scanningResultData.oxygenSaturation,
-                    scanningResultData.respiration,
                     Enums.SessionMode.FINGER.toString(),
                     scanningResultData.stressLevel,
                     scanningResultData.stressResponse,
                     scanningResultData.breathingRate,
                     scanningResultData.prq,
                     scanningResultData.wellnessScore,
+                    scanningResultData.recoveryAbility,
                     0.0,
                     0.0
                 )
-                if (request.bloodPressure == "0" && request.heartRate == "0" && request.oxygenSaturation == "0" && request.prq == "0") {
+                if (request.bloodPressure == "" && request.heartRate == "" && request.oxygenSaturation == "" && request.prq == "") {
                     CommonUtils.showToast(this, getString(R.string.no_result_found))
                 } else {
                     historyViewModel.sendScanResult(request)
@@ -693,6 +692,14 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         }, AppConstant.RESULT_SCREEN_DELAY_TIME.toLong())
     }
 
+    private fun getStressResponseAndRecoveryAbility(value: Int): String? {
+        return when (value) {
+            1 -> "Low"
+            2 -> "Normal"
+            3 -> "High"
+            else -> ""
+        }
+    }
 
     private fun showErrorDialog(code: Int) {
         if (mMessageDialog != null && mMessageDialog!!.isShowing) {
@@ -922,6 +929,9 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             createHealthMonitorManager()
 //            createSession()
+        } else {
+            CommonUtils.showToast(this, getString(R.string.required_permission_not_granted))
+            finish()
         }
     }
 

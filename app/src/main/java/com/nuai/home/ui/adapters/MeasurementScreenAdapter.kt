@@ -87,6 +87,7 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
                 categoryList.add(Enums.ResultCategory.STRESS_LEVEL.toString())
                 categoryList.add(Enums.ResultCategory.ENERGY.toString())
                 categoryList.add(Enums.ResultCategory.HEART_RATE_VARIABILITY.toString())
+                categoryList.add(Enums.ResultCategory.BLOOD_TEST.toString())
                 holder.binding.resultCategoryAdapter =
                     ResultCategorySelectListAdapter(categoryList).apply {
                         selectCategoryListener =
@@ -119,6 +120,9 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
                     }
                     Enums.ResultCategory.HEART_RATE_VARIABILITY.toString() -> {
                         context.getString(R.string.heart_rate_variability)
+                    }
+                    Enums.ResultCategory.BLOOD_TEST.toString() -> {
+                        context.getString(R.string.blood_test)
                     }
                     else -> {
                         wrapper.resultCategoryName

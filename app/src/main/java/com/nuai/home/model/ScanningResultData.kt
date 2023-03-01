@@ -17,13 +17,9 @@ class ScanningResultData : Serializable {
     @Expose
     var oxygenSaturation = "0"
 
-    @SerializedName("respiration")
-    @Expose
-    var respiration = "0"
-
     @SerializedName("stress_level")
     @Expose
-    var stressLevel:Int = 0
+    var stressLevel: Int = 0
 
     @SerializedName("hrv_sdnn")
     @Expose
@@ -51,7 +47,11 @@ class ScanningResultData : Serializable {
 
     @SerializedName("stress_response")
     @Expose
-    var stressResponse: String? = ""
+    var stressResponse: String? = "" //
+
+    @SerializedName("recovery_ability")
+    @Expose
+    var recoveryAbility: String? = null
 
     @SerializedName("wellness_score")
     @Expose

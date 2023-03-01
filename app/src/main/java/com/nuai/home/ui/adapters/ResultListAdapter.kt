@@ -2,6 +2,7 @@ package com.nuai.home.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nuai.R
@@ -9,6 +10,7 @@ import com.nuai.databinding.ItemResultBinding
 import com.nuai.home.model.Reading
 import com.nuai.utils.BindingViewHolder
 import com.nuai.utils.CommonUtils
+import com.nuai.utils.Enums
 import com.nuai.utils.ImageSetter
 
 internal class ResultListAdapter(items: ArrayList<Reading>) :
@@ -79,6 +81,14 @@ internal class ResultListAdapter(items: ArrayList<Reading>) :
             )
             holder.binding.tvShortDesc.text = reading.shortDesc
         }
+        // Hide learn more for Hemoglobin and Hemoglobin H1c
+        holder.binding.tvLearnMore.visibility =
+            if (!reading.title.isNullOrEmpty()
+                && (reading.title == Enums.ResultType.HEMOGLOBIN.type
+                        || reading.title == Enums.ResultType.HEMOGLOBIN_A1C.type)
+            )
+                View.GONE
+            else View.VISIBLE
         holder.binding.resultListener = resultListener
         holder.binding.executePendingBindings()
     }

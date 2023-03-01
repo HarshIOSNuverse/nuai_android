@@ -83,6 +83,12 @@ class AbnormalResultsDialogFragment : BottomSheetDialogFragment(), View.OnClickL
                     readingList = result!!.heartRateVariability
                 })
             }
+            if (!result!!.bloodTest.isNullOrEmpty()) {
+                abnormalResultList.add(ResultWrapper().apply {
+                    resultCategoryName = Enums.ResultCategory.BLOOD_TEST.toString()
+                    readingList = result!!.bloodTest
+                })
+            }
         }
         binding.adapter!!.notifyDataSetChanged()
     }

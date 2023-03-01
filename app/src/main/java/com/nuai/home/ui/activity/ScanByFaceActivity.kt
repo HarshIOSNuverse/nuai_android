@@ -42,7 +42,6 @@ import com.nuai.home.model.ScanningResultData
 import com.nuai.home.model.api.request.SendScanRequest
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
-import com.nuai.onboarding.ui.activity.TutorialActivity
 import com.nuai.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -50,10 +49,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorManagerInfoListener,
-    StateListener,
-    VitalSignsListener,
-    ImageListener,
-    AlertsListener {
+    StateListener, VitalSignsListener, ImageListener, AlertsListener {
     companion object {
         val tag: String = ScanByFaceActivity::class.java.simpleName
         fun startActivity(activity: Activity) {
@@ -85,7 +81,6 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 
     private var handlerPublishReport: Handler? = null
     private var isResultPublishedTimePassed = false
-    private var isStopDialogVisible = false
     private var faceResultID: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,7 +105,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
         } else {
             createHealthMonitorManager()
-            createSession()
+//            createSession()
         }
     }
 
@@ -166,7 +161,6 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         if (handlerPublishReport != null) {
             handlerPublishReport = null
             isResultPublishedTimePassed = false
-            isStopDialogVisible = false
         }
     }
 
@@ -309,52 +303,36 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         }
         updateUi(Enums.UiState.LOADING)
         try {
-            if (mTestMode == Enums.SessionMode.FINGER) {
-                mSession = mManager?.createFingerSessionBuilder(
-                    baseContext,
-                    AppConstant.BINAH_AI_SCANNING_TIME_SECONDS
-                )?.withSessionStateListener(this@ScanByFaceActivity)
-                    ?.withImageListener(this@ScanByFaceActivity)
-                    ?.withVitalSignsListener(this@ScanByFaceActivity)
-                    ?.withAlertsListener(this@ScanByFaceActivity)
-                    ?.build()
-//                mDeviceEnabledVitalSigns = mManager.getFingerEvaluationResult();
-                Log.e(
-                    tag,
-                    "createSession called mDeviceEnabledVitalSigns: $mDeviceEnabledVitalSigns"
-                )
-            } else {
-                val user = Pref.user
-                var gender = Gender.MALE
-                var weight = 75.0
-                if (user?.bodyInfo != null) {
-                    gender = when (user.bodyInfo!!.gender!!.lowercase()) {
-                        Enums.Gender.MALE.toString().lowercase() -> {
-                            Gender.MALE
-                        }
-                        Enums.Gender.FEMALE.toString().lowercase() -> {
-                            Gender.FEMALE
-                        }
-                        else -> {
-                            Gender.UNSPECIFIED
-                        }
+            val user = Pref.user
+            var gender = Gender.MALE
+            var weight = 75.0
+            if (user?.bodyInfo != null) {
+                gender = when (user.bodyInfo!!.gender!!.lowercase()) {
+                    Enums.Gender.MALE.toString().lowercase() -> {
+                        Gender.MALE
                     }
-                    if (user.bodyInfo?.weight != null)
-                        weight = user.bodyInfo?.weight!!
+                    Enums.Gender.FEMALE.toString().lowercase() -> {
+                        Gender.FEMALE
+                    }
+                    else -> {
+                        Gender.UNSPECIFIED
+                    }
                 }
-                val subjectDemographic = SubjectDemographic(gender, 35.0, weight)
-                mSession = mManager?.createFaceSessionBuilder(
-                    baseContext,
-                    AppConstant.BINAH_AI_SCANNING_TIME_SECONDS
-                )
-                    ?.withStateListener(this@ScanByFaceActivity)
-                    ?.withImageListener(this@ScanByFaceActivity)
-                    ?.withVitalSignsListener(this@ScanByFaceActivity)
-                    ?.withAlertsListener(this@ScanByFaceActivity)
-                    ?.withSubjectDemographic(subjectDemographic)
-                    ?.build()
-                mDeviceEnabledVitalSigns = null
+                if (user.bodyInfo?.weight != null)
+                    weight = user.bodyInfo?.weight!!
             }
+            val subjectDemographic = SubjectDemographic(gender, 35.0, weight)
+            mSession = mManager?.createFaceSessionBuilder(
+                baseContext,
+                AppConstant.BINAH_AI_SCANNING_TIME_SECONDS
+            )
+                ?.withStateListener(this@ScanByFaceActivity)
+                ?.withImageListener(this@ScanByFaceActivity)
+                ?.withVitalSignsListener(this@ScanByFaceActivity)
+                ?.withAlertsListener(this@ScanByFaceActivity)
+                ?.withSubjectDemographic(subjectDemographic)
+                ?.build()
+            mDeviceEnabledVitalSigns = null
             Handler(Looper.getMainLooper()).postDelayed({
                 if (mSession?.state != SessionState.MEASURING)
                     startMeasuring()
@@ -434,12 +412,8 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 //                binding.simpleProgressBar.setVisibility(View.GONE)
 //                binding.layoutCamera.setVisibility(View.VISIBLE)
 //                binding.layoutMeasurementFace.setVisibility(View.GONE)
-                if (mTestMode === Enums.SessionMode.FACE) {
-//                    if (binding.roiWarning.getVisibility() === View.VISIBLE) {
-//                        binding.roiWarning.setVisibility(View.GONE)
-//                    }
-                } else {
-                    Log.e(tag, "Show finger ui")
+                if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
+                    binding.crFaceNotDetectWarning.visibility = View.GONE
                 }
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 stopTimeCount()
@@ -450,15 +424,10 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 //                binding.simpleProgressBar.setVisibility(View.GONE)
 //                binding.layoutCamera.setVisibility(View.VISIBLE)
 //                binding.layoutMeasurementFace.setVisibility(View.GONE)
-//                if (mTestMode === SessionMode.FACE) {
-//                    if (binding.roiWarning.getVisibility() === View.VISIBLE) {
-//                        binding.roiWarning.setVisibility(View.GONE)
-//                    }
-//                } else {
-//                    Log.e(com.nuai.ui.fragments.FragmentFace.tag, "Show finger ui")
-//                }
-                window
-                    .clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
+                    binding.crFaceNotDetectWarning.visibility = View.GONE
+                }
+                window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 stopTimeCount()
             }
             Enums.UiState.SCREEN_PAUSED -> {
@@ -466,13 +435,9 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 //                binding.simpleProgressBar.setVisibility(View.GONE)
 //                binding.layoutCamera.setVisibility(View.VISIBLE)
 //                binding.layoutMeasurementFace.setVisibility(View.GONE)
-//                if (mTestMode === SessionMode.FACE) {
-//                    if (binding.roiWarning.getVisibility() === View.VISIBLE) {
-//                        binding.roiWarning.setVisibility(View.GONE)
-//                    }
-//                } else {
-//                    Log.e(com.nuai.ui.fragments.FragmentFace.tag, "Show finger ui")
-//                }
+                if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
+                    binding.crFaceNotDetectWarning.visibility = View.GONE
+                }
 //                if (binding.warningLayout.getVisibility() === View.VISIBLE) {
 //                    binding.warningLayout.setVisibility(View.GONE)
 //                }
@@ -505,10 +470,12 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         }
         if (detected) {
             binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
+            binding.crFaceNotDetectWarning.visibility = View.GONE
             binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_normal)
         } else {
             binding.mainContent.measurementsLayout.root.visibility = View.INVISIBLE
-//            binding.mainContent.roiWarningText.setText(getString(if (mTestMode == Enums.SessionMode.FACE) R.string.no_face_detected else R.string.no_finger_detected))
+            binding.crFaceNotDetectWarning.visibility = View.VISIBLE
+            binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_error)
         }
     }
 
@@ -543,66 +510,50 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 
 
         if (finalResults.getResult(VitalSignTypes.HEART_RATE)?.value == null) {
-            scanningResultData.heartRate = "0"
+            scanningResultData.heartRate = ""
         } else {
             scanningResultData.heartRate =
                 "" + finalResults.getResult(VitalSignTypes.HEART_RATE).value
         }
 
         if (finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION)?.value == null) {
-            scanningResultData.oxygenSaturation = "0"
+            scanningResultData.oxygenSaturation = ""
         } else {
             scanningResultData.oxygenSaturation =
                 "" + finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION).value
         }
 
-        if (finalResults.getResult(VitalSignTypes.BREATHING_RATE)?.value == null) {
-            scanningResultData.respiration = "0"
-        } else {
-            scanningResultData.respiration =
-                "" + finalResults.getResult(VitalSignTypes.BREATHING_RATE).value
-        }
-
         if (finalResults.getResult(VitalSignTypes.HEMOGLOBIN)?.value == null) {
-            scanningResultData.hemoglobin = "0"
+            scanningResultData.hemoglobin = ""
         } else {
             scanningResultData.hemoglobin =
                 "" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN).value
         }
 
         if (finalResults.getResult(VitalSignTypes.HEMOGLOBIN_A1C)?.value == null) {
-            scanningResultData.hba1c = "0"
+            scanningResultData.hba1c = ""
         } else {
             scanningResultData.hba1c =
                 "" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN_A1C).value
         }
 
         if (finalResults.getResult(VitalSignTypes.SDNN)?.value == null) {
-            scanningResultData.hrvSdnn = "0"
+            scanningResultData.hrvSdnn = ""
         } else {
             scanningResultData.hrvSdnn = "" + finalResults.getResult(VitalSignTypes.SDNN).value
         }
-//        if (finalResults.getResult(VitalSignTypes.STRESS_INDEX)?.value == null) {
-//            scanningResultData.stressLevel = 0
-//        } else {
-//            scanningResultData.stressLevel =
-//               (finalResults.getResult(VitalSignTypes.STRESS_INDEX) as VitalSignStressIndex).value
-//        }
 
         if (finalResults.getResult(VitalSignTypes.STRESS_LEVEL)?.value == null
             || (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal == 0
         ) {
             scanningResultData.stressLevel = 0
-            scanningResultData.stressResponse = ""
         } else {
             scanningResultData.stressLevel =
                 (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal
-            scanningResultData.stressResponse =
-                "" + (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value
         }
 
         if (finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE)?.value == null) {
-            scanningResultData.bloodPressure = "0"
+            scanningResultData.bloodPressure = ""
         } else {
             val bloodPressureValue =
                 finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE) as VitalSignBloodPressure
@@ -610,24 +561,39 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 "" + bloodPressureValue.value.systolic + "/" + bloodPressureValue.value.diastolic
         }
         if (finalResults.getResult(VitalSignTypes.PRQ)?.value == null) {
-            scanningResultData.prq = "0"
+            scanningResultData.prq = ""
         } else {
             scanningResultData.prq =
                 "" + finalResults.getResult(VitalSignTypes.PRQ).value
         }
 
         if (finalResults.getResult(VitalSignTypes.BREATHING_RATE)?.value == null) {
-            scanningResultData.breathingRate = "0"
+            scanningResultData.breathingRate = ""
         } else {
             scanningResultData.breathingRate =
                 "" + finalResults.getResult(VitalSignTypes.BREATHING_RATE).value
         }
         if (finalResults.getResult(VitalSignTypes.WELLNESS_INDEX)?.value == null) {
-            scanningResultData.wellnessScore = "0"
+            scanningResultData.wellnessScore = ""
         } else {
             scanningResultData.wellnessScore =
                 "" + finalResults.getResult(VitalSignTypes.WELLNESS_INDEX).value
         }
+
+        if (finalResults.getResult(VitalSignTypes.SNS_ZONE)?.value == null) {
+            scanningResultData.stressResponse = ""
+        } else {
+            scanningResultData.stressResponse =
+                getStressResponseAndRecoveryAbility(finalResults.getResult(VitalSignTypes.SNS_ZONE).value as Int)
+        }
+
+        if (finalResults.getResult(VitalSignTypes.PNS_ZONE)?.value == null) {
+            scanningResultData.recoveryAbility = ""
+        } else {
+            scanningResultData.recoveryAbility =
+                getStressResponseAndRecoveryAbility(finalResults.getResult(VitalSignTypes.PNS_ZONE).value as Int)
+        }
+
 
         scanningResultData.latitude = 0.0
         scanningResultData.longitude = 0.0
@@ -646,17 +612,17 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                     scanningResultData.hemoglobin,
                     scanningResultData.hrvSdnn,
                     scanningResultData.oxygenSaturation,
-                    scanningResultData.respiration,
                     Enums.SessionMode.FACE.toString(),
                     scanningResultData.stressLevel,
                     scanningResultData.stressResponse,
                     scanningResultData.breathingRate,
                     scanningResultData.prq,
                     scanningResultData.wellnessScore,
+                    scanningResultData.recoveryAbility,
                     0.0,
                     0.0
                 )
-                if (request.bloodPressure == "0" && request.heartRate == "0" && request.oxygenSaturation == "0" && request.prq == "0") {
+                if (request.bloodPressure == "" && request.heartRate == "" && request.oxygenSaturation == "" && request.prq == "") {
                     CommonUtils.showToast(this, getString(R.string.no_result_found))
                 } else {
                     historyViewModel.sendScanResult(request)
@@ -665,6 +631,14 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         }, AppConstant.RESULT_SCREEN_DELAY_TIME.toLong())
     }
 
+    private fun getStressResponseAndRecoveryAbility(value: Int): String? {
+        return when (value) {
+            1 -> "Low"
+            2 -> "Normal"
+            3 -> "High"
+            else -> ""
+        }
+    }
 
     private fun showErrorDialog(code: Int) {
         if (mMessageDialog != null && mMessageDialog!!.isShowing) {
@@ -688,8 +662,9 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             AlertDialog.Builder(this) //                .setMessage(message)
                 .setMessage(
                     String.format(
-                        getString(R.string.error_message),
-                        errorCode
+                        getString(R.string.error_code_message),
+                        errorCode,
+                        message
                     )
                 )
                 .setPositiveButton(R.string.ok) { _, _ ->
@@ -822,7 +797,8 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.retry_btn -> {
-                TutorialActivity.startActivity(this, TutorialActivity.Companion.From.SETTINGS)
+                if (mSession?.state != SessionState.MEASURING)
+                    startMeasuring()
             }
             R.id.stop_btn -> {
                 stopTimeCount()
@@ -838,7 +814,6 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         run {
 //            openResultScreen(id, scanningResultData)
             isResultPublishedTimePassed = false
-            isStopDialogVisible = false
         }
     }
 
@@ -889,8 +864,10 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             createHealthMonitorManager()
-            createSession()
+//            createSession()
+        } else {
+            CommonUtils.showToast(this, getString(R.string.required_permission_not_granted))
+            finish()
         }
     }
-
 }

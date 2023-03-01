@@ -56,4 +56,7 @@ class Result {
 
     @SerializedName("HEART_RATE_VARIABILITY")
     var heartRateVariability: ArrayList<Reading>? = null
+
+    @SerializedName("BLOOD_TEST")
+    var bloodTest: ArrayList<Reading>? = null
 }

@@ -47,7 +47,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_view_more"
+            android:id="@+id/tv_learn_more"
             style="@style/TextViewStyleRegular"
             android:onClick="@{()->resultListener.onLearnMoreClick(reading)}"
             android:paddingHorizontal="@dimen/dp_5"
@@ -107,7 +107,7 @@
                 style="@style/TextViewStyleRegular"
                 android:layout_width="0dp"
                 android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginTop="@dimen/dp_2"
+                android:layout_marginTop="@dimen/dp_7"
                 android:textColor="@color/secondary_text_color"
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintBottom_toBottomOf="parent"
