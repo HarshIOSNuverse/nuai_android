@@ -69,144 +69,6 @@ object CommonUtils {
         return true
     }
 
-    fun copyFileOrDirectory(srcDir: String, dstDir: String) {
-        val src = File(srcDir)
-        val dst = File(dstDir, src.name)
-
-        try {
-            if (src.isDirectory) {
-                val files = src.list()
-                if (!files.isNullOrEmpty()) {
-                    val filesLength = files.size
-                    for (i in 0 until filesLength) {
-                        val src1 = File(src, files[i]).path
-                        val dst1 = dst.path
-                        copyFileOrDirectory(src1, dst1)
-                    }
-                }
-            } else {
-                copyDirectoryOneLocationToAnotherLocation(src, dst)
-            }
-        } catch (e: Exception) {
-            if (src.exists()) {
-                src.delete()
-            }
-            if (dst.exists()) {
-                dst.delete()
-            }
-            e.printStackTrace()
-        }
-    }
-
-    fun openGallery(galleyPickLauncher: ActivityResultLauncher<Intent>, type1: String) {
-        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
-            type = type1
-        }.run {
-            galleyPickLauncher.launch(this)
-        }
-    }
-
-    fun getRightAngleImage(photoPath: String): String {
-
-        try {
-            val ei = ExifInterface(photoPath)
-            val degree = when (ei.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_NORMAL
-            )) {
-                ExifInterface.ORIENTATION_NORMAL -> 0
-                ExifInterface.ORIENTATION_ROTATE_90 -> 90
-                ExifInterface.ORIENTATION_ROTATE_180 -> 180
-                ExifInterface.ORIENTATION_ROTATE_270 -> 270
-                ExifInterface.ORIENTATION_UNDEFINED -> 0
-                else -> 90
-            }
-
-            return rotateImage(degree, photoPath)
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return photoPath
-    }
-
-    @Throws(IOException::class)
-    fun copyDirectoryOneLocationToAnotherLocation(sourceLocation: File, targetLocation: File) {
-
-        if (sourceLocation.isDirectory) {
-            if (!targetLocation.exists()) {
-                targetLocation.mkdir()
-            }
-
-            val children = sourceLocation.list()
-            if (!sourceLocation.listFiles().isNullOrEmpty() && !children.isNullOrEmpty()) {
-                for (i in sourceLocation.listFiles()!!.indices) {
-
-                    copyDirectoryOneLocationToAnotherLocation(
-                        File(sourceLocation, children[i]),
-                        File(targetLocation, children[i])
-                    )
-                }
-            }
-        } else {
-
-            val inputStream = FileInputStream(sourceLocation)
-
-            val out = FileOutputStream(targetLocation)
-
-            val buffer = ByteArray(1024)
-            var length = inputStream.read(buffer)
-            while (length > 0) {
-                out.write(buffer, 0, length)
-                length = inputStream.read(buffer)
-            }
-
-            inputStream.close()
-            out.close()
-        }
-    }
-
-    private fun rotateImage(degree: Int, imagePath: String): String {
-
-        if (degree <= 0) {
-            return imagePath
-        }
-        try {
-            var b = BitmapFactory.decodeFile(imagePath)
-
-            val matrix = Matrix()
-            if (b.width > b.height) {
-                matrix.setRotate(degree.toFloat())
-                b = Bitmap.createBitmap(
-                    b, 0, 0, b.width, b.height,
-                    matrix, true
-                )
-            }
-
-            val fOut = FileOutputStream(imagePath)
-            val imageName = imagePath.substring(imagePath.lastIndexOf("/") + 1)
-            val imageType = imageName.substring(imageName.lastIndexOf(".") + 1)
-
-            val out = FileOutputStream(imagePath)
-            if (imageType.equals("png", ignoreCase = true)) {
-                b.compress(Bitmap.CompressFormat.PNG, 50, out)
-            } else if (imageType.equals("jpeg", ignoreCase = true)
-                || imageType.equals("jpg", ignoreCase = true)
-            ) {
-                b.compress(Bitmap.CompressFormat.JPEG, 50, out)
-            }
-            fOut.flush()
-            fOut.close()
-
-            b.recycle()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return imagePath
-    }
-
     @SuppressLint("PackageManagerGetSignatures")
     fun printHashKey(activity: Activity) {
         try {
@@ -382,22 +244,6 @@ object CommonUtils {
 
     }
 
-//    fun getRoundDoubleWithCurrency(value: Double, digit: Int): String {
-//        var digits = digit
-//        val amount1 = roundDouble(value, digit)
-//        if (!amount1.contains(".")) {
-//            digits = 0
-//        }
-//        val localeForCurrency = Locale("en", "lb")
-//        val formatter =
-//            NumberFormat.getCurrencyInstance(localeForCurrency) as DecimalFormat
-//        formatter.maximumFractionDigits = digits
-//        val currencySymbol =
-//            Currency.getInstance(localeForCurrency).getSymbol(localeForCurrency)
-//        return formatter.format(value).replace(currencySymbol, Constants.CURRENCY)
-////        return formatter.format(value)
-//    }
-
     fun getImage(context: Context, ImageName: String?): Drawable? {
         return try {
             ContextCompat.getDrawable(
@@ -416,17 +262,24 @@ object CommonUtils {
             is ShapeDrawable -> {
                 // cast to 'ShapeDrawable'
                 val shapeDrawable: ShapeDrawable = background
-                shapeDrawable.paint.color = ContextCompat.getColor(mContext, color)
+                shapeDrawable.paint.color =
+                    if (color > 0) ContextCompat.getColor(mContext, color) else color
             }
             is GradientDrawable -> {
                 // cast to 'GradientDrawable'
                 val gradientDrawable: GradientDrawable = background
-                gradientDrawable.setColor(ContextCompat.getColor(mContext, color))
+                gradientDrawable.setColor(
+                    if (color > 0) ContextCompat.getColor(
+                        mContext,
+                        color
+                    ) else color
+                )
             }
             is ColorDrawable -> {
                 // alpha value may need to be set again after this call
                 val colorDrawable: ColorDrawable = background
-                colorDrawable.color = ContextCompat.getColor(mContext, color)
+                colorDrawable.color =
+                    if (color > 0) ContextCompat.getColor(mContext, color) else color
             }
         }
     }
@@ -513,6 +366,15 @@ object CommonUtils {
             else -> {
                 context.getString(R.string.low)
             }
+        }
+    }
+
+    fun getStressResponseAndRecoveryAbility(value: Int): String? {
+        return when (value) {
+            1 -> "Low"
+            2 -> "Normal"
+            3 -> "High"
+            else -> ""
         }
     }
 }

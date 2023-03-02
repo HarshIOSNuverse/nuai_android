@@ -16,7 +16,7 @@ import com.nuai.base.BaseActivity
 import com.nuai.databinding.HealthHistoryListActivityBinding
 import com.nuai.history.ui.adapter.HealthHistoryListAdapter
 import com.nuai.history.viewmodel.HistoryViewModel
-import com.nuai.home.model.HealthHistory
+import com.nuai.home.model.HealthBasicInfo
 import com.nuai.home.ui.activity.MeasurementResultActivity
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
@@ -43,7 +43,7 @@ class HealthHistoryListActivity : BaseActivity() {
     private lateinit var binding: HealthHistoryListActivityBinding
     private val historyViewModel: HistoryViewModel by viewModels()
     private var selectedDate: String? = ""
-    private val historyList: ArrayList<HealthHistory> = arrayListOf()
+    private val historyList: ArrayList<HealthBasicInfo> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -234,10 +234,13 @@ class HealthHistoryListActivity : BaseActivity() {
                 calendar.set(Calendar.YEAR, date.year)
                 calendar.set(Calendar.MONDAY, (date.month - 1))
                 calendar.set(Calendar.DAY_OF_MONTH, date.day)
-                selectedDate =
+                val tempDate =
                     DateFormatter.getDateToString(DateFormatter.yyyy_MM_dd_DASH, calendar.time)
-                historyViewModel.getHistoryList(selectedDate!!)
-                updateDateView()
+                if (tempDate != selectedDate) {
+                    selectedDate = tempDate
+                    historyViewModel.getHistoryList(selectedDate!!)
+                    updateDateView()
+                }
             }
         }
     }
@@ -246,13 +249,13 @@ class HealthHistoryListActivity : BaseActivity() {
         binding.adapter = HealthHistoryListAdapter(historyList).apply {
             selectHealthHistoryListener =
                 object : HealthHistoryListAdapter.SelectHealthHistoryListener {
-                    override fun onViewMoreClick(history: HealthHistory?) {
+                    override fun onViewMoreClick(history: HealthBasicInfo?) {
                         if (history != null)
                             MeasurementResultActivity.startActivityForResult(
                                 this@HealthHistoryListActivity,
                                 history.id,
                                 detailLauncher
-                                )
+                            )
                     }
                 }
         }

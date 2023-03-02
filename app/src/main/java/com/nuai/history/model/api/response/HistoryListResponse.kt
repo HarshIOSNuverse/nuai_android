@@ -3,9 +3,8 @@ package com.nuai.history.model.api.response
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.nuai.home.model.HealthHistory
+import com.nuai.home.model.HealthBasicInfo
 import com.nuai.network.CommonResponse
-import com.nuai.profile.model.CalendarDate
 
 class HistoryListResponse : CommonResponse() {
 
@@ -18,7 +17,7 @@ class Data() : Parcelable {
     var logDate: String? = null
 
     @SerializedName("scan_results")
-    var scanResults: ArrayList<HealthHistory>? = null
+    var scanResults: ArrayList<HealthBasicInfo>? = null
 
     constructor(parcel: Parcel) : this() {
         logDate = parcel.readString()

@@ -10,7 +10,7 @@ import com.nuai.R
 import com.nuai.databinding.ItemMeasurementHeaderBinding
 import com.nuai.databinding.ItemResultDeleteBinding
 import com.nuai.databinding.ItemResultWrapperBinding
-import com.nuai.home.model.HealthHistory
+import com.nuai.home.model.HealthBasicInfo
 import com.nuai.home.model.Reading
 import com.nuai.home.model.ResultWrapper
 import com.nuai.utils.BindingViewHolder
@@ -64,7 +64,7 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
     ) {
         when (holder.binding) {
             is ItemMeasurementHeaderBinding -> {
-                val basicInfo = items[position] as HealthHistory
+                val basicInfo = items[position] as HealthBasicInfo
                 holder.binding.history = basicInfo
                 if (!basicInfo.scanBy.isNullOrEmpty()) {
                     when (basicInfo.scanBy) {
@@ -149,7 +149,7 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (items[position] is HealthHistory) {
+        return if (items[position] is HealthBasicInfo) {
             HEADER
         } else if (items[position] is String) {
             DELETE

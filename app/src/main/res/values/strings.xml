@@ -141,6 +141,7 @@
     <string name="error_message">Error (%d)</string>
     <string name="error_code_message">Error (%d) - %s</string>
     <string name="warning_message">Warning (%d)</string>
+    <string name="warning_message_1">Warning (%s)</string>
     <string name="ok">Ok</string>
     <string name="no_finger_detected">Place your finger on the rear camera</string>
     <string name="finger_scan_hint">Place your finger on the rear camera (not on the selfie camera).</string>

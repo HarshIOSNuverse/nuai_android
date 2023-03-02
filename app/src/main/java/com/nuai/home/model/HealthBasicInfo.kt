@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
-class HealthHistory() : Parcelable {
+class HealthBasicInfo() : Parcelable {
 
     @SerializedName("id")
     var id: Long = 0
@@ -116,12 +116,12 @@ class HealthHistory() : Parcelable {
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<HealthHistory> {
-        override fun createFromParcel(parcel: Parcel): HealthHistory {
-            return HealthHistory(parcel)
+    companion object CREATOR : Parcelable.Creator<HealthBasicInfo> {
+        override fun createFromParcel(parcel: Parcel): HealthBasicInfo {
+            return HealthBasicInfo(parcel)
         }
 
-        override fun newArray(size: Int): Array<HealthHistory?> {
+        override fun newArray(size: Int): Array<HealthBasicInfo?> {
             return arrayOfNulls(size)
         }
     }

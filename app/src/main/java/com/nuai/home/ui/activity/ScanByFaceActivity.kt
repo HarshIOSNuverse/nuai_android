@@ -508,44 +508,86 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 
         val scanningResultData = ScanningResultData()
 
+        Log.d(
+            "Final Result = HEART_RATE ",
+            "" + finalResults.getResult(VitalSignTypes.HEART_RATE)?.value
+        )
+        Log.d(
+            "Final Result = OXYGEN_SATURATION",
+            "" + finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION)?.value
+        )
+        Log.d(
+            "Final Result = HEMOGLOBIN ",
+            "" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN)?.value
+        )
+        Log.d(
+            "Final Result = HEMOGLOBIN_A1C ",
+            "" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN_A1C)?.value
+        )
+        Log.d("Final Result = SDNN ", "" + finalResults.getResult(VitalSignTypes.SDNN)?.value)
+        Log.d(
+            "Final Result = STRESS_LEVEL ",
+            "" + finalResults.getResult(VitalSignTypes.STRESS_LEVEL)?.value
+        )
+        Log.d(
+            "Final Result = BLOOD_PRESSURE",
+            "" + (finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE) as VitalSignBloodPressure)?.value?.systolic + "/" + (finalResults.getResult(
+                VitalSignTypes.BLOOD_PRESSURE
+            ) as VitalSignBloodPressure)?.value?.systolic
+        )
+        Log.d("Final Result = PRQ ", "" + finalResults.getResult(VitalSignTypes.PRQ)?.value)
+        Log.d(
+            "Final Result = BREATHING_RATE ",
+            "" + finalResults.getResult(VitalSignTypes.BREATHING_RATE)?.value
+        )
+        Log.d(
+            "Final Result = WELLNESS_INDEX ",
+            "" + finalResults.getResult(VitalSignTypes.WELLNESS_INDEX)?.value
+        )
+        Log.d(
+            "Final Result = SNS_ZONE ",
+            "" + finalResults.getResult(VitalSignTypes.SNS_ZONE)?.value
+        )
+        Log.d(
+            "Final Result = PNS_ZONE ",
+            "" + finalResults.getResult(VitalSignTypes.PNS_ZONE)?.value
+        )
 
         if (finalResults.getResult(VitalSignTypes.HEART_RATE)?.value == null) {
-            scanningResultData.heartRate = ""
+            scanningResultData.heartRate = "0"
         } else {
             scanningResultData.heartRate =
                 "" + finalResults.getResult(VitalSignTypes.HEART_RATE).value
         }
 
         if (finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION)?.value == null) {
-            scanningResultData.oxygenSaturation = ""
+            scanningResultData.oxygenSaturation = "0"
         } else {
             scanningResultData.oxygenSaturation =
                 "" + finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION).value
         }
 
         if (finalResults.getResult(VitalSignTypes.HEMOGLOBIN)?.value == null) {
-            scanningResultData.hemoglobin = ""
+            scanningResultData.hemoglobin = "0"
         } else {
             scanningResultData.hemoglobin =
                 "" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN).value
         }
 
         if (finalResults.getResult(VitalSignTypes.HEMOGLOBIN_A1C)?.value == null) {
-            scanningResultData.hba1c = ""
+            scanningResultData.hba1c = "0"
         } else {
             scanningResultData.hba1c =
                 "" + finalResults.getResult(VitalSignTypes.HEMOGLOBIN_A1C).value
         }
 
         if (finalResults.getResult(VitalSignTypes.SDNN)?.value == null) {
-            scanningResultData.hrvSdnn = ""
+            scanningResultData.hrvSdnn = "0"
         } else {
             scanningResultData.hrvSdnn = "" + finalResults.getResult(VitalSignTypes.SDNN).value
         }
 
-        if (finalResults.getResult(VitalSignTypes.STRESS_LEVEL)?.value == null
-            || (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal == 0
-        ) {
+        if ((finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal == 0) {
             scanningResultData.stressLevel = 0
         } else {
             scanningResultData.stressLevel =
@@ -553,7 +595,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         }
 
         if (finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE)?.value == null) {
-            scanningResultData.bloodPressure = ""
+            scanningResultData.bloodPressure = "0"
         } else {
             val bloodPressureValue =
                 finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE) as VitalSignBloodPressure
@@ -561,7 +603,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 "" + bloodPressureValue.value.systolic + "/" + bloodPressureValue.value.diastolic
         }
         if (finalResults.getResult(VitalSignTypes.PRQ)?.value == null) {
-            scanningResultData.prq = ""
+            scanningResultData.prq = "0"
         } else {
             scanningResultData.prq =
                 "" + finalResults.getResult(VitalSignTypes.PRQ).value
@@ -583,17 +625,24 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         if (finalResults.getResult(VitalSignTypes.SNS_ZONE)?.value == null) {
             scanningResultData.stressResponse = ""
         } else {
-            scanningResultData.stressResponse =
-                getStressResponseAndRecoveryAbility(finalResults.getResult(VitalSignTypes.SNS_ZONE).value as Int)
+            val value = (finalResults.getResult(VitalSignTypes.SNS_ZONE) as VitalSignSNSZone).value
+            scanningResultData.stressResponse = if (value.name.length > 1) {
+                value.name.substring(0, 1) + value.name.substring(1, value.name.length).lowercase()
+            } else {
+                CommonUtils.getStressResponseAndRecoveryAbility(value.ordinal)
+            }
         }
 
-        if (finalResults.getResult(VitalSignTypes.PNS_ZONE)?.value == null) {
+        if (finalResults.getResult(VitalSignTypes.SNS_ZONE)?.value == null) {
             scanningResultData.recoveryAbility = ""
         } else {
-            scanningResultData.recoveryAbility =
-                getStressResponseAndRecoveryAbility(finalResults.getResult(VitalSignTypes.PNS_ZONE).value as Int)
+            val value = (finalResults.getResult(VitalSignTypes.PNS_ZONE) as VitalSignPNSZone).value
+            scanningResultData.recoveryAbility = if (value.name.length > 1) {
+                value.name.substring(0, 1) + value.name.substring(1, value.name.length).lowercase()
+            } else {
+                CommonUtils.getStressResponseAndRecoveryAbility(value.ordinal)
+            }
         }
-
 
         scanningResultData.latitude = 0.0
         scanningResultData.longitude = 0.0
@@ -622,22 +671,14 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                     0.0,
                     0.0
                 )
-                if (request.bloodPressure == "" && request.heartRate == "" && request.oxygenSaturation == "" && request.prq == "") {
-                    CommonUtils.showToast(this, getString(R.string.no_result_found))
+                if (request.bloodPressure == "0" && request.heartRate == "0" && request.oxygenSaturation == "0" && request.prq == "0") {
+//                    CommonUtils.showToast(this, getString(R.string.no_result_found))
+                    Log.d(tag, "No result calculated")
                 } else {
                     historyViewModel.sendScanResult(request)
                 }
             }
         }, AppConstant.RESULT_SCREEN_DELAY_TIME.toLong())
-    }
-
-    private fun getStressResponseAndRecoveryAbility(value: Int): String? {
-        return when (value) {
-            1 -> "Low"
-            2 -> "Normal"
-            3 -> "High"
-            else -> ""
-        }
     }
 
     private fun showErrorDialog(code: Int) {

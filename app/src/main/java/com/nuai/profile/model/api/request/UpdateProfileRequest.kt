@@ -9,16 +9,16 @@ data class UpdateProfileRequest(
     @SerializedName("last_name") val lastName: String,
     @SerializedName("date_of_birth") val dateOfBirth: String?,
     @SerializedName("gender") val gender: String,
-    @SerializedName("weight") val weight: Int,
-    @SerializedName("height") val height: Int
+    @SerializedName("weight") val weight: Double,
+    @SerializedName("height") val height: Double
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString(),
         parcel.readString()!!,
-        parcel.readInt(),
-        parcel.readInt(),
+        parcel.readDouble(),
+        parcel.readDouble(),
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -26,8 +26,8 @@ data class UpdateProfileRequest(
         parcel.writeString(lastName)
         parcel.writeString(dateOfBirth)
         parcel.writeString(gender)
-        parcel.writeInt(weight)
-        parcel.writeInt(height)
+        parcel.writeDouble(weight)
+        parcel.writeDouble(height)
     }
 
     override fun describeContents(): Int {

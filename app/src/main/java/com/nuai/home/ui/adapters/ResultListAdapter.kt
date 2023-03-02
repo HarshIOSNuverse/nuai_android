@@ -1,9 +1,11 @@
 package com.nuai.home.ui.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.nuai.R
 import com.nuai.databinding.ItemResultBinding
@@ -46,23 +48,12 @@ internal class ResultListAdapter(items: ArrayList<Reading>) :
             R.drawable.rc_black_border_c25,
             holder.binding.ivReadingIndicator
         )
-        val bgColor = when (position % 4) {
-            0 -> {
-                R.color.history_bg_color_0
-            }
-            1 -> {
-                R.color.history_bg_color_1
-            }
-            2 -> {
-                R.color.history_bg_color_2
-            }
-            3 -> {
-                R.color.history_bg_color_3
-            }
-            else -> {
-                R.color.history_bg_color_0
-            }
+        val bgColor = if (!reading.colorCode.isNullOrEmpty()) {
+            reading.colorCode!!.toColorInt()
+        } else {
+            R.color.history_bg_color_0
         }
+
         CommonUtils.setBgColor(
             context,
             holder.binding.crReadingRoot.background,

@@ -32,6 +32,9 @@ class Reading() : Parcelable {
     @SerializedName("level_icon")
     var levelIcon: String? = null
 
+    @SerializedName("color_code")
+    var colorCode: String? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
         title = parcel.readString()
@@ -42,6 +45,7 @@ class Reading() : Parcelable {
         observedValue = parcel.readString()
         level = parcel.readString()
         levelIcon = parcel.readString()
+        colorCode = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -54,6 +58,7 @@ class Reading() : Parcelable {
         parcel.writeString(observedValue)
         parcel.writeString(level)
         parcel.writeString(levelIcon)
+        parcel.writeString(colorCode)
     }
 
     override fun describeContents(): Int {
@@ -69,4 +74,5 @@ class Reading() : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
 }

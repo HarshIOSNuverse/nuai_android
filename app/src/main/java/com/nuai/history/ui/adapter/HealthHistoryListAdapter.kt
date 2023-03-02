@@ -6,15 +6,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nuai.R
 import com.nuai.databinding.ItemHealthHistoryBinding
-import com.nuai.home.model.HealthHistory
+import com.nuai.home.model.HealthBasicInfo
 import com.nuai.utils.BindingViewHolder
 import com.nuai.utils.CommonUtils
 import com.nuai.utils.Enums
 
-internal class HealthHistoryListAdapter(items: ArrayList<HealthHistory>) :
+internal class HealthHistoryListAdapter(items: ArrayList<HealthBasicInfo>) :
     RecyclerView.Adapter<BindingViewHolder<ItemHealthHistoryBinding>>() {
 
-    private var items: ArrayList<HealthHistory> = arrayListOf()
+    private var items: ArrayList<HealthBasicInfo> = arrayListOf()
     internal var selectHealthHistoryListener: SelectHealthHistoryListener? = null
     private lateinit var context: Context
 
@@ -107,7 +107,7 @@ internal class HealthHistoryListAdapter(items: ArrayList<HealthHistory>) :
     }
 
     interface SelectHealthHistoryListener {
-        fun onViewMoreClick(history: HealthHistory?)
+        fun onViewMoreClick(history: HealthBasicInfo?)
     }
 
 }

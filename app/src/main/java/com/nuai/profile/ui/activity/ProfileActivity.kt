@@ -199,8 +199,8 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
                     binding.lastEdit.text.toString().trim(),
                     dob,
                     gender,
-                    binding.weightEdit.text.toString().trim().toInt(),
-                    binding.heightEdit.text.toString().trim().toInt()
+                    binding.weightEdit.text.toString().trim().toDouble(),
+                    binding.heightEdit.text.toString().trim().toDouble()
                 )
                 profileViewModel.updateProfile(request)
             }

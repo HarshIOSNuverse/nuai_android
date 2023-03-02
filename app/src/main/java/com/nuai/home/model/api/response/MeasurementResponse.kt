@@ -3,14 +3,14 @@ package com.nuai.home.model.api.response
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.nuai.home.model.HealthHistory
+import com.nuai.home.model.HealthBasicInfo
 import com.nuai.home.model.Reading
 import com.nuai.network.CommonResponse
 
 class MeasurementResponse() : CommonResponse(), Parcelable {
 
     @SerializedName("basic_info")
-    var basicInfo: HealthHistory? = null
+    var basicInfo: HealthBasicInfo? = null
 
     @SerializedName("result")
     var result: Result? = null
@@ -19,7 +19,7 @@ class MeasurementResponse() : CommonResponse(), Parcelable {
     var abnormalResult: Result? = null
 
     constructor(parcel: Parcel) : this() {
-        basicInfo = parcel.readParcelable(HealthHistory::class.java.classLoader)
+        basicInfo = parcel.readParcelable(HealthBasicInfo::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
