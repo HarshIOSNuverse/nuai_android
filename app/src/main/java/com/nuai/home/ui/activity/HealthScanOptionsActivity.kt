@@ -19,6 +19,7 @@ import com.nuai.databinding.DialogScanRemainingBinding
 import com.nuai.databinding.HealthScanOptionsActivityBinding
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
+import com.nuai.profile.ui.activity.SubscriptionPlansActivity
 import com.nuai.profile.viewmodel.ProfileViewModel
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.CommonUtils
@@ -190,6 +191,7 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
             remainingBinding.button1.text = button1Message
             remainingBinding.button1.setOnClickListener {
                 dismiss()
+                SubscriptionPlansActivity.startActivity(this@HealthScanOptionsActivity)
             }
             remainingBinding.button1.visibility =
                 if (!button1Message.isNullOrEmpty()) View.VISIBLE else View.GONE

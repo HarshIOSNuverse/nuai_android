@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="subscription"
+            type="com.nuai.home.model.Reading" />
+
+        <variable
+            name="subscriptionListener"
+            type="com.nuai.profile.ui.adapters.SubscriptionPlanListAdapter.SubscriptionListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cr_subscription_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/dp_8"
+        android:background="@drawable/subscription_row_selected"
+        android:onClick="@{()->subscriptionListener.onSubscriptionClick(subscription)}"
+        android:paddingHorizontal="@dimen/dp_25"
+        android:paddingVertical="@dimen/dp_20">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/radio_default"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_subscription_type"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_subscription_type" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_subscription_type"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/dp_20"
+            android:text='@{subscription.title?? ""}'
+            android:textSize="@dimen/sp_22"
+            app:layout_constraintBottom_toTopOf="@+id/tv_subscription_msg"
+            app:layout_constraintEnd_toStartOf="@+id/tv_price"
+            app:layout_constraintStart_toEndOf="@+id/iv_radio"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_price"
+            style="@style/TextViewStyleMedium"
+            android:layout_width="wrap_content"
+            android:text='@{subscription.observedValue?? ""}'
+            android:textSize="@dimen/sp_17"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_subscription_type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_subscription_type"
+            app:layout_constraintTop_toTopOf="@+id/tv_subscription_type" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_subscription_msg"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_5"
+            android:text='@{subscription.shortDesc?? ""}'
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_radio"
+            app:layout_constraintTop_toBottomOf="@+id/tv_subscription_type" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

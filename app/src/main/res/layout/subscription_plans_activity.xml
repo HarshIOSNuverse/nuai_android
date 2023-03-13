@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="adapter"
+            type="com.nuai.profile.ui.adapters.SubscriptionPlanListAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/toolbarLayout"
+            layout="@layout/toolbar_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ViewFlipper
+            android:id="@+id/view_flipper"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
+
+            <include layout="@layout/layout_progress" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    app:layout_constraintBottom_toTopOf="@+id/continue_btn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cr_no_active_plan"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingHorizontal="@dimen/dp_25"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/lbl_choose_your_plan"
+                            style="@style/TextViewStyleRegular"
+                            android:layout_marginTop="@dimen/dp_30"
+                            android:gravity="center_horizontal"
+                            android:text="@string/choose_your_plan"
+                            android:textSize="@dimen/sp_36"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/lbl_choose_your_plan_msg"
+                            style="@style/TextViewStyleRegular"
+                            android:layout_marginTop="@dimen/dp_20"
+                            android:gravity="center_horizontal"
+                            android:text="@string/choose_the_plan_right_for_you"
+                            android:textColor="@color/secondary_text_color"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lbl_choose_your_plan" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_25"
+                            android:adapter="@{adapter}"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="vertical"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lbl_choose_your_plan_msg" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/lbl_more_info"
+                            style="@style/TextViewStyleRegular"
+                            android:layout_width="0dp"
+                            android:layout_marginTop="@dimen/dp_25"
+                            android:text="@string/more_information"
+                            android:textColor="@color/secondary_text_color"
+                            android:textSize="@dimen/sp_15"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_1"
+                            android:layout_width="@dimen/dp_10"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:src="@drawable/green_circle"
+                            app:layout_constraintEnd_toStartOf="@+id/lbl_more_info_1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/lbl_more_info_1" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/lbl_more_info_1"
+                            style="@style/TextViewStyleRegular"
+                            android:layout_width="0dp"
+                            android:layout_marginStart="@dimen/dp_10"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:text="@string/more_information_msg_1"
+                            android:textColor="@color/secondary_text_color"
+                            android:textSize="@dimen/sp_14"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/iv_1"
+                            app:layout_constraintTop_toBottomOf="@+id/lbl_more_info" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_2"
+                            android:layout_width="@dimen/dp_10"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:src="@drawable/green_circle"
+                            app:layout_constraintEnd_toStartOf="@+id/lbl_more_info_2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/lbl_more_info_2" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/lbl_more_info_2"
+                            style="@style/TextViewStyleRegular"
+                            android:layout_width="0dp"
+                            android:layout_marginStart="@dimen/dp_10"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:text="@string/more_information_msg_2"
+                            android:textColor="@color/secondary_text_color"
+                            android:textSize="@dimen/sp_14"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/iv_2"
+                            app:layout_constraintTop_toBottomOf="@+id/lbl_more_info_1" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.core.widget.NestedScrollView>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/continue_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_50"
+                    android:layout_marginHorizontal="@dimen/dp_25"
+                    android:layout_marginBottom="@dimen/dp_40"
+                    android:background="@drawable/rc_black_filled_c25"
+                    android:fontFamily="@font/switzer_medium"
+                    android:onClick="@{onClickListener}"
+                    android:text="@string/continue_"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_18"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/no_data_found"
+                layout="@layout/layout_no_data_found" />
+
+            <include
+                android:id="@+id/no_internet_connection"
+                layout="@layout/layout_no_internet" />
+        </ViewFlipper>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
