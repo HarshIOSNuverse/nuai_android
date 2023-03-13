@@ -344,7 +344,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                     ?.withImageListener(this@ScanByFingerActivity)
                     ?.withVitalSignsListener(this@ScanByFingerActivity)
                     ?.withAlertsListener(this@ScanByFingerActivity)
-                    ?.withSubjectDemographic(subjectDemographic)
+//                    ?.withSubjectDemographic(subjectDemographic)
                     ?.build()
                 mDeviceEnabledVitalSigns = null
             }
@@ -606,7 +606,9 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
             scanningResultData.hrvSdnn = "" + finalResults.getResult(VitalSignTypes.SDNN).value
         }
 
-        if ((finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal == 0) {
+        if ((finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel?)?.value == null
+            || (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel?)?.value?.ordinal == 0
+        ) {
             scanningResultData.stressLevel = 0
         } else {
             scanningResultData.stressLevel =

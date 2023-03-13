@@ -45,6 +45,38 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/my_plan_text"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="0dp"
+            android:drawablePadding="@dimen/dp_15"
+            android:gravity="center_vertical"
+            android:onClick="@{onClickListener}"
+            android:paddingHorizontal="@dimen/dp_25"
+            android:paddingVertical="@dimen/dp_15"
+            android:text="@string/my_plan"
+            app:drawableEndCompat="@drawable/right_arrow"
+            app:drawableStartCompat="@drawable/my_plans"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_walk_through_text" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/payment_history_text"
+            style="@style/TextViewStyleRegular"
+            android:layout_width="0dp"
+            android:drawablePadding="@dimen/dp_15"
+            android:gravity="center_vertical"
+            android:onClick="@{onClickListener}"
+            android:paddingHorizontal="@dimen/dp_25"
+            android:paddingVertical="@dimen/dp_15"
+            android:text="@string/payment_history"
+            app:drawableEndCompat="@drawable/right_arrow"
+            app:drawableStartCompat="@drawable/payment_history"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_plan_text" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/send_feedback_text"
             style="@style/TextViewStyleRegular"
             android:layout_width="0dp"
@@ -60,7 +92,7 @@
             app:drawableStartCompat="@drawable/send_feedback"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_walk_through_text" />
+            app:layout_constraintTop_toBottomOf="@+id/payment_history_text" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/terms_of_service_text"

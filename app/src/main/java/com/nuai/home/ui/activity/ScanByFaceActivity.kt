@@ -45,6 +45,7 @@ import com.nuai.network.Status
 import com.nuai.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -330,7 +331,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 ?.withImageListener(this@ScanByFaceActivity)
                 ?.withVitalSignsListener(this@ScanByFaceActivity)
                 ?.withAlertsListener(this@ScanByFaceActivity)
-                ?.withSubjectDemographic(subjectDemographic)
+//                ?.withSubjectDemographic(subjectDemographic)
                 ?.build()
             mDeviceEnabledVitalSigns = null
             Handler(Looper.getMainLooper()).postDelayed({
@@ -531,9 +532,9 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         )
         Log.d(
             "Final Result = BLOOD_PRESSURE",
-            "" + (finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE) as VitalSignBloodPressure)?.value?.systolic + "/" + (finalResults.getResult(
+            "" + (finalResults.getResult(VitalSignTypes.BLOOD_PRESSURE) as VitalSignBloodPressure?)?.value?.systolic + "/" + (finalResults.getResult(
                 VitalSignTypes.BLOOD_PRESSURE
-            ) as VitalSignBloodPressure)?.value?.systolic
+            ) as VitalSignBloodPressure?)?.value?.systolic
         )
         Log.d("Final Result = PRQ ", "" + finalResults.getResult(VitalSignTypes.PRQ)?.value)
         Log.d(
@@ -587,7 +588,9 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             scanningResultData.hrvSdnn = "" + finalResults.getResult(VitalSignTypes.SDNN).value
         }
 
-        if ((finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel).value.ordinal == 0) {
+        if ((finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel?)?.value == null
+            || (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel?)?.value?.ordinal == 0
+        ) {
             scanningResultData.stressLevel = 0
         } else {
             scanningResultData.stressLevel =

@@ -270,4 +270,16 @@ Blood Pressure is categorized as low, normal, or elevated: low blood pressure is
     <string name="pls_dont_remove_your_finger">Please do not move your finger</string>
     <string name="required_permission_not_granted">Required permission not granted</string>
     <string name="blood_test">Blood Test</string>
+    <string name="my_plan">My Plan</string>
+    <string name="payment_history">Payment History</string>
+    <string name="no_plan_title">You don\'t have  any subscriptions yet</string>
+    <string name="no_plan_msg">To continue scanning\n please buy a plan</string>
+    <string name="subscribe_now">Subscribe Now</string>
+    <string name="you_have_value_free_scans_now">You have %d free health\nscans now!</string>
+    <string name="purchase_subscription_now_for_unlimited_scans">Purchase a subscription now\nfor unlimited health scans.</string>
+    <string name="continue_scan">Continue Scan</string>
+    <string name="your_value_free_scans_expired">Your %d free health scans\nhave expired!</string>
+    <string name="your_plan_is_about_to_expire">Your plan is about to expire.</string>
+    <string name="renew_your_subscription_for_unlimited_scans">Please renew your subscription\nfor unlimited health scans.</string>
+    <string name="renew_now">Renew Now</string>
 </resources>

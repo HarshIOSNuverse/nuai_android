@@ -37,6 +37,12 @@ class User() : BaseResponse() {
     @SerializedName("updated_at")
     var updatedAt: String? = null
 
+    @SerializedName("has_active_subscription")
+    var hasActiveSubscription: Boolean = false
+
+    @SerializedName("has_upcoming_subscription")
+    var hasUpcomingSubscription: Boolean = false
+
     @SerializedName("body_info")
     var bodyInfo: BodyInfo? = null
 
@@ -51,6 +57,8 @@ class User() : BaseResponse() {
         deletedAt = parcel.readString()
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
+        hasActiveSubscription = parcel.readByte() != 0.toByte()
+        hasUpcomingSubscription = parcel.readByte() != 0.toByte()
         bodyInfo = parcel.readParcelable(BodyInfo::class.java.classLoader)
     }
 
@@ -66,6 +74,8 @@ class User() : BaseResponse() {
         parcel.writeString(deletedAt)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
+        parcel.writeByte(if (hasActiveSubscription) 1 else 0)
+        parcel.writeByte(if (hasUpcomingSubscription) 1 else 0)
         parcel.writeParcelable(bodyInfo, flags)
     }
 
