@@ -53,4 +53,9 @@ object Enums {
             return type
         }
     }
+
+    enum class PopupType {
+        FREE_SCAN_REMAINING, FREE_SCAN_ENDED, PLAN_ABOUT_TO_EXPIRE, PLAN_EXPIRED
+    }
+
 }

@@ -37,11 +37,23 @@ class User() : BaseResponse() {
     @SerializedName("updated_at")
     var updatedAt: String? = null
 
+    @SerializedName("initial_free_scan_count")
+    var initialFreeScanCount:Int =0
+
+    @SerializedName("available_free_scan_count")
+    var availableFreeScanCount:Int =0
+
+    @SerializedName("number_of_subscriptions")
+    var numberOfSubscriptions:Int =0
+
     @SerializedName("has_active_subscription")
     var hasActiveSubscription: Boolean = false
 
     @SerializedName("has_upcoming_subscription")
     var hasUpcomingSubscription: Boolean = false
+
+    @SerializedName("show_about_expired")
+    var showAboutExpired:Boolean = false
 
     @SerializedName("body_info")
     var bodyInfo: BodyInfo? = null
@@ -57,8 +69,12 @@ class User() : BaseResponse() {
         deletedAt = parcel.readString()
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
+        initialFreeScanCount = parcel.readInt()
+        availableFreeScanCount = parcel.readInt()
+        numberOfSubscriptions = parcel.readInt()
         hasActiveSubscription = parcel.readByte() != 0.toByte()
         hasUpcomingSubscription = parcel.readByte() != 0.toByte()
+        showAboutExpired = parcel.readByte() != 0.toByte()
         bodyInfo = parcel.readParcelable(BodyInfo::class.java.classLoader)
     }
 
@@ -74,8 +90,12 @@ class User() : BaseResponse() {
         parcel.writeString(deletedAt)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
+        parcel.writeInt(initialFreeScanCount)
+        parcel.writeInt(availableFreeScanCount)
+        parcel.writeInt(numberOfSubscriptions)
         parcel.writeByte(if (hasActiveSubscription) 1 else 0)
         parcel.writeByte(if (hasUpcomingSubscription) 1 else 0)
+        parcel.writeByte(if (showAboutExpired) 1 else 0)
         parcel.writeParcelable(bodyInfo, flags)
     }
 

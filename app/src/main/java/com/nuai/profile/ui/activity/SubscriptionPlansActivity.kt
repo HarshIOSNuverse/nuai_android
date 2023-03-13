@@ -18,6 +18,7 @@ import com.nuai.home.model.Reading
 import com.nuai.profile.ui.adapters.SubscriptionPlanListAdapter
 import com.nuai.profile.viewmodel.ProfileViewModel
 import com.nuai.utils.AnimationsHandler
+import com.nuai.utils.CommonUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -126,6 +127,14 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
         when (v!!.id) {
             R.id.continue_btn -> {
 //                profileViewModel.updateProfile(request)
+                if (binding.adapter!!.selectedSubscription != null) {
+                    PaymentStatusActivity.startActivity(
+                        this,
+                        binding.adapter!!.selectedSubscription
+                    )
+                } else {
+                    CommonUtils.showToast(this, getString(R.string.pls_select_plan))
+                }
             }
         }
     }

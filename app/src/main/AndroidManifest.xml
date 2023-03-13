@@ -184,6 +184,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Nuai.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".profile.ui.activity.PaymentStatusActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
 
         <provider
             android:name=".utils.GenericFileProvider"

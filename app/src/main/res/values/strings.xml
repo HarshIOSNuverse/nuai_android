@@ -288,4 +288,15 @@ Blood Pressure is categorized as low, normal, or elevated: low blood pressure is
     <string name="more_information">More Information</string>
     <string name="more_information_msg_1">Payment will be charged to your Account at confirmation of purchase.</string>
     <string name="more_information_msg_2">Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period.</string>
+    <string name="payment_status_success_title">Payment Successful</string>
+    <string name="payment_status_success_msg">Your payment has been successfully processed! Details of transaction are included below.</string>
+    <string name="payment_status_fail_title">Payment Failed</string>
+    <string name="payment_status_fail_msg">We\'re sorry, your payment couldn\'t be processed at this time.</string>
+    <string name="payment_status">Payment Status</string>
+    <string name="pls_select_plan">Please select Plan</string>
+    <string name="retry_payment">Retry Payment</string>
+    <string name="plan_expire_date">Plan Expire Date</string>
+    <string name="transaction_date">Transaction Date</string>
+    <string name="transaction_number">Transaction Number</string>
+    <string name="your_plan_is_expired">Your Plan is Expired</string>
 </resources>

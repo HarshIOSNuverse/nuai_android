@@ -95,6 +95,10 @@ open class BaseActivity : AppCompatActivity() {
         tvToolbarTitle.text = if (!title.isNullOrEmpty()) title else ""
     }
 
+    protected fun hideBackButton() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
     protected fun initNoInternet(
         noInternetLayout: LayoutNoInternetBinding, onClickListener: View.OnClickListener
     ) {
