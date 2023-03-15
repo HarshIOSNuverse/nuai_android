@@ -14,6 +14,8 @@ import com.nuai.onboarding.model.api.response.MyProfileResponse
 import com.nuai.profile.model.api.request.SendFeedbackRequest
 import com.nuai.profile.model.api.request.UpdateProfileRequest
 import com.nuai.profile.model.api.response.MyPlansResponse
+import com.nuai.profile.model.api.response.PaymentDetailResponse
+import com.nuai.profile.model.api.response.PaymentListResponse
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -136,6 +138,17 @@ constructor(
         @Headers("$HEADER_BEAR: true")
         @GET(Url.API + "me/plan")
         suspend fun getMyPlans(): Response<MyPlansResponse?>
+
+        @Headers("$HEADER_BEAR: true")
+        @GET(Url.API + "transactions")
+        suspend fun getPaymentList(
+            @Query("year") year: String?, @Query("offset") offset: Int
+        ): Response<PaymentListResponse?>
+
+        @Headers("$HEADER_BEAR: true")
+        @GET(Url.API + "transactions/{id}")
+        suspend fun getPaymentDetail(@Query("id") id: String?): Response<PaymentDetailResponse?>
+
 
         /* @Headers("$HEADER_BEAR: true")
          @POST(Url.API + "register-device")

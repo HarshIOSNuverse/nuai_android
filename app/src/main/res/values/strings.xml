@@ -307,4 +307,5 @@ Blood Pressure is categorized as low, normal, or elevated: low blood pressure is
     <string name="successful">Successful</string>
     <string name="view_payment_details">View Payment Details</string>
     <string name="upgrade_now">Upgrade Now</string>
+    <string name="no_payment_data_found">No Payment Data Found</string>
 </resources>

@@ -21,6 +21,7 @@ import com.nuai.onboarding.ui.activity.LoginRegisterActivity
 import com.nuai.onboarding.ui.activity.TutorialActivity
 import com.nuai.onboarding.ui.activity.WebActivity
 import com.nuai.profile.ui.activity.MyPlansActivity
+import com.nuai.profile.ui.activity.PaymentHistoryListActivity
 import com.nuai.profile.viewmodel.ProfileViewModel
 import com.nuai.utils.AlertDialogManager
 import com.nuai.utils.AnimationsHandler
@@ -97,7 +98,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                 MyPlansActivity.startActivity(this)
             }
             R.id.payment_history_text -> {
-
+                PaymentHistoryListActivity.startActivity(this)
             }
             R.id.send_feedback_text -> {
                 SendFeedbackActivity.startActivity(this)

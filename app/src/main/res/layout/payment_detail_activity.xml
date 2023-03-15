@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_color">
+
+        <include
+            android:id="@+id/toolbarLayout"
+            layout="@layout/toolbar_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ViewFlipper
+            android:id="@+id/view_flipper"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
+
+            <include layout="@layout/layout_progress" />
+
+            <ScrollView
+                android:id="@+id/scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:paddingHorizontal="@dimen/dp_25"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_plan_type"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/dp_25"
+                        android:textSize="@dimen/sp_17"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_plan_status"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_plan_status"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_marginStart="@dimen/dp_5"
+                        android:text="@string/successful"
+                        android:textColor="@color/green_text_color"
+                        android:textSize="@dimen/sp_15"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_plan_type"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tv_plan_type"
+                        app:layout_constraintTop_toTopOf="@+id/tv_plan_type" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_plan_amount"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:gravity="center"
+                        android:textSize="@dimen/sp_36"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_plan_type" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_purchase_date"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="@string/purchased_on"
+                        android:textColor="@color/secondary_text_color"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_plan_amount" />
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:background="@color/disabled_btn_text_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_purchase_date" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/lbl_pay_details"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:gravity="center"
+                        android:text="@string/payment_details"
+                        android:textSize="@dimen/sp_17"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/lbl_name"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:text="@string/name"
+                        android:textColor="@color/secondary_text_color"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_name"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/lbl_pay_details" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_name"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/lbl_name"
+                        app:layout_constraintTop_toBottomOf="@id/lbl_pay_details" />
+
+                    <View
+                        android:id="@+id/divider_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:background="@color/divider_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/lbl_name" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/lbl_plan_expire_date"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:text="@string/plan_expire_date"
+                        android:textColor="@color/secondary_text_color"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_plan_expire_date"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_1" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_plan_expire_date"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/lbl_plan_expire_date"
+                        app:layout_constraintTop_toBottomOf="@id/divider_1" />
+
+                    <View
+                        android:id="@+id/divider_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:background="@color/divider_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/lbl_plan_expire_date" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/lbl_transaction_date"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:text="@string/transaction_date"
+                        android:textColor="@color/secondary_text_color"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_transaction_date"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_2" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_transaction_date"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/lbl_transaction_date"
+                        app:layout_constraintTop_toBottomOf="@id/divider_2" />
+
+                    <View
+                        android:id="@+id/divider_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:background="@color/divider_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/lbl_transaction_date" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/lbl_transaction_number"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:text="@string/transaction_number"
+                        android:textColor="@color/secondary_text_color"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_transaction_number"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_3" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_transaction_number"
+                        style="@style/TextViewStyleRegular"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/lbl_transaction_number"
+                        app:layout_constraintTop_toBottomOf="@id/divider_3" />
+
+                    <View
+                        android:id="@+id/divider_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:background="@color/divider_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/lbl_transaction_number" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+
+            <include
+                android:id="@+id/no_data_found"
+                layout="@layout/layout_no_data_found" />
+
+            <include
+                android:id="@+id/no_internet_connection"
+                layout="@layout/layout_no_internet" />
+        </ViewFlipper>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

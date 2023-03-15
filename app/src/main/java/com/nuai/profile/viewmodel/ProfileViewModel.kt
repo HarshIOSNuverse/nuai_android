@@ -12,6 +12,8 @@ import com.nuai.onboarding.model.api.response.MyProfileResponse
 import com.nuai.profile.model.api.request.SendFeedbackRequest
 import com.nuai.profile.model.api.request.UpdateProfileRequest
 import com.nuai.profile.model.api.response.MyPlansResponse
+import com.nuai.profile.model.api.response.PaymentDetailResponse
+import com.nuai.profile.model.api.response.PaymentListResponse
 import com.nuai.profile.repository.ProfileRepository
 import com.nuai.utils.CommonUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,6 +35,10 @@ class ProfileViewModel @Inject constructor(
     val sendFeedbackState =
         MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
     val getMyPlanState = MutableStateFlow(ApiResponseState(Status.LOADING, MyPlansResponse()))
+    val paymentListState = MutableStateFlow(ApiResponseState(Status.LOADING, PaymentListResponse()))
+    val paymentDetailState =
+        MutableStateFlow(ApiResponseState(Status.LOADING, PaymentDetailResponse()))
+
     fun getMe() {
         if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
             meApiState.value = ApiResponseState.loading()
@@ -121,6 +127,7 @@ class ProfileViewModel @Inject constructor(
                 )
         }
     }
+
     fun getMyPlans() {
         if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
             getMyPlanState.value = ApiResponseState.loading()
@@ -143,4 +150,49 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun getPaymentList(year: String, offset: Int) {
+        when {
+            (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
+                paymentListState.value = ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
+            }
+            else -> {
+                paymentListState.value = ApiResponseState.loading()
+                viewModelScope.launch {
+                    profileRepository.getPaymentList(year, offset).catch {
+                        paymentListState.value = ApiResponseState.error(it.message, 100)
+                    }.collect {
+                        paymentListState.value =
+                            if (it.data != null) ApiResponseState.success(it.data, it.code)
+                            else ApiResponseState.error(it.message, it.code)
+                    }
+                }
+            }
+        }
+    }
+
+    fun getPaymentDetail(id: String?) {
+        when {
+            (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
+                paymentDetailState.value = ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
+            }
+            else -> {
+                paymentDetailState.value = ApiResponseState.loading()
+                viewModelScope.launch {
+                    profileRepository.getPaymentDetail(id).catch {
+                        paymentDetailState.value = ApiResponseState.error(it.message, 100)
+                    }.collect {
+                        paymentDetailState.value =
+                            if (it.data != null) ApiResponseState.success(it.data, it.code)
+                            else ApiResponseState.error(it.message, it.code)
+                    }
+                }
+            }
+        }
+    }
 }

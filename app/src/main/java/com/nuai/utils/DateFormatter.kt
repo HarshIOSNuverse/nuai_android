@@ -6,6 +6,7 @@ import java.util.*
 
 
 object DateFormatter {
+    const val yyyy ="yyyy"
     const val MMMM_d_yyyy = "MMMM d, yyyy"
 
     //    private const val SERVER_STANDARD_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"

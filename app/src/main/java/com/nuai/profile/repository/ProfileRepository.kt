@@ -8,6 +8,8 @@ import com.nuai.onboarding.model.api.response.MyProfileResponse
 import com.nuai.profile.model.api.request.SendFeedbackRequest
 import com.nuai.profile.model.api.request.UpdateProfileRequest
 import com.nuai.profile.model.api.response.MyPlansResponse
+import com.nuai.profile.model.api.response.PaymentDetailResponse
+import com.nuai.profile.model.api.response.PaymentListResponse
 import com.nuai.utils.CommonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -81,6 +83,38 @@ class ProfileRepository @Inject constructor(private val networkService: NetworkS
     suspend fun getMyPlans(): Flow<ApiResponseState<MyPlansResponse>> {
         return flow {
             val response = networkService.api.getMyPlans()
+            if (response.isSuccessful) {
+                emit(ApiResponseState.success(response.body(), response.code()))
+            } else {
+                emit(
+                    ApiResponseState.error(
+                        CommonUtils.getErrorResponse(response.errorBody()).message, response.code()
+                    )
+                )
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getPaymentList(
+        year: String, offset: Int
+    ): Flow<ApiResponseState<PaymentListResponse>> {
+        return flow {
+            val response = networkService.api.getPaymentList(year, offset)
+            if (response.isSuccessful) {
+                emit(ApiResponseState.success(response.body(), response.code()))
+            } else {
+                emit(
+                    ApiResponseState.error(
+                        CommonUtils.getErrorResponse(response.errorBody()).message, response.code()
+                    )
+                )
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getPaymentDetail(id: String?): Flow<ApiResponseState<PaymentDetailResponse>> {
+        return flow {
+            val response = networkService.api.getPaymentDetail(id)
             if (response.isSuccessful) {
                 emit(ApiResponseState.success(response.body(), response.code()))
             } else {
