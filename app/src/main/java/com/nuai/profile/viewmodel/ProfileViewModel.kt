@@ -11,6 +11,7 @@ import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
 import com.nuai.profile.model.api.request.SendFeedbackRequest
 import com.nuai.profile.model.api.request.UpdateProfileRequest
+import com.nuai.profile.model.api.response.MyPlansResponse
 import com.nuai.profile.repository.ProfileRepository
 import com.nuai.utils.CommonUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val resourcesProvider: ResourcesProvider,
-    private val onBoardingRepository: ProfileRepository
+    private val profileRepository: ProfileRepository
 ) : ViewModel() {
     val updateProfileState = MutableStateFlow(ApiResponseState(Status.LOADING, LoginResponse()))
     val meApiState =
@@ -31,12 +32,12 @@ class ProfileViewModel @Inject constructor(
         MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
     val sendFeedbackState =
         MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
-
+    val getMyPlanState = MutableStateFlow(ApiResponseState(Status.LOADING, MyPlansResponse()))
     fun getMe() {
         if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
             meApiState.value = ApiResponseState.loading()
             viewModelScope.launch {
-                onBoardingRepository.getMe().catch {
+                profileRepository.getMe().catch {
                     meApiState.value =
                         ApiResponseState.error(it.message, 100)
                 }.collect {
@@ -65,7 +66,7 @@ class ProfileViewModel @Inject constructor(
             else -> {
                 updateProfileState.value = ApiResponseState.loading()
                 viewModelScope.launch {
-                    onBoardingRepository.updateProfile(request).catch {
+                    profileRepository.updateProfile(request).catch {
                         updateProfileState.value = ApiResponseState.error(it.message, 100)
                     }.collect {
                         updateProfileState.value =
@@ -81,7 +82,7 @@ class ProfileViewModel @Inject constructor(
         if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
             deleteAccountState.value = ApiResponseState.loading()
             viewModelScope.launch {
-                onBoardingRepository.deleteAccount().catch {
+                profileRepository.deleteAccount().catch {
                     deleteAccountState.value =
                         ApiResponseState.error(it.message, 100)
                 }.collect {
@@ -103,7 +104,7 @@ class ProfileViewModel @Inject constructor(
         if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
             sendFeedbackState.value = ApiResponseState.loading()
             viewModelScope.launch {
-                onBoardingRepository.sendFeedback(request).catch {
+                profileRepository.sendFeedback(request).catch {
                     sendFeedbackState.value =
                         ApiResponseState.error(it.message, 100)
                 }.collect {
@@ -114,6 +115,27 @@ class ProfileViewModel @Inject constructor(
             }
         } else {
             sendFeedbackState.value =
+                ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
+        }
+    }
+    fun getMyPlans() {
+        if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
+            getMyPlanState.value = ApiResponseState.loading()
+            viewModelScope.launch {
+                profileRepository.getMyPlans().catch {
+                    getMyPlanState.value =
+                        ApiResponseState.error(it.message, 100)
+                }.collect {
+                    getMyPlanState.value =
+                        if (it.data != null) ApiResponseState.success(it.data, it.code)
+                        else ApiResponseState.error(it.message, it.code)
+                }
+            }
+        } else {
+            getMyPlanState.value =
                 ApiResponseState.error(
                     resourcesProvider.getString(R.string.no_internet_connection),
                     100

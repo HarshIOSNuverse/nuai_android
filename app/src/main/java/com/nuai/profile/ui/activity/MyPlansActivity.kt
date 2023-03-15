@@ -3,10 +3,9 @@ package com.nuai.profile.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +14,7 @@ import com.nuai.base.BaseActivity
 import com.nuai.databinding.MyPlansActivityBinding
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
+import com.nuai.profile.model.api.response.MyPlansResponse
 import com.nuai.profile.viewmodel.ProfileViewModel
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.CommonUtils
@@ -53,30 +53,36 @@ class MyPlansActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.my_plans_activity)
         setUpToolNewBar(binding.toolbarLayout)
         setToolBarTitle(getString(R.string.my_plan))
+        enableDisableButton(binding.upgradeNowBtn, false)
         initClickListener()
         initObserver()
-        Handler(Looper.getMainLooper()).postDelayed({
-            init()
-        }, 100)
+        init()
     }
 
     private fun init() {
+        getMyPlans()
+    }
+
+    private fun getMyPlans() {
+        if (CommonUtils.isNetworkAvailable(this)) {
+            binding.viewFlipper.displayedChild = 0
+            profileViewModel.getMyPlans()
+        } else {
+            binding.viewFlipper.displayedChild = 3
+        }
     }
 
     private fun initObserver() {
         lifecycleScope.launch {
-            profileViewModel.updateProfileState.collect {
+            profileViewModel.getMyPlanState.collect {
                 when (it.status) {
                     Status.LOADING -> {
-                        showHideProgress(it.data == null)
+                        showHideProgress(false)
                     }
                     Status.SUCCESS -> {
-                        if (it.data != null
-                            && (it.code == ResponseStatus.STATUS_CODE_SUCCESS
-                                    || it.code == ResponseStatus.STATUS_CODE_CREATED)
-                        ) {
-                            setResult(Activity.RESULT_OK)
-                            profileViewModel.getMe()
+                        showHideProgress(false)
+                        if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
+                            setPlanDetails(it.data)
                         }
                     }
                     Status.ERROR -> {
@@ -88,15 +94,40 @@ class MyPlansActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private fun setPlanDetails(data: MyPlansResponse?) {
+        if (data?.activePlan != null) {
+            binding.viewFlipper.displayedChild = 1
+        } else {
+            binding.viewFlipper.displayedChild = 2
+        }
+        if (data?.upcomingPlan != null) {
+            enableDisableButton(binding.upgradeNowBtn, false)
+            binding.crUpcomingPlan.visibility = View.VISIBLE
+        } else {
+            enableDisableButton(binding.upgradeNowBtn, true)
+            binding.crUpcomingPlan.visibility = View.GONE
+        }
+    }
+
     private fun initClickListener() {
         binding.onClickListener = this
+        initNoInternet(binding.noInternetConnection) {
+            getMyPlans()
+        }
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.subscribe_now_btn -> {
-//                profileViewModel.updateProfile(request)
+                SubscriptionPlansActivity.startActivityForResult(this, subscriptionLauncher)
             }
         }
     }
+
+    private val subscriptionLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                getMyPlans()
+            }
+        }
 }

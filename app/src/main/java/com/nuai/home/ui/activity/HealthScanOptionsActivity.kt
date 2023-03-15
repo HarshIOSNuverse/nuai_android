@@ -21,12 +21,10 @@ import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
 import com.nuai.profile.ui.activity.SubscriptionPlansActivity
 import com.nuai.profile.viewmodel.ProfileViewModel
-import com.nuai.utils.AnimationsHandler
-import com.nuai.utils.CommonUtils
-import com.nuai.utils.Enums
-import com.nuai.utils.Pref
+import com.nuai.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -147,32 +145,41 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
                         } else {
                             gotoScan()
                         }
-                    } else if (user!!.hasActiveSubscription && user!!.showAboutExpired) {
-                        showInformationDialog(
-                            Enums.PopupType.PLAN_ABOUT_TO_EXPIRE,
-                            title =
-                            getString(R.string.your_plan_is_about_to_expire),
-                            titleColor =
-                            ContextCompat.getColor(this, R.color.error_msg_text_color),
-                            msg = getString(R.string.renew_your_subscription_for_unlimited_scans),
-                            button1Message = getString(R.string.renew_now),
-                            isContinueScan = true,
-                            cancelable = false
-                        )
-                    } else if (!user!!.hasActiveSubscription) {
-                        showInformationDialog(
-                            Enums.PopupType.PLAN_EXPIRED,
-                            title =
-                            getString(R.string.your_plan_is_expired),
-                            titleColor =
-                            ContextCompat.getColor(this, R.color.error_msg_text_color),
-                            msg = getString(R.string.purchase_subscription_now_for_unlimited_scans),
-                            button1Message = getString(R.string.subscribe_now),
-                            isContinueScan = false,
-                            cancelable = true
-                        )
                     } else {
-                        gotoScan()
+                        val planAboutToExpireShownDate = Pref.planAboutToExpireWarningShownDate
+                        val currentDate = DateFormatter.getDateToString(
+                            DateFormatter.yyyy_MM_dd_DASH, Date()
+                        )
+                        if (user!!.hasActiveSubscription && user!!.showAboutExpired
+                            && planAboutToExpireShownDate != currentDate
+                        ) {
+                            Pref.planAboutToExpireWarningShownDate = currentDate
+                            showInformationDialog(
+                                Enums.PopupType.PLAN_ABOUT_TO_EXPIRE,
+                                title =
+                                getString(R.string.your_plan_is_about_to_expire),
+                                titleColor =
+                                ContextCompat.getColor(this, R.color.error_msg_text_color),
+                                msg = getString(R.string.renew_your_subscription_for_unlimited_scans),
+                                button1Message = getString(R.string.renew_now),
+                                isContinueScan = true,
+                                cancelable = false
+                            )
+                        } else if (!user!!.hasActiveSubscription) {
+                            showInformationDialog(
+                                Enums.PopupType.PLAN_EXPIRED,
+                                title =
+                                getString(R.string.your_plan_is_expired),
+                                titleColor =
+                                ContextCompat.getColor(this, R.color.error_msg_text_color),
+                                msg = getString(R.string.purchase_subscription_now_for_unlimited_scans),
+                                button1Message = getString(R.string.subscribe_now),
+                                isContinueScan = false,
+                                cancelable = true
+                            )
+                        } else {
+                            gotoScan()
+                        }
                     }
                 }
             }
@@ -192,7 +199,8 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
         title: String? = null,
         titleColor: Int = ContextCompat.getColor(this, R.color.primary_text_color),
         msg: String? = null, button1Message: String? = null,
-        isContinueScan: Boolean = false, cancelable: Boolean = false
+        isContinueScan: Boolean = false, cancelable: Boolean = false,
+        isCloseShow: Boolean = true
     ) {
         Dialog(this).apply {
             setCancelable(cancelable)
@@ -202,67 +210,10 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
             )
             setContentView(remainingBinding.root)
 
-            when (popupType) {
-                Enums.PopupType.FREE_SCAN_REMAINING -> {
-                    remainingBinding.txtTitle.text =
-                        String.format(
-                            getString(R.string.you_have_value_free_scans_now),
-                            user!!.availableFreeScanCount
-                        )
-                    remainingBinding.txtTitle.setTextColor(
-                        ContextCompat.getColor(
-                            this@HealthScanOptionsActivity, R.color.primary_text_color
-                        )
-                    )
-                    remainingBinding.txtMessage.text =
-                        getString(R.string.purchase_subscription_now_for_unlimited_scans)
-                    remainingBinding.button1.text = getString(R.string.subscribe_now)
-                    remainingBinding.txtContinueScan.visibility = View.VISIBLE
-                }
-
-                Enums.PopupType.FREE_SCAN_ENDED -> {
-                    remainingBinding.txtTitle.text =
-                        String.format(
-                            getString(R.string.your_value_free_scans_expired),
-                            user!!.initialFreeScanCount
-                        )
-                    remainingBinding.txtTitle.setTextColor(
-                        ContextCompat.getColor(
-                            this@HealthScanOptionsActivity, R.color.error_msg_text_color
-                        )
-                    )
-                    remainingBinding.txtMessage.text =
-                        getString(R.string.purchase_subscription_now_for_unlimited_scans)
-                    remainingBinding.button1.text = getString(R.string.subscribe_now)
-                    remainingBinding.txtContinueScan.visibility = View.GONE
-                }
-
-                Enums.PopupType.PLAN_ABOUT_TO_EXPIRE -> {
-                    remainingBinding.txtTitle.text =
-                        getString(R.string.your_plan_is_about_to_expire)
-                    remainingBinding.txtTitle.setTextColor(
-                        ContextCompat.getColor(
-                            this@HealthScanOptionsActivity, R.color.error_msg_text_color
-                        )
-                    )
-                    remainingBinding.txtMessage.text =
-                        getString(R.string.renew_your_subscription_for_unlimited_scans)
-                    remainingBinding.button1.text = getString(R.string.renew_now)
-                    remainingBinding.txtContinueScan.visibility = View.VISIBLE
-                }
-                else -> {
-                    remainingBinding.txtTitle.text =
-                        getString(R.string.your_plan_is_about_to_expire)
-                    remainingBinding.txtTitle.setTextColor(
-                        ContextCompat.getColor(
-                            this@HealthScanOptionsActivity, R.color.error_msg_text_color
-                        )
-                    )
-                    remainingBinding.txtMessage.text =
-                        getString(R.string.renew_your_subscription_for_unlimited_scans)
-                    remainingBinding.button1.text = getString(R.string.renew_now)
-                    remainingBinding.txtContinueScan.visibility = View.VISIBLE
-                }
+            remainingBinding.imgClose.visibility =
+                if (isCloseShow) View.VISIBLE else View.GONE
+            remainingBinding.imgClose.setOnClickListener {
+                dismiss()
             }
             if (!title.isNullOrEmpty()) {
                 remainingBinding.txtTitle.text = title

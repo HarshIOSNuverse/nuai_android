@@ -13,6 +13,7 @@ import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
 import com.nuai.profile.model.api.request.SendFeedbackRequest
 import com.nuai.profile.model.api.request.UpdateProfileRequest
+import com.nuai.profile.model.api.response.MyPlansResponse
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -131,6 +132,10 @@ constructor(
         @Headers("$HEADER_BEAR: true")
         @DELETE(Url.API + "scan/{id}")
         suspend fun deleteMeasurement(@Path("id") id: Long): Response<CommonResponse?>
+
+        @Headers("$HEADER_BEAR: true")
+        @GET(Url.API + "me/plan")
+        suspend fun getMyPlans(): Response<MyPlansResponse?>
 
         /* @Headers("$HEADER_BEAR: true")
          @POST(Url.API + "register-device")

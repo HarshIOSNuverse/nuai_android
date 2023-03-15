@@ -16,6 +16,7 @@ object Pref {
         const val USER_OBJECT = "user_object"
         const val FCM_TOKEN = "fcm_token"
         const val IS_SEND_FCM_TOKEN = "is_send_fcm_token"
+        const val PLAN_ABOUT_TO_EXPIRE_DATE = "PLAN_ABOUT_TO_EXPIRE_DATE"
     }
 
     private val prefs: SharedPreferences =
@@ -63,6 +64,11 @@ object Pref {
         set(value) = prefs.edit()
             .putString(PrefConstant.USER_OBJECT, KeyStoreHelper.encrypt(gson.toJson(value)))
             .apply()
+
+    var planAboutToExpireWarningShownDate: String
+        get() = prefs.getString(PrefConstant.PLAN_ABOUT_TO_EXPIRE_DATE, "")!!
+        set(value) = prefs.edit().putString(PrefConstant.PLAN_ABOUT_TO_EXPIRE_DATE, value).apply()
+
 
     //    var customSizes: ArrayList<Size1>?
 //        get() {

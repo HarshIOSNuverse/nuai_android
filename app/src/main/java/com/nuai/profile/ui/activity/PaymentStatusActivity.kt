@@ -101,6 +101,7 @@ class PaymentStatusActivity : BaseActivity(), View.OnClickListener {
     private fun goto() {
         if (count % 2 == 0) {
             HomeActivity.startActivity(this)
+            AnimationsHandler.playActivityAnimation(this, AnimationsHandler.Animations.LeftToRight)
         } else {
             finish()
         }

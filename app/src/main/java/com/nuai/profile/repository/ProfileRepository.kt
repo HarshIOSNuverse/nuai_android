@@ -7,6 +7,7 @@ import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
 import com.nuai.profile.model.api.request.SendFeedbackRequest
 import com.nuai.profile.model.api.request.UpdateProfileRequest
+import com.nuai.profile.model.api.response.MyPlansResponse
 import com.nuai.utils.CommonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -65,6 +66,21 @@ class ProfileRepository @Inject constructor(private val networkService: NetworkS
     suspend fun sendFeedback(request: SendFeedbackRequest): Flow<ApiResponseState<CommonResponse>> {
         return flow {
             val response = networkService.api.sendFeedback(request)
+            if (response.isSuccessful) {
+                emit(ApiResponseState.success(response.body(), response.code()))
+            } else {
+                emit(
+                    ApiResponseState.error(
+                        CommonUtils.getErrorResponse(response.errorBody()).message, response.code()
+                    )
+                )
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getMyPlans(): Flow<ApiResponseState<MyPlansResponse>> {
+        return flow {
+            val response = networkService.api.getMyPlans()
             if (response.isSuccessful) {
                 emit(ApiResponseState.success(response.body(), response.code()))
             } else {
