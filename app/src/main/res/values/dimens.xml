@@ -6,12 +6,23 @@
     <dimen name="sp_13">13sp</dimen>
     <dimen name="sp_14">14sp</dimen>
     <dimen name="sp_15">15sp</dimen>
-    <dimen name="sp_16">16sp</dimen>
+    <dimen name="sp_17">17sp</dimen>
     <dimen name="sp_18">18sp</dimen>
     <dimen name="sp_20">20sp</dimen>
+    <dimen name="sp_22">22sp</dimen>
     <dimen name="sp_24">24sp</dimen>
+    <dimen name="sp_26">26sp</dimen>
+    <dimen name="sp_30">30sp</dimen>
+    <dimen name="sp_34">34sp</dimen>
+    <dimen name="sp_36">36sp</dimen>
+    <dimen name="sp_40">40sp</dimen>
+    <dimen name="sp_45">45sp</dimen>
+    <dimen name="sp_50">50sp</dimen>
+    <dimen name="menu_text_size">18sp</dimen>
+    <dimen name="onboading_header_text_size">36sp</dimen>
 
     <!--DP-->
+    <dimen name="divider_height">1dp</dimen>
     <dimen name="dp_0_7">0.7dp</dimen>
     <dimen name="dp_1">1dp</dimen>
     <dimen name="dp_2">2dp</dimen>
@@ -34,6 +45,7 @@
     <dimen name="dp_40">40dp</dimen>
     <dimen name="dp_45">45dp</dimen>
     <dimen name="dp_50">50dp</dimen>
+    <dimen name="dp_55">55dp</dimen>
     <dimen name="dp_60">60dp</dimen>
     <dimen name="dp_65">65dp</dimen>
     <dimen name="dp_70">70dp</dimen>
@@ -57,16 +69,8 @@
 
     <dimen name="line_space">5dp</dimen>
     <dimen name="minus_dp_10">-10dp</dimen>
-    <dimen name="sp_34">34sp</dimen>
-    <dimen name="sp_50">50sp</dimen>
-    <dimen name="sp_36">36sp</dimen>
-    <dimen name="sp_26">26sp</dimen>
-    <dimen name="sp_40">40sp</dimen>
-    <dimen name="sp_45">45sp</dimen>
-    <dimen name="onboading_header_text_size">30sp</dimen>
     <dimen name="spinner_item_vertical_padding">7dp</dimen>
     <dimen name="spinner_item_padding">5dp</dimen>
-    <dimen name="sp_30">30sp</dimen>
     <dimen name="drawer_width">310dp</dimen>
     <dimen name="drawer_menu_start_padding">25dp</dimen>
     <dimen name="drawer_menu_vertical_padding">15dp</dimen>
@@ -74,9 +78,4 @@
     <dimen name="drawer_menu_icon_size">32dp</dimen>
     <dimen name="menu_icon_spacing">15dp</dimen>
     <dimen name="menu_divider_height">1dp</dimen>
-    <dimen name="menu_text_size">18sp</dimen>
-    <dimen name="dp_55">55dp</dimen>
-    <dimen name="divider_height">1dp</dimen>
-    <dimen name="sp_17">17sp</dimen>
-    <dimen name="sp_22">22sp</dimen>
 </resources>

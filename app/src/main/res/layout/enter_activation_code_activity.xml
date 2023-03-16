@@ -33,6 +33,7 @@
             style="@style/TextViewStyleRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_20"
             android:gravity="center_horizontal"
             android:text="@string/enter_activation_code"
@@ -50,7 +51,7 @@
             android:gravity="center_horizontal"
             android:text="@string/activation_code_sent_on_email_msg"
             android:textColor="@color/secondary_text_color"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_17"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_txt" />
@@ -97,7 +98,7 @@
             android:text="@string/activate"
             android:textAllCaps="false"
             android:textColor="@color/disabled_btn_text_color"
-            android:textSize="@dimen/sp_18"
+            android:textSize="@dimen/sp_20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lineField" />
@@ -113,7 +114,7 @@
             android:padding="@dimen/dp_5"
             android:text="@string/resend_activation_code"
             android:textColor="@color/secondary_text_color"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_17"
             app:layout_constraintEnd_toStartOf="@+id/timer_text"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +130,7 @@
             android:padding="@dimen/dp_5"
             android:text="00"
             android:textColor="@color/otp_timer_text_color"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_17"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/resend_text"
             app:layout_constraintTop_toBottomOf="@+id/activate_btn" />

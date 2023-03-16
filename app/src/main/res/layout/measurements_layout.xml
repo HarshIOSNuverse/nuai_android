@@ -24,7 +24,7 @@
             android:gravity="center_horizontal"
             android:text="@string/face_scanning_msg"
             android:textColor="@color/secondary_text_color"
-            android:textSize="@dimen/sp_18"
+            android:textSize="@dimen/sp_20"
             app:layout_constraintBottom_toTopOf="@+id/tv_reading"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:gravity="center_horizontal"
             android:text="0"
-            android:textSize="@dimen/sp_30"
+            android:textSize="@dimen/sp_36"
             android:layout_marginEnd="@dimen/dp_8"
             app:layout_constraintBottom_toTopOf="@+id/reading_progress_bar"
             app:layout_constraintEnd_toStartOf="@+id/tv_reading_unit"
@@ -49,7 +49,7 @@
             style="@style/TextViewStyleRegular"
             android:gravity="center_horizontal"
             android:text="@string/bpm"
-            android:textColor="@color/secondary_text_color"
+            android:textSize="@dimen/sp_22"
             app:layout_constraintBottom_toBottomOf="@+id/tv_reading"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_reading"
@@ -68,7 +68,7 @@
             app:rpbProgressColor="@color/green_text_color"
             app:rpbProgressTextColor="@color/white"
             app:rpbTextPadding="12dp"
-            app:rpbTextSize="@dimen/sp_16" />
+            app:rpbTextSize="@dimen/sp_17" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/stop_btn"
@@ -81,7 +81,7 @@
             android:text="@string/stop"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_18"
+            android:textSize="@dimen/sp_20"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

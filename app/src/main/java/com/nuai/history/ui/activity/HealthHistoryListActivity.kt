@@ -86,7 +86,7 @@ class HealthHistoryListActivity : BaseActivity() {
             historyViewModel.calendarDateByMonthState.collect {
                 when (it.status) {
                     Status.LOADING -> {
-                        showHideProgress(it.data == null)
+                        showHideProgress(false)
                     }
                     Status.SUCCESS -> {
                         showHideProgress(false)

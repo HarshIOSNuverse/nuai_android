@@ -168,7 +168,7 @@
                     android:text="@string/continue_"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp_18"
+                    android:textSize="@dimen/sp_20"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

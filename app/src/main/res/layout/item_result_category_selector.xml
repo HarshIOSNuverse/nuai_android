@@ -23,6 +23,7 @@
         android:paddingHorizontal="@dimen/dp_20"
         android:paddingVertical="@dimen/dp_10"
         android:text="@string/wellness_score"
+        android:textSize="@dimen/sp_15"
         android:onClick="@{()-> selectCategoryListener.onItemClick(nameEnum)}"
         android:textColor="@color/secondary_text_color" />
 </layout>

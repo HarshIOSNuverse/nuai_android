@@ -55,7 +55,7 @@
                         android:paddingHorizontal="@dimen/dp_7"
                         android:text='@{reading.title?? ""}'
                         android:textColor="@color/secondary_text_color"
-                        android:textSize="@dimen/sp_18"
+                        android:textSize="@dimen/sp_14"
                         app:layout_constraintEnd_toStartOf="@+id/iv_reading_indicator"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -77,8 +77,7 @@
                         android:layout_marginTop="@dimen/dp_5"
                         android:paddingHorizontal="@dimen/dp_7"
                         android:text='@{reading.observedValue!=null  &amp;&amp; reading.observedValue.length()>0? reading.observedValue: "N/A"}'
-                        android:textColor="@color/secondary_text_color"
-                        android:textSize="@dimen/sp_30"
+                        android:textSize="@dimen/sp_50"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_reading_title" />
 
@@ -87,8 +86,7 @@
                         style="@style/TextViewStyleRegular"
                         android:layout_width="0dp"
                         android:text='@{reading.unit?? ""}'
-                        android:textColor="@color/secondary_text_color"
-                        android:textSize="@dimen/sp_20"
+                        android:textSize="@dimen/sp_22"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_observed_value"
                         app:layout_constraintStart_toEndOf="@+id/tv_observed_value" />
 
@@ -100,7 +98,6 @@
                     android:layout_marginHorizontal="@dimen/dp_25"
                     android:layout_marginTop="@dimen/dp_20"
                     android:text="@string/reading_name_title_msg"
-                    android:textSize="@dimen/sp_17"
                     app:layout_constraintBottom_toTopOf="@+id/progress_bar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

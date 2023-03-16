@@ -36,7 +36,6 @@
             android:layout_marginTop="@dimen/dp_20"
             android:gravity="center"
             android:textColor="@color/secondary_text_color"
-            android:textSize="@dimen/sp_16"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

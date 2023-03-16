@@ -65,9 +65,8 @@
 
             <TextView
                 android:id="@+id/name_text"
+                style="@style/TextViewStyleRegular"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/switzer_regular"
                 android:gravity="center_vertical"
                 android:text='@{user.fullName?? ""}'
                 android:textColor="@color/primary_text_color"
@@ -79,30 +78,26 @@
 
             <TextView
                 android:id="@+id/email_text"
+                style="@style/TextViewStyleRegular"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_5"
-                android:fontFamily="@font/switzer_regular"
                 android:gravity="center_vertical"
                 android:text='@{user.email?? ""}'
                 android:textColor="@color/secondary_text_color"
-                android:textSize="@dimen/sp_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name_text" />
 
             <TextView
                 android:id="@+id/view_profile_text"
+                style="@style/TextViewStyleRegular"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_20"
-                android:fontFamily="@font/switzer_regular"
                 android:gravity="center_vertical"
                 android:onClick="@{onClickLister}"
                 android:paddingVertical="@dimen/dp_5"
                 android:text="@string/view_profile"
                 android:textColor="@color/blue_text_color"
-                android:textSize="@dimen/sp_16"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -128,6 +123,8 @@
                     android:id="@+id/health_history_menu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/ripple"
+                    android:clickable="true"
                     android:gravity="center_vertical"
                     android:onClick="@{onClickLister}"
                     android:orientation="horizontal"
@@ -162,7 +159,8 @@
                     android:id="@+id/settings_menu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#F8F8F8"
+                    android:background="@drawable/ripple"
+                    android:clickable="true"
                     android:gravity="center_vertical"
                     android:onClick="@{onClickLister}"
                     android:orientation="horizontal"
@@ -196,6 +194,8 @@
                     android:id="@+id/about_app_menu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/ripple"
+                    android:clickable="true"
                     android:gravity="center_vertical"
                     android:onClick="@{onClickLister}"
                     android:orientation="horizontal"
@@ -275,7 +275,7 @@
             android:paddingHorizontal="@dimen/drawer_menu_start_padding"
             android:text="@string/check_my_self_copy_right"
             android:textColor="@color/copy_write_text_color"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

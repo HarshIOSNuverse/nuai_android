@@ -16,6 +16,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.nuai.R
 import com.nuai.databinding.LayoutNoInternetBinding
 import com.nuai.databinding.ToolbarLayoutBinding
+import com.nuai.home.ui.activity.HomeActivity
 import com.nuai.onboarding.ui.activity.LoginRegisterActivity
 import com.nuai.onboarding.ui.activity.SplashActivity
 import com.nuai.onboarding.ui.activity.SplashAnimationActivity
@@ -63,7 +64,7 @@ open class BaseActivity : AppCompatActivity() {
     protected fun setUpToolNewBar(toolbarLayout: ToolbarLayoutBinding) {
         this.toolbarLayoutBinding = toolbarLayout
         val toolbar = toolbarLayout.toolbar.apply {
-            setPadding(0, 0, 0, 0)
+            setPadding(/*if(this@BaseActivity is HomeActivity) 22 else*/ 20, 0, 0, 0)
             setContentInsetsAbsolute(0, 0)
         }
         tvToolbarTitle = toolbarLayout.tvToolbarTitle

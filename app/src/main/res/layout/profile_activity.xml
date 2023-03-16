@@ -43,12 +43,11 @@
 
             <TextView
                 android:id="@+id/name_text"
+                style="@style/TextViewStyleRegular"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:fontFamily="@font/switzer_regular"
                 android:gravity="center_vertical"
                 android:text='@{user.fullName?? ""}'
-                android:textColor="@color/primary_text_color"
                 android:textSize="@dimen/sp_20"
                 app:layout_constraintBottom_toTopOf="@+id/email_text"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -57,14 +56,13 @@
 
             <TextView
                 android:id="@+id/email_text"
+                style="@style/TextViewStyleRegular"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_5"
                 android:fontFamily="@font/switzer_regular"
                 android:gravity="center_vertical"
                 android:text='@{user.email?? ""}'
                 android:textColor="@color/secondary_text_color"
-                android:textSize="@dimen/sp_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name_text" />
@@ -379,12 +377,9 @@
                     <TextView
                         android:id="@+id/lbl_your_bmi"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/switzer_regular"
+                        style="@style/TextViewStyleRegular"
                         android:gravity="center"
                         android:text="@string/your_bmi"
-                        android:textColor="@color/primary_text_color"
-                        android:textSize="@dimen/sp_18"
                         app:layout_constraintBottom_toTopOf="@+id/bmi_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -394,13 +389,11 @@
                     <TextView
                         android:id="@+id/bmi_text"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        style="@style/TextViewStyleMedium"
                         android:layout_marginTop="@dimen/dp_5"
-                        android:fontFamily="@font/switzer_medium"
                         android:gravity="center"
                         android:text='@{""+user.bodyInfo.bmiIndex}'
                         android:textColor="@color/bmi_text_color"
-                        android:textSize="@dimen/sp_16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -424,13 +417,10 @@
 
                     <TextView
                         android:id="@+id/lbl_your_category"
+                        style="@style/TextViewStyleRegular"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/switzer_regular"
                         android:gravity="center"
                         android:text="@string/your_category"
-                        android:textColor="@color/primary_text_color"
-                        android:textSize="@dimen/sp_18"
                         app:layout_constraintBottom_toTopOf="@+id/category_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -440,13 +430,11 @@
                     <TextView
                         android:id="@+id/category_text"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        style="@style/TextViewStyleMedium"
                         android:layout_marginTop="@dimen/dp_5"
-                        android:fontFamily="@font/switzer_medium"
                         android:gravity="center"
                         android:text='@{user.bodyInfo.category?? ""}'
                         android:textColor="@color/green_text_color"
-                        android:textSize="@dimen/sp_16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -472,7 +460,7 @@
             android:text="@string/save_changes"
             android:textAllCaps="false"
             android:textColor="@color/disabled_btn_text_color"
-            android:textSize="@dimen/sp_18"
+            android:textSize="@dimen/sp_20"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

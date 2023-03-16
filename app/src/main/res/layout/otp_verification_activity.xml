@@ -50,7 +50,6 @@
             android:gravity="center_horizontal"
             android:text="@string/otp_code_sent_on_email_msg"
             android:textColor="@color/secondary_text_color"
-            android:textSize="@dimen/sp_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_txt" />
@@ -97,7 +96,7 @@
             android:text="@string/reset_password"
             android:textAllCaps="false"
             android:textColor="@color/disabled_btn_text_color"
-            android:textSize="@dimen/sp_18"
+            android:textSize="@dimen/sp_20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lineField" />
@@ -105,15 +104,11 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/didnt_received_otp_text"
             style="@style/TextViewStyleRegular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/dp_30"
             android:gravity="center_horizontal"
             android:onClick="@{onClickListener}"
             android:padding="@dimen/dp_5"
             android:text="@string/didnt_received_otp"
-            android:textColor="@color/primary_text_color"
-            android:textSize="@dimen/sp_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ll_options"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -138,8 +133,7 @@
                 android:onClick="@{onClickListener}"
                 android:padding="@dimen/dp_5"
                 android:text="@string/resend"
-                android:textColor="@color/blue_text_color"
-                android:textSize="@dimen/sp_16" />
+                android:textColor="@color/blue_text_color" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/timer_text"
@@ -151,7 +145,6 @@
                 android:padding="@dimen/dp_5"
                 android:text="@string/resend_activation_code"
                 android:textColor="@color/otp_timer_text_color"
-                android:textSize="@dimen/sp_16"
                 android:visibility="gone" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -346,7 +346,7 @@
                         android:text="@string/upgrade_now"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/sp_18"
+                        android:textSize="@dimen/sp_20"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -414,7 +414,7 @@
                     android:text="@string/subscribe_now"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp_18"
+                    android:textSize="@dimen/sp_20"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

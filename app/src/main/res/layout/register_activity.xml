@@ -426,7 +426,7 @@
             android:text="@string/register"
             android:textAllCaps="false"
             android:textColor="@color/disabled_btn_text_color"
-            android:textSize="@dimen/sp_18"
+            android:textSize="@dimen/sp_20"
             app:layout_constraintBottom_toTopOf="@+id/already_have_account_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -442,7 +442,7 @@
             android:padding="@dimen/dp_5"
             android:text="@string/already_have_account"
             android:textColor="@color/blue_text_color"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_17"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

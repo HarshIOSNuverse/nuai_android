@@ -125,5 +125,7 @@ dependencies {
     implementation 'com.github.MackHartley:RoundedProgressBar:3.0.0'
     //Swipe Refresh Layout
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
+    // In-App Purchase
+    implementation 'com.android.billingclient:billing-ktx:5.1.0'
 
 }

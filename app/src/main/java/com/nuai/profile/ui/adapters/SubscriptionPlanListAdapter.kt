@@ -6,15 +6,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nuai.R
 import com.nuai.databinding.ItemSubscriptionPlanBinding
-import com.nuai.home.model.Reading
+import com.nuai.profile.model.SubscriptionPlan
 import com.nuai.utils.BindingViewHolder
 
-internal class SubscriptionPlanListAdapter(items: ArrayList<Reading>) :
+internal class SubscriptionPlanListAdapter(items: ArrayList<SubscriptionPlan>) :
     RecyclerView.Adapter<BindingViewHolder<ItemSubscriptionPlanBinding>>() {
 
-    private var items: ArrayList<Reading> = arrayListOf()
+    private var items: ArrayList<SubscriptionPlan> = arrayListOf()
     internal var subscriptionListener: SubscriptionListener? = null
-    var selectedSubscription: Reading? = null
+    var selectedSubscription: SubscriptionPlan? = null
     private lateinit var context: Context
 
     init {
@@ -52,7 +52,7 @@ internal class SubscriptionPlanListAdapter(items: ArrayList<Reading>) :
     }
 
     interface SubscriptionListener {
-        fun onSubscriptionClick(reading: Reading)
+        fun onSubscriptionClick(reading: SubscriptionPlan)
     }
 
 }

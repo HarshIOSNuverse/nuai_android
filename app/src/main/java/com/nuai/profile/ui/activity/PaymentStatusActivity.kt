@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.PaymentStatusActivityBinding
-import com.nuai.home.model.Reading
 import com.nuai.home.ui.activity.HomeActivity
+import com.nuai.profile.model.SubscriptionPlan
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.IntentConstant
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class PaymentStatusActivity : BaseActivity(), View.OnClickListener {
     companion object {
         private var count = 0
-        fun startActivity(activity: Activity, selectedSubscription: Reading?) {
+        fun startActivity(activity: Activity, selectedSubscription: SubscriptionPlan?) {
             Intent(activity, PaymentStatusActivity::class.java).apply {
                 putExtra(IntentConstant.READING, selectedSubscription)
             }.run {
@@ -34,7 +34,7 @@ class PaymentStatusActivity : BaseActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: PaymentStatusActivityBinding
-    private var subscription: Reading? = null
+    private var subscription: SubscriptionPlan? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +50,7 @@ class PaymentStatusActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         intent?.run {
             subscription = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                getParcelableExtra(IntentConstant.READING, Reading::class.java)
+                getParcelableExtra(IntentConstant.READING, SubscriptionPlan::class.java)
             } else {
                 getParcelableExtra(IntentConstant.READING)
             }

@@ -25,6 +25,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -509,21 +510,23 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
             binding.measurementsLayout.tvReadingUnit.setTextColor(
                 ContextCompat.getColor(
                     this,
-                    R.color.secondary_text_color
+                    R.color.primary_text_color
                 )
             )
+            binding.measurementsLayout.tvReadingUnit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f)
             binding.measurementsLayout.readingProgressBar.setProgressDrawableColor(
                 ContextCompat.getColor(
                     this,
                     R.color.green_text_color
                 )
             )
+
         } else {
 //            binding.measurementsLayout.root.visibility = View.INVISIBLE
             binding.ivFingerMask.setImageResource(R.drawable.ic_finger_red_elipse)
             binding.measurementsLayout.tvFaceScanningMsg.text =
                 getString(R.string.could_not_collect_data_over_seconds)
-            binding.measurementsLayout.tvReading.visibility = View.INVISIBLE
+            binding.measurementsLayout.tvReading.visibility = View.GONE
             binding.measurementsLayout.tvReadingUnit.text =
                 getString(R.string.pls_dont_remove_your_finger)
             binding.measurementsLayout.tvReadingUnit.setTextColor(
@@ -532,6 +535,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                     R.color.error_msg_text_color
                 )
             )
+            binding.measurementsLayout.tvReadingUnit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
             binding.measurementsLayout.readingProgressBar.setProgressDrawableColor(
                 ContextCompat.getColor(
                     this,

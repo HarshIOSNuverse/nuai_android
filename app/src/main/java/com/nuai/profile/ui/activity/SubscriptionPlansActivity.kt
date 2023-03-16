@@ -11,14 +11,18 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import com.android.billingclient.api.*
+import com.android.billingclient.api.BillingClient.ProductType
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.SubscriptionPlansActivityBinding
-import com.nuai.home.model.Reading
+import com.nuai.profile.model.SubscriptionPlan
 import com.nuai.profile.ui.adapters.SubscriptionPlanListAdapter
 import com.nuai.profile.viewmodel.ProfileViewModel
 import com.nuai.utils.AnimationsHandler
 import com.nuai.utils.CommonUtils
+import com.nuai.utils.CommonUtils.TAG
+import com.nuai.utils.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -49,7 +53,8 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: SubscriptionPlansActivityBinding
     private val profileViewModel: ProfileViewModel by viewModels()
-    private val subscriptionList: ArrayList<Reading> = arrayListOf()
+    private val subscriptionList: ArrayList<SubscriptionPlan> = arrayListOf()
+    private var billingClient: BillingClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +62,7 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
         setUpToolNewBar(binding.toolbarLayout)
         setToolBarTitle(getString(R.string.subscriptions_plan))
         initClickListener()
+        initBilling()
         initAdapter()
         initObserver()
         Handler(Looper.getMainLooper()).postDelayed({
@@ -67,13 +73,13 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("NotifyDataSetChanged")
     private fun init() {
         subscriptionList.clear()
-        subscriptionList.add(Reading().apply {
+        subscriptionList.add(SubscriptionPlan().apply {
             id = 1
             title = "Monthly"
             observedValue = "$2.95"
             shortDesc = "No Limit for Scan"
         })
-        subscriptionList.add(Reading().apply {
+        subscriptionList.add(SubscriptionPlan().apply {
             id = 2
             title = "Yearly"
             observedValue = "$30"
@@ -126,16 +132,118 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.continue_btn -> {
-//                profileViewModel.updateProfile(request)
-                if (binding.adapter!!.selectedSubscription != null) {
+                val selectedPlan = binding.adapter!!.selectedSubscription
+                if (selectedPlan == null) {
+                    CommonUtils.showToast(this, getString(R.string.pls_select_plan))
+                }/* else if (selectedPlan.skuDetailsResult == null) {
+                    CommonUtils.showToast(this, getString(R.string.please_try_after_some_time))
+                }*/ else if (!CommonUtils.isNetworkAvailable(this)) {
+                    CommonUtils.showToast(this, getString(R.string.no_internet_connection))
+                } else {
                     PaymentStatusActivity.startActivity(
                         this,
                         binding.adapter!!.selectedSubscription
                     )
-                } else {
-                    CommonUtils.showToast(this, getString(R.string.pls_select_plan))
+                    callInAppPurchase(selectedPlan.skuDetailsResult)
                 }
             }
+        }
+    }
+
+    private val purchasesUpdatedListener =
+        PurchasesUpdatedListener { billingResult, purchases ->
+            Logger.d(TAG, "onPurchasesUpdated() response: ${billingResult.responseCode}")
+            when (billingResult.responseCode) {
+                BillingClient.BillingResponseCode.OK -> {
+                    if (!purchases.isNullOrEmpty()) {
+                        runOnUiThread {
+//                            addSubscription(purchases[0])
+                        }
+                    }
+                }
+                BillingClient.BillingResponseCode.USER_CANCELED -> {
+                    CommonUtils.showToast(this, "Payment cancelled")
+                }
+                BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
+                    CommonUtils.showToast(this, "Already Owned")
+                }
+                else -> {
+                    CommonUtils.showToast(this, "Something went wrong")
+                }
+            }
+        }
+
+    private fun initBilling() {
+        billingClient =
+            BillingClient.newBuilder(this).enablePendingPurchases()
+                .setListener(purchasesUpdatedListener).build()
+        billingClient!!.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                Logger.e(
+                    "onBillingSetupFinished",
+                    "onBillingSetupFinished " + billingResult.debugMessage + " " + billingResult.responseCode
+                )
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    querySkuDetailsAsync()
+                }
+            }
+
+            override fun onBillingServiceDisconnected() {
+                Logger.e("onBilling Disconnected", "onBillingServiceDisconnected")
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        })
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun querySkuDetailsAsync() {
+        val productList = ArrayList<String>()
+        productList.add("product_id_example")
+        val params = QueryProductDetailsParams.newBuilder()
+        params.setProductList(
+            arrayListOf(
+                QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId("product_id_example")
+                    .setProductType(ProductType.SUBS)
+                    .build(),
+                QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId("product_id_example_1")
+                    .setProductType(ProductType.SUBS)
+                    .build()
+            )
+        )
+        billingClient!!.queryProductDetailsAsync(params.build()) { _, productDetailsList ->
+            if (productDetailsList.isNotEmpty()) {
+                for (j in productDetailsList.indices) {
+                    val skuDetails = productDetailsList[j]
+                    subscriptionList[j].skuDetailsResult = skuDetails
+                }
+                runOnUiThread {
+                    binding.adapter!!.notifyDataSetChanged()
+                    setNoResult()
+                }
+            }
+        }
+    }
+
+    private fun callInAppPurchase(productDetails: ProductDetails?) {
+        if (productDetails != null) {
+            val productDetailsParamsList = listOf(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                    // retrieve a value for "productDetails" by calling queryProductDetailsAsync()
+                    .setProductDetails(productDetails)
+                    // to get an offer token, call ProductDetails.subscriptionOfferDetails()
+                    // for a list of offers that are available to the user
+//                    .setOfferToken(selectedOfferToken)
+                    .build()
+            )
+
+            val billingFlowParams = BillingFlowParams.newBuilder()
+                .setProductDetailsParamsList(productDetailsParamsList)
+                .build()
+            val billingResult = billingClient?.launchBillingFlow(this, billingFlowParams)
+            Logger.e("responseCode", billingResult.toString())
         }
     }
 
@@ -143,7 +251,7 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
         binding.adapter = SubscriptionPlanListAdapter(subscriptionList).apply {
             subscriptionListener = object : SubscriptionPlanListAdapter.SubscriptionListener {
                 @SuppressLint("NotifyDataSetChanged")
-                override fun onSubscriptionClick(reading: Reading) {
+                override fun onSubscriptionClick(reading: SubscriptionPlan) {
                     selectedSubscription = reading
                     binding.adapter!!.notifyDataSetChanged()
                 }
