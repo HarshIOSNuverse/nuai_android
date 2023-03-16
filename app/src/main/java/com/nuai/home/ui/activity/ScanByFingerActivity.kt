@@ -506,19 +506,10 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
             binding.measurementsLayout.tvFaceScanningMsg.text =
                 getString(R.string.finger_scanning_msg)
             binding.measurementsLayout.tvReading.visibility = View.VISIBLE
-            binding.measurementsLayout.tvReadingUnit.text = getString(R.string.bpm)
-            binding.measurementsLayout.tvReadingUnit.setTextColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.primary_text_color
-                )
-            )
-            binding.measurementsLayout.tvReadingUnit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f)
+            binding.measurementsLayout.tvReadingUnit.visibility = View.VISIBLE
+            binding.measurementsLayout.tvError.visibility = View.GONE
             binding.measurementsLayout.readingProgressBar.setProgressDrawableColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.green_text_color
-                )
+                ContextCompat.getColor(this, R.color.green_text_color)
             )
 
         } else {
@@ -526,21 +517,13 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
             binding.ivFingerMask.setImageResource(R.drawable.ic_finger_red_elipse)
             binding.measurementsLayout.tvFaceScanningMsg.text =
                 getString(R.string.could_not_collect_data_over_seconds)
-            binding.measurementsLayout.tvReading.visibility = View.GONE
-            binding.measurementsLayout.tvReadingUnit.text =
+            binding.measurementsLayout.tvError.text =
                 getString(R.string.pls_dont_remove_your_finger)
-            binding.measurementsLayout.tvReadingUnit.setTextColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.error_msg_text_color
-                )
-            )
-            binding.measurementsLayout.tvReadingUnit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+            binding.measurementsLayout.tvReading.visibility = View.GONE
+            binding.measurementsLayout.tvReadingUnit.visibility = View.GONE
+            binding.measurementsLayout.tvError.visibility = View.VISIBLE
             binding.measurementsLayout.readingProgressBar.setProgressDrawableColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.error_msg_text_color
-                )
+                ContextCompat.getColor(this, R.color.error_msg_text_color)
             )
         }
     }

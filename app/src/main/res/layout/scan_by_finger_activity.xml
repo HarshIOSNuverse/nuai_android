@@ -45,6 +45,7 @@
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_200"
                 android:layout_marginTop="90dp"
+                android:background="@drawable/finger_bg"
                 android:contentDescription="@string/todo"
                 android:src="@drawable/ic_finger_white_elipse"
                 app:layout_constraintEnd_toEndOf="parent"
