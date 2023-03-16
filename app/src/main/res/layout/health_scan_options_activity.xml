@@ -59,8 +59,8 @@
                 <TextView
                     android:id="@+id/tv_title"
                     style="@style/TextViewStyleRegular"
-                    android:paddingHorizontal="@dimen/dp_40"
                     android:gravity="center"
+                    android:paddingHorizontal="@dimen/dp_40"
                     android:text="@string/face_option_select_title"
                     android:textSize="@dimen/sp_20"
                     app:layout_constraintBottom_toTopOf="@+id/tv_message"
@@ -71,23 +71,23 @@
                 <TextView
                     android:id="@+id/tv_message"
                     style="@style/TextViewStyleRegular"
-                    android:paddingHorizontal="@dimen/dp_40"
                     android:layout_marginTop="@dimen/dp_20"
                     android:gravity="center"
+                    android:paddingHorizontal="@dimen/dp_40"
                     android:text="@string/face_option_select_msg"
                     android:textColor="@color/secondary_text_color"
-                    app:layout_constraintBottom_toTopOf="@+id/rg_type"
+                    app:layout_constraintBottom_toTopOf="@+id/cr_type"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-                <RadioGroup
-                    android:id="@+id/rg_type"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cr_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_30"
                     android:layout_marginBottom="@dimen/dp_30"
-                    android:background="@drawable/rc_orange_border_light_filled_c25"
+                    android:background="@drawable/scan_type_bg"
                     android:minHeight="@dimen/dp_55"
                     android:orientation="horizontal"
                     android:padding="@dimen/dp_1"
@@ -96,37 +96,135 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_message">
 
-                    <RadioButton
-                        android:id="@+id/rb_face"
-                        style="@style/TextViewStyleRegular"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cr_face"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/scan_type_radio_selector"
-                        android:button="@null"
-                        android:checked="true"
-                        android:drawableStart="@drawable/face_selector"
-                        android:drawableEnd="@drawable/tick_selector"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/dp_25"
-                        android:text="@string/face"
-                        android:textColor="@color/scan_radio_text_selector" />
+                        android:layout_height="0dp"
+                        android:background="@drawable/rc_orange_filled_c25"
+                        android:onClick="@{onClickListener}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/cr_finger"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <RadioButton
-                        android:id="@+id/rb_finger"
-                        style="@style/TextViewStyleRegular"
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/chk_face"
+                            style="@style/TextViewStyleRegular"
+                            android:button="@null"
+                            android:checked="true"
+                            android:drawableStart="@drawable/face_selector"
+                            android:drawablePadding="@dimen/dp_12"
+                            android:gravity="center"
+                            android:onClick="@{onClickListener}"
+                            android:text="@string/face"
+                            android:textColor="@color/scan_radio_text_selector"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/iv_face"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_face"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/tick_white_circle"
+                            android:layout_marginStart="@dimen/dp_12"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/chk_face"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cr_finger"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/scan_type_radio_selector"
-                        android:button="@null"
-                        android:drawableStart="@drawable/finger_selector"
-                        android:drawableEnd="@drawable/tick_selector"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/dp_25"
-                        android:text="@string/finger"
-                        android:textColor="@color/scan_radio_text_selector" />
-                </RadioGroup>
+                        android:layout_height="0dp"
+                        android:background="@drawable/rc_orange_light_filled_c25"
+                        android:onClick="@{onClickListener}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/cr_face"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/chk_finger"
+                            style="@style/TextViewStyleRegular"
+                            android:button="@null"
+                            android:drawableStart="@drawable/finger_selector"
+                            android:drawablePadding="@dimen/dp_12"
+                            android:gravity="center"
+                            android:onClick="@{onClickListener}"
+                            android:text="@string/finger"
+                            android:textColor="@color/scan_radio_text_selector"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/iv_finger"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_finger"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/tick_white_circle"
+                            android:visibility="gone"
+                            android:layout_marginStart="@dimen/dp_12"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/chk_finger"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--                <RadioGroup-->
+                <!--                    android:id="@+id/rg_type"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="@dimen/dp_30"-->
+                <!--                    android:layout_marginBottom="@dimen/dp_30"-->
+                <!--                    android:background="@drawable/rc_orange_border_light_filled_c25"-->
+                <!--                    android:minHeight="@dimen/dp_55"-->
+                <!--                    android:orientation="horizontal"-->
+                <!--                    android:padding="@dimen/dp_1"-->
+                <!--                    android:visibility="gone"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@+id/tv_message">-->
+
+                <!--                    <RadioButton-->
+                <!--                        android:id="@+id/rb_face"-->
+                <!--                        style="@style/TextViewStyleRegular"-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:background="@drawable/scan_type_radio_selector"-->
+                <!--                        android:button="@null"-->
+                <!--                        android:checked="true"-->
+                <!--                        android:drawableStart="@drawable/face_selector"-->
+                <!--                        android:drawableEnd="@drawable/tick_selector"-->
+                <!--                        android:gravity="center"-->
+                <!--                        android:paddingHorizontal="@dimen/dp_25"-->
+                <!--                        android:text="@string/face"-->
+                <!--                        android:textColor="@color/scan_radio_text_selector" />-->
+
+                <!--                    <RadioButton-->
+                <!--                        android:id="@+id/rb_finger"-->
+                <!--                        style="@style/TextViewStyleRegular"-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:background="@drawable/scan_type_radio_selector"-->
+                <!--                        android:button="@null"-->
+                <!--                        android:drawableStart="@drawable/finger_selector"-->
+                <!--                        android:drawableEnd="@drawable/tick_selector"-->
+                <!--                        android:gravity="center"-->
+                <!--                        android:paddingHorizontal="@dimen/dp_25"-->
+                <!--                        android:text="@string/finger"-->
+                <!--                        android:textColor="@color/scan_radio_text_selector" />-->
+                <!--                </RadioGroup>-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

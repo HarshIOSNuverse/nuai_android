@@ -55,7 +55,7 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
-        updateView(binding.rgType.checkedRadioButtonId)
+        updateView(binding.chkFace.id)
     }
 
     override fun onResume() {
@@ -88,29 +88,48 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
 
     private fun initClickListener() {
         binding.onClickListener = this
-        binding.rgType.setOnCheckedChangeListener { _, checkedId ->
-            updateView(checkedId)
-        }
+//        binding.rgType.setOnCheckedChangeListener { _, checkedId ->
+//            updateView(checkedId)
+//        }
         enableDisableButton(binding.measureNowBtn, true)
     }
 
     private fun updateView(checkedId: Int) {
-        if (checkedId == R.id.rb_face) {
+        if (checkedId == R.id.chk_face) {
+
             binding.ivTopIcon.setImageResource(R.drawable.face_option_select_top_icon)
             if (!user?.firstName.isNullOrEmpty()) {
                 binding.tvTitle.text =
                     String.format(getString(R.string.face_option_select_title), user?.firstName)
             }
             binding.tvMessage.text = getString(R.string.face_option_select_msg)
+            binding.crFace.setBackgroundResource(R.drawable.rc_orange_filled_c25)
+            binding.crFinger.setBackgroundResource(R.drawable.rc_orange_light_filled_c25)
+            binding.ivFace.visibility = View.VISIBLE
+            binding.ivFinger.visibility = View.GONE
         } else {
             binding.ivTopIcon.setImageResource(R.drawable.finger_option_select_top_icon)
             binding.tvTitle.text = getString(R.string.finger_option_select_title)
             binding.tvMessage.text = getString(R.string.finger_option_select_msg)
+            binding.crFace.setBackgroundResource(R.drawable.rc_orange_light_filled_c25)
+            binding.crFinger.setBackgroundResource(R.drawable.rc_orange_filled_c25)
+            binding.ivFace.visibility = View.GONE
+            binding.ivFinger.visibility = View.VISIBLE
         }
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
+            R.id.cr_face, R.id.chk_face -> {
+                binding.chkFace.isChecked = true
+                binding.chkFinger.isChecked = false
+                updateView(binding.chkFace.id)
+            }
+            R.id.cr_finger, R.id.chk_finger -> {
+                binding.chkFace.isChecked = false
+                binding.chkFinger.isChecked = true
+                updateView(binding.chkFinger.id)
+            }
             R.id.measure_now_btn -> {
                 if (user != null) {
                     if (user!!.numberOfSubscriptions == 0) {
@@ -187,7 +206,7 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun gotoScan() {
-        if (binding.rgType.checkedRadioButtonId == R.id.rb_face) {
+        if (binding.chkFace.isChecked) {
             ScanByFaceActivity.startActivity(this)
         } else {
             ScanByFingerActivity.startActivity(this)
