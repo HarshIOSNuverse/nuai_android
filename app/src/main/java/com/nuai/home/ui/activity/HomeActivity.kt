@@ -3,31 +3,26 @@ package com.nuai.home.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.lifecycleScope
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.HomeActivityBinding
 import com.nuai.history.ui.activity.HealthHistoryListActivity
 import com.nuai.interfaces.DialogClickListener
-import com.nuai.network.ResponseStatus
-import com.nuai.network.Status
 import com.nuai.onboarding.ui.activity.LoginRegisterActivity
 import com.nuai.profile.ui.activity.ProfileActivity
-import com.nuai.profile.viewmodel.ProfileViewModel
 import com.nuai.settings.ui.activity.SettingsActivity
 import com.nuai.utils.AlertDialogManager
 import com.nuai.utils.AnimationsHandler
-import com.nuai.utils.CommonUtils
 import com.nuai.utils.Pref
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -47,7 +42,8 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: HomeActivityBinding
-    private val profileViewModel: ProfileViewModel by viewModels()
+
+    //    private val profileViewModel: ProfileViewModel by viewModels()
     private lateinit var actionBarToggle: ActionBarDrawerToggle
 
 
@@ -58,12 +54,18 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
         setToolBarTitle(getString(R.string.app_name))
         showToolbarIcon(true)
         initClickListener()
-        setUpDrawerView()
-        initObserver()
+//        initObserver()
         init()
     }
 
     private fun init() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            setUpDrawerView()
+        }, 500)
+    }
+
+    override fun onResume() {
+        super.onResume()
         setUserDetails()
     }
 
@@ -72,25 +74,25 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
         binding.navigationMenuContainer.user = user
     }
 
-    private fun initObserver() {
-        lifecycleScope.launch {
-            profileViewModel.meApiState.collect {
-                when (it.status) {
-                    Status.LOADING -> {
-                        showHideProgress(it.data == null)
-                    }
-                    Status.SUCCESS -> {
-                        if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
-                        }
-                    }
-                    Status.ERROR -> {
-                        showHideProgress(false)
-                        CommonUtils.showToast(this@HomeActivity, it.message)
-                    }
-                }
-            }
-        }
-    }
+//    private fun initObserver() {
+//        lifecycleScope.launch {
+//            profileViewModel.meApiState.collect {
+//                when (it.status) {
+//                    Status.LOADING -> {
+//                        showHideProgress(it.data == null)
+//                    }
+//                    Status.SUCCESS -> {
+//                        if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
+//                        }
+//                    }
+//                    Status.ERROR -> {
+//                        showHideProgress(false)
+//                        CommonUtils.showToast(this@HomeActivity, it.message)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private fun initClickListener() {
         binding.onClickListener = this
@@ -150,19 +152,6 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
         Pref.logout()
         LoginRegisterActivity.clearTopAndOpenLoginSignUpActivity(this@HomeActivity)
         return
-        if (CommonUtils.isNetworkAvailable(this)) {
-            val fcmToken = Pref.fcmToken
-            if (!fcmToken.isNullOrEmpty()) {
-//                profileViewModel.loading.value = true
-//                val request =
-//                    RegisterTokenRequest(
-//                        fcmToken, Enums.PLATFORM, Enums.TokenType.UNREGISTER.toString()
-//                    )
-//                profileViewModel.registerUnregisterToken(request)
-            }
-        } else {
-            CommonUtils.showToast(this, getString(R.string.no_internet_connection))
-        }
     }
 
     private fun setUpDrawerView() {

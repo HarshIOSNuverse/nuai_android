@@ -1,7 +1,9 @@
 package com.nuai.base
 
 import android.content.Context
+import android.graphics.Point
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -16,7 +18,6 @@ import androidx.core.content.res.ResourcesCompat
 import com.nuai.R
 import com.nuai.databinding.LayoutNoInternetBinding
 import com.nuai.databinding.ToolbarLayoutBinding
-import com.nuai.home.ui.activity.HomeActivity
 import com.nuai.onboarding.ui.activity.LoginRegisterActivity
 import com.nuai.onboarding.ui.activity.SplashActivity
 import com.nuai.onboarding.ui.activity.SplashAnimationActivity
@@ -147,5 +148,35 @@ open class BaseActivity : AppCompatActivity() {
                 ContextCompat.getColor(this, R.color.disabled_btn_text_color)
             )
         }
+    }
+
+    @Suppress("DEPRECATION")
+    fun getScreenHeight(): Int {
+        val displayMetrics = DisplayMetrics()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            val display = display
+            display?.getRealMetrics(displayMetrics)
+        } else {
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+        }
+        return displayMetrics.heightPixels
+    }
+
+    @Suppress("DEPRECATION")
+    fun getScreenWidth(): Int {
+        val displayMetrics = DisplayMetrics()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            val display = display
+            display?.getRealMetrics(displayMetrics)
+        } else {
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+        }
+        return displayMetrics.widthPixels
+    }
+
+    open fun getLocationOnScreen(view: View): Point? {
+        val location = IntArray(2)
+        view.getLocationOnScreen(location)
+        return Point(location[0], location[1])
     }
 }

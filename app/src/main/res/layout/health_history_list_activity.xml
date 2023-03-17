@@ -156,12 +156,15 @@
                     android:id="@+id/view_flipper"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:measureAllChildren="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cr_header">
 
-                    <include layout="@layout/layout_progress" />
+                    <include
+                        android:id="@+id/progress_holder"
+                        layout="@layout/layout_progress" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/product_recycler_View"
@@ -177,11 +180,11 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/tv_no_data_found"
                         style="@style/TextViewStyleRegular"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="@dimen/dp_50"
-                        android:layout_marginVertical="@dimen/dp_100"
                         android:background="@color/white"
                         android:gravity="center"
                         android:text="@string/no_measurement_were_taken"

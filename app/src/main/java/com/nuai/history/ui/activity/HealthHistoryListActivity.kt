@@ -44,6 +44,9 @@ class HealthHistoryListActivity : BaseActivity() {
     private val historyViewModel: HistoryViewModel by viewModels()
     private var selectedDate: String? = ""
     private val historyList: ArrayList<HealthBasicInfo> = arrayListOf()
+    private var screenHeight = 0
+    private var bottom = 0
+    private var progressOrNoDataHeight = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -175,11 +178,18 @@ class HealthHistoryListActivity : BaseActivity() {
         }
         lifecycleScope.launch {
             historyViewModel.historyListState.collect {
+                if (screenHeight == 0 || progressOrNoDataHeight == 0) {
+                    screenHeight = getScreenHeight()
+                    bottom = (binding.crHeader.y * 1.4).toInt() + binding.crHeader.height
+                    if (bottom != 0)
+                        progressOrNoDataHeight = screenHeight - bottom
+                }
                 when (it.status) {
                     Status.LOADING -> {
 //                        showHideProgress(it.data == null)
                         showHideProgress(false)
                         binding.viewFlipper.displayedChild = 0
+                        binding.progressHolder.crProgressBar.minHeight = progressOrNoDataHeight
                     }
                     Status.SUCCESS -> {
                         showHideProgress(false)
@@ -212,6 +222,7 @@ class HealthHistoryListActivity : BaseActivity() {
             binding.viewFlipper.displayedChild = 1
         } else {
             binding.viewFlipper.displayedChild = 2
+            binding.tvNoDataFound.height = progressOrNoDataHeight
         }
     }
 
