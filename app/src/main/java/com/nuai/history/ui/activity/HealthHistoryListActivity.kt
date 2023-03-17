@@ -203,6 +203,9 @@ class HealthHistoryListActivity : BaseActivity() {
                                 binding.tvFingerCount.text =
                                     historyList.count { finger -> finger.scanBy == Enums.ScanType.FINGER.toString() }
                                         .toString()
+                            } else {
+                                binding.tvFaceCount.text = "0"
+                                binding.tvFingerCount.text = "0"
                             }
                             binding.adapter!!.notifyDataSetChanged()
                             setNoResult()

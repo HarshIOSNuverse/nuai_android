@@ -13,5 +13,5 @@
     android:singleLine="true"
     android:textAlignment="inherit"
     android:textColor="@color/primary_text_color"
-    android:textSize="@dimen/sp_15"
+    android:textSize="@dimen/sp_17"
     tools:ignore="RtlSymmetry" />

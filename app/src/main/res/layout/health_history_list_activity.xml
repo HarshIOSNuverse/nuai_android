@@ -76,7 +76,7 @@
 
                     <TextView
                         android:id="@+id/tv_date"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_5"
@@ -101,7 +101,7 @@
 
                     <TextView
                         android:id="@+id/tv_face_count"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_10"
                         android:text="0"
@@ -138,7 +138,7 @@
 
                     <TextView
                         android:id="@+id/tv_finger_count"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_10"
                         android:text="0"
@@ -181,12 +181,13 @@
 
                     <TextView
                         android:id="@+id/tv_no_data_found"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="@dimen/dp_50"
                         android:background="@color/white"
                         android:gravity="center"
+                        android:textSize="@dimen/sp_14"
                         android:text="@string/no_measurement_were_taken"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

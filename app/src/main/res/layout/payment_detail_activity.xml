@@ -48,7 +48,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_plan_type"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_width="0dp"
                         android:layout_marginTop="@dimen/dp_25"
                         android:textSize="@dimen/sp_17"
@@ -58,7 +58,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_plan_status"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleMedium"
                         android:layout_marginStart="@dimen/dp_5"
                         android:text="@string/successful"
                         android:textColor="@color/green_text_color"
@@ -70,7 +70,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_plan_amount"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_marginTop="@dimen/dp_10"
                         android:gravity="center"
                         android:textSize="@dimen/sp_36"
@@ -79,7 +79,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_purchase_date"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_width="0dp"
                         android:layout_marginTop="@dimen/dp_10"
                         android:text="@string/purchased_on"
@@ -101,7 +101,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/lbl_pay_details"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_marginTop="@dimen/dp_20"
                         android:gravity="center"
                         android:text="@string/payment_details"
@@ -111,7 +111,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/lbl_name"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_width="0dp"
                         android:layout_marginTop="@dimen/dp_20"
                         android:text="@string/name"
@@ -123,7 +123,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_name"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_marginTop="@dimen/dp_10"
                         android:textSize="@dimen/sp_14"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -142,7 +142,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/lbl_plan_expire_date"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_width="0dp"
                         android:layout_marginTop="@dimen/dp_7"
                         android:text="@string/plan_expire_date"
@@ -154,7 +154,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_plan_expire_date"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_marginTop="@dimen/dp_7"
                         android:textSize="@dimen/sp_14"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -173,7 +173,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/lbl_transaction_date"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_width="0dp"
                         android:layout_marginTop="@dimen/dp_7"
                         android:text="@string/transaction_date"
@@ -185,7 +185,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_transaction_date"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_marginTop="@dimen/dp_7"
                         android:textSize="@dimen/sp_14"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -204,7 +204,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/lbl_transaction_number"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_width="0dp"
                         android:layout_marginTop="@dimen/dp_7"
                         android:text="@string/transaction_number"
@@ -216,7 +216,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_transaction_number"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_marginTop="@dimen/dp_7"
                         android:textSize="@dimen/sp_14"
                         app:layout_constraintEnd_toEndOf="parent"

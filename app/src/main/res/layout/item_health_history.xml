@@ -49,6 +49,7 @@
                 style="@style/TextViewStyleRegular"
                 android:layout_marginStart="@dimen/dp_10"
                 android:text="@string/wellness_score"
+                android:textSize="@dimen/sp_12"
                 android:textColor="@color/secondary_text_color"
                 app:layout_constraintStart_toEndOf="@+id/iv_indicator"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -57,6 +58,7 @@
                 android:id="@+id/tv_wellness_score"
                 style="@style/TextViewStyleRegular"
                 android:layout_width="0dp"
+                android:textSize="@dimen/sp_12"
                 android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_2"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -69,6 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_marginHorizontal="@dimen/dp_10"
                 android:gravity="end"
+                android:textSize="@dimen/sp_10"
                 android:text="@{history.resultTime}"
                 android:textColor="@color/secondary_text_color"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -90,7 +93,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lbl_heart_rate"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/dp_10"
             android:paddingVertical="@dimen/dp_7"
@@ -103,7 +106,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_heart_rate"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:text='@{""+history.heartRate+" "+@string/bpm}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_heart_rate"
@@ -122,7 +125,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lbl_breathing_rate"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:paddingVertical="@dimen/dp_7"
             android:text="@string/breathing_rate"
@@ -134,7 +137,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_breathing_rate"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:text='@{""+history.breathingRate+" "+@string/brpm}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_breathing_rate"
@@ -153,7 +156,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lbl_prq"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:paddingVertical="@dimen/dp_7"
             android:text="@string/prq"
@@ -165,7 +168,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_prq"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:text='@{""+history.prq}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_prq"
@@ -184,7 +187,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lbl_oxygen_saturation"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:paddingVertical="@dimen/dp_7"
             android:text="@string/oxygen_saturation"
@@ -196,7 +199,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_oxygen_saturation"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:text='@{""+history.oxygenSaturation+"%"}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_oxygen_saturation"
@@ -216,7 +219,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lbl_blood_pressure"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:paddingVertical="@dimen/dp_7"
             android:text="@string/blood_pressure"
@@ -228,7 +231,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_blood_pressure"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:text='@{history.bloodPressure!=null  &amp;&amp; history.bloodPressure.length()>0? history.bloodPressure: "N/A"}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_blood_pressure"
@@ -247,7 +250,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lbl_stress_level"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:paddingVertical="@dimen/dp_7"
             android:text="@string/stress_level"
@@ -259,7 +262,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_stress_level"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:text='@{""+history.stressLevel}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_stress_level"
@@ -278,7 +281,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lbl_recovery_ability"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:paddingVertical="@dimen/dp_7"
             android:text="@string/recovery_ability"
@@ -290,7 +293,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_recovery_ability"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:text='@{history.recoveryAbility!=null  &amp;&amp; history.recoveryAbility.length()>0? history.recoveryAbility: "N/A"}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_recovery_ability"
@@ -309,7 +312,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lbl_stress_response"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:paddingVertical="@dimen/dp_7"
             android:text="@string/stress_response"
@@ -321,7 +324,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_stress_response"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:text='@{history.stressResponse!=null  &amp;&amp; history.stressResponse.length()>0? history.stressResponse: "N/A"}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_stress_response"
@@ -340,7 +343,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lbl_hrv_sdnn"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:paddingVertical="@dimen/dp_7"
             android:text="@string/hrv_sdnn"
@@ -352,7 +355,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_hrv_sdnn"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:text='@{""+history.hrvSdnn+" "+@string/ms}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_hrv_sdnn"

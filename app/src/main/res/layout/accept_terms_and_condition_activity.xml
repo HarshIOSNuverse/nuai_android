@@ -30,7 +30,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title_txt"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
@@ -60,7 +60,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/height_error_text"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:layout_marginTop="@dimen/dp_40"
                     android:layout_marginBottom="@dimen/dp_30"
@@ -99,7 +99,7 @@
             android:layout_marginBottom="@dimen/dp_20"
             android:background="@drawable/rc_gray_filled_c25"
             android:enabled="false"
-            android:fontFamily="@font/switzer_medium"
+            android:fontFamily="@font/switzer_regular"
             android:onClick="@{onClickListener}"
             android:text="@string/continue_"
             android:textAllCaps="false"

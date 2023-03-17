@@ -45,7 +45,7 @@
                 android:id="@+id/name_text"
                 style="@style/TextViewStyleRegular"
                 android:layout_width="0dp"
-                android:fontFamily="@font/switzer_regular"
+                android:fontFamily="@font/switzer_light"
                 android:gravity="center_vertical"
                 android:text='@{user.fullName?? ""}'
                 android:textSize="@dimen/sp_20"
@@ -59,7 +59,7 @@
                 style="@style/TextViewStyleRegular"
                 android:layout_width="0dp"
                 android:layout_marginTop="@dimen/dp_5"
-                android:fontFamily="@font/switzer_regular"
+                android:fontFamily="@font/switzer_light"
                 android:gravity="center_vertical"
                 android:text='@{user.email?? ""}'
                 android:textColor="@color/secondary_text_color"
@@ -112,7 +112,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/first_error_text"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_5"
@@ -150,7 +150,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/last_error_text"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_5"
@@ -213,7 +213,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/dob_error_text"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/error_info"
@@ -272,7 +272,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/gender_error_text"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/error_info"
@@ -310,7 +310,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/weight_error_text"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_5"
@@ -348,7 +348,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/height_error_text"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_5"
@@ -377,7 +377,7 @@
                     <TextView
                         android:id="@+id/lbl_your_bmi"
                         android:layout_width="0dp"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:gravity="center"
                         android:text="@string/your_bmi"
                         app:layout_constraintBottom_toTopOf="@+id/bmi_text"
@@ -389,7 +389,7 @@
                     <TextView
                         android:id="@+id/bmi_text"
                         android:layout_width="0dp"
-                        style="@style/TextViewStyleMedium"
+                        style="@style/TextViewStyleSemiBold"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="center"
                         android:text='@{""+user.bodyInfo.bmiIndex}'
@@ -417,7 +417,7 @@
 
                     <TextView
                         android:id="@+id/lbl_your_category"
-                        style="@style/TextViewStyleRegular"
+                        style="@style/TextViewStyleLight"
                         android:layout_width="0dp"
                         android:gravity="center"
                         android:text="@string/your_category"
@@ -430,7 +430,7 @@
                     <TextView
                         android:id="@+id/category_text"
                         android:layout_width="0dp"
-                        style="@style/TextViewStyleMedium"
+                        style="@style/TextViewStyleSemiBold"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="center"
                         android:text='@{user.bodyInfo.category?? ""}'
@@ -455,7 +455,7 @@
             android:layout_marginBottom="@dimen/dp_20"
             android:background="@drawable/rc_gray_filled_c25"
             android:enabled="false"
-            android:fontFamily="@font/switzer_medium"
+            android:fontFamily="@font/switzer_regular"
             android:onClick="@{onClickListener}"
             android:text="@string/save_changes"
             android:textAllCaps="false"

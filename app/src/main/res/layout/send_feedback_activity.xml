@@ -42,7 +42,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/lbl_feedback_form"
-                    style="@style/TextViewStyleMedium"
+                    style="@style/TextViewStyleRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_20"
@@ -55,7 +55,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/lbl_rate_your_exp"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_30"
@@ -79,7 +79,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/lbl_feedback_title"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_30"
@@ -105,7 +105,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_feedback_title_length"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_5"
@@ -116,7 +116,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/lbl_feedback_message"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_30"
@@ -144,7 +144,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_feedback_message_length"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_5"
@@ -162,7 +162,7 @@
                     android:layout_marginBottom="@dimen/dp_20"
                     android:background="@drawable/rc_gray_filled_c25"
                     android:enabled="false"
-                    android:fontFamily="@font/switzer_medium"
+                    android:fontFamily="@font/switzer_regular"
                     android:inputType="textCapSentences"
                     android:onClick="@{onClickListener}"
                     android:text="@string/submit"

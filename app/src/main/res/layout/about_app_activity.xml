@@ -60,7 +60,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/app_version_sdk_version_text"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:layout_marginHorizontal="@dimen/dp_25"
             android:layout_marginTop="@dimen/dp_30"
@@ -73,7 +73,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/message_text"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:layout_marginHorizontal="@dimen/dp_25"
             android:layout_marginTop="@dimen/dp_30"
@@ -82,13 +82,14 @@
 risus sem sollicitudin lacus, ut interdum tellus elit sed risus.
 \n\n
 Maecenas eget condimentum velit, sit ame feugiat lectus. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna."
+            android:textColor="@color/secondary_text_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/app_version_sdk_version_text" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/link_message_text"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:layout_marginHorizontal="@dimen/dp_25"
             android:layout_marginTop="@dimen/dp_10"

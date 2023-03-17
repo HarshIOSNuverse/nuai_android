@@ -43,7 +43,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_face_not_detect_title"
-                style="@style/TextViewStyleRegular"
+                style="@style/TextViewStyleLight"
                 android:layout_marginTop="@dimen/dp_5"
                 android:text="@string/face_not_detected"
                 android:textColor="@color/red"
@@ -55,7 +55,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_face_not_detect_msg"
-                style="@style/TextViewStyleRegular"
+                style="@style/TextViewStyleLight"
                 android:layout_marginTop="@dimen/dp_10"
                 android:gravity="center_horizontal"
                 android:text="@string/face_not_detected_msg"
@@ -73,7 +73,7 @@
                 android:layout_marginBottom="@dimen/dp_20"
                 android:background="@drawable/rc_black_filled_c25"
                 android:enabled="false"
-                android:fontFamily="@font/switzer_medium"
+                android:fontFamily="@font/switzer_regular"
                 android:onClick="@{onClickListener}"
                 android:text="@string/retry"
                 android:textAllCaps="false"

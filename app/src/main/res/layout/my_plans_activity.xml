@@ -53,15 +53,14 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_plan_type"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_marginTop="@dimen/dp_25"
-                            android:textSize="@dimen/sp_17"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_plan_amount"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_marginTop="@dimen/dp_10"
                             android:gravity="center"
                             android:textSize="@dimen/sp_36"
@@ -70,7 +69,7 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_purchase_date"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_width="0dp"
                             android:layout_marginTop="@dimen/dp_10"
                             android:text="@string/purchased_on"
@@ -92,17 +91,16 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/lbl_pay_details"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_marginTop="@dimen/dp_20"
                             android:gravity="center"
                             android:text="@string/payment_details"
-                            android:textSize="@dimen/sp_17"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/divider" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/lbl_name"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_width="0dp"
                             android:layout_marginTop="@dimen/dp_20"
                             android:text="@string/name"
@@ -114,7 +112,7 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_name"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_marginTop="@dimen/dp_10"
                             android:textSize="@dimen/sp_14"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -133,7 +131,7 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/lbl_plan_expire_date"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_width="0dp"
                             android:layout_marginTop="@dimen/dp_7"
                             android:text="@string/plan_expire_date"
@@ -145,7 +143,7 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_plan_expire_date"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_marginTop="@dimen/dp_7"
                             android:textSize="@dimen/sp_14"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -164,7 +162,7 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/lbl_transaction_date"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_width="0dp"
                             android:layout_marginTop="@dimen/dp_7"
                             android:text="@string/transaction_date"
@@ -176,7 +174,7 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_transaction_date"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_marginTop="@dimen/dp_7"
                             android:textSize="@dimen/sp_14"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -195,7 +193,7 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/lbl_transaction_number"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_width="0dp"
                             android:layout_marginTop="@dimen/dp_7"
                             android:text="@string/transaction_number"
@@ -207,7 +205,7 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_transaction_number"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_marginTop="@dimen/dp_7"
                             android:textSize="@dimen/sp_14"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -244,7 +242,7 @@
 
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:id="@+id/tv_upcoming_plan_type"
-                                    style="@style/TextViewStyleRegular"
+                                    style="@style/TextViewStyleLight"
                                     android:layout_width="0dp"
                                     android:textSize="@dimen/sp_17"
                                     app:layout_constraintEnd_toStartOf="@+id/tv_incoming_plan_status"
@@ -253,7 +251,7 @@
 
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:id="@+id/tv_incoming_plan_status"
-                                    style="@style/TextViewStyleRegular"
+                                    style="@style/TextViewStyleMedium"
                                     android:layout_marginStart="@dimen/dp_5"
                                     android:text="@string/successful"
                                     android:textColor="@color/green_text_color"
@@ -265,6 +263,7 @@
 
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:id="@+id/tv_upcoming_plan_amount"
+                                    style="@style/TextViewStyleLight"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/dp_10"
@@ -274,7 +273,7 @@
 
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:id="@+id/tv_upcoming_purchase_date"
-                                    style="@style/TextViewStyleRegular"
+                                    style="@style/TextViewStyleLight"
                                     android:layout_marginTop="@dimen/dp_10"
                                     android:text="@string/purchased_on"
                                     android:textSize="@dimen/sp_14"
@@ -295,7 +294,7 @@
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/Upcoming_plan"
-                                style="@style/TextViewStyleRegular"
+                                style="@style/TextViewStyleMedium"
                                 android:layout_marginStart="@dimen/dp_25"
                                 android:layout_marginEnd="@dimen/dp_20"
                                 android:background="@drawable/rc_orange_filled_c25"
@@ -314,7 +313,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/help_text"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_marginBottom="@dimen/dp_10"
                     android:gravity="center"
                     android:paddingHorizontal="@dimen/dp_25"
@@ -341,7 +340,7 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/dp_50"
                         android:background="@drawable/rc_black_filled_c25"
-                        android:fontFamily="@font/switzer_medium"
+                        android:fontFamily="@font/switzer_regular"
                         android:onClick="@{onClickListener}"
                         android:text="@string/upgrade_now"
                         android:textAllCaps="false"
@@ -378,7 +377,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_no_plan_title"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_marginTop="@dimen/dp_50"
                     android:gravity="center_horizontal"
                     android:text="@string/no_plan_title"
@@ -392,7 +391,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_no_plan_msg"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_marginTop="@dimen/dp_20"
                     android:gravity="center_horizontal"
                     android:text="@string/no_plan_msg"
@@ -409,7 +408,7 @@
                     android:layout_height="@dimen/dp_50"
                     android:layout_marginBottom="@dimen/dp_40"
                     android:background="@drawable/rc_black_filled_c25"
-                    android:fontFamily="@font/switzer_medium"
+                    android:fontFamily="@font/switzer_regular"
                     android:onClick="@{onClickListener}"
                     android:text="@string/subscribe_now"
                     android:textAllCaps="false"

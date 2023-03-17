@@ -93,7 +93,7 @@
             android:layout_marginHorizontal="@dimen/dp_25"
             android:layout_marginBottom="@dimen/dp_50"
             android:background="@drawable/rc_black_filled_c25"
-            android:fontFamily="@font/switzer_medium"
+            android:fontFamily="@font/switzer_regular"
             android:gravity="center"
             android:onClick="@{onClickLister}"
             android:text="@string/get_started"

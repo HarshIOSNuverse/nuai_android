@@ -16,7 +16,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_result_name"
-        style="@style/TextViewStyleRegular"
+        style="@style/TextViewStyleLight"
         android:layout_marginEnd="@dimen/dp_10"
         android:background="@drawable/rc_black_border_c25"
         android:layout_marginVertical="@dimen/dp_5"

@@ -52,7 +52,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt_title"
-                    style="@style/TextViewStyleBold"
+                    style="@style/TextViewStyleRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/dp_10"
@@ -68,7 +68,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt_message"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/dp_10"
@@ -91,7 +91,7 @@
                     android:layout_marginTop="@dimen/dp_20"
                     android:background="@drawable/rc_black_filled_c25"
                     android:button="@android:color/transparent"
-                    android:fontFamily="@font/switzer_regular"
+                    android:fontFamily="@font/switzer_light"
                     android:gravity="center"
                     android:padding="@dimen/dp_10"
                     android:text="@string/done"

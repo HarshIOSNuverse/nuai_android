@@ -47,11 +47,11 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_payment_status_title"
-                style="@style/TextViewStyleRegular"
+                style="@style/TextViewStyleLight"
                 android:layout_marginTop="@dimen/dp_50"
                 android:gravity="center_horizontal"
                 android:text="@string/payment_status_fail_title"
-                android:textSize="@dimen/sp_26"
+                android:textSize="@dimen/sp_22"
                 app:layout_constraintBottom_toTopOf="@+id/tv_payment_status_msg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +61,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_payment_status_msg"
-                style="@style/TextViewStyleRegular"
+                style="@style/TextViewStyleLight"
                 android:layout_marginTop="@dimen/dp_20"
                 android:gravity="center_horizontal"
                 android:text="@string/payment_status_fail_msg"
@@ -72,7 +72,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_amount"
-                style="@style/TextViewStyleRegular"
+                style="@style/TextViewStyleLight"
                 android:layout_marginTop="@dimen/dp_25"
                 android:gravity="center_horizontal"
                 android:text="@string/payment_status_fail_title"
@@ -96,7 +96,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/lbl_plan_expire_date"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:paddingVertical="@dimen/dp_7"
                     android:text="@string/plan_expire_date"
@@ -108,7 +108,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_plan_expire_date"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintBottom_toBottomOf="@+id/lbl_plan_expire_date"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -126,7 +126,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/lbl_transaction_date"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:paddingVertical="@dimen/dp_7"
                     android:text="@string/transaction_date"
@@ -138,7 +138,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_transaction_date"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintBottom_toBottomOf="@+id/lbl_transaction_date"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -156,7 +156,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/lbl_transaction_number"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_width="0dp"
                     android:paddingVertical="@dimen/dp_7"
                     android:text="@string/transaction_number"
@@ -168,7 +168,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_transaction_number"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintBottom_toBottomOf="@+id/lbl_transaction_number"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -187,7 +187,7 @@
             android:layout_marginHorizontal="@dimen/dp_25"
             android:layout_marginBottom="@dimen/dp_40"
             android:background="@drawable/rc_black_filled_c25"
-            android:fontFamily="@font/switzer_medium"
+            android:fontFamily="@font/switzer_regular"
             android:onClick="@{onClickListener}"
             android:text="@string/measure_now"
             android:textAllCaps="false"

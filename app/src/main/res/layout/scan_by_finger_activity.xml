@@ -65,7 +65,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_hint_msg"
-                    style="@style/TextViewStyleRegular"
+                    style="@style/TextViewStyleLight"
                     android:layout_marginTop="@dimen/dp_10"
                     android:gravity="center_horizontal"
                     android:text="@string/finger_scan_hint"
@@ -84,7 +84,7 @@
                     android:layout_marginTop="@dimen/dp_100"
                     android:layout_marginBottom="@dimen/dp_20"
                     android:background="@drawable/rc_black_filled_c25"
-                    android:fontFamily="@font/switzer_medium"
+                    android:fontFamily="@font/switzer_regular"
                     android:onClick="@{onClickListener}"
                     android:text="@string/stop"
                     android:textAllCaps="false"

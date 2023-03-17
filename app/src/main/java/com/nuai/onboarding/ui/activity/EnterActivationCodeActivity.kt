@@ -3,6 +3,7 @@ package com.nuai.onboarding.ui.activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -10,6 +11,7 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.nuai.R
@@ -173,9 +175,11 @@ class EnterActivationCodeActivity : BaseActivity(), View.OnClickListener {
     private fun showResendButton(isTimerCompleted: Boolean) {
         binding.resendText.isEnabled=isTimerCompleted
         if(isTimerCompleted){
+            binding.resendText.setTypeface(ResourcesCompat.getFont(this, R.font.switzer_regular))
             binding.resendText.setTextColor(ContextCompat.getColor(this,R.color.blue_text_color))
             binding.timerText.visibility = View.GONE
         }else{
+            binding.resendText.setTypeface(ResourcesCompat.getFont(this, R.font.switzer_light))
             binding.resendText.setTextColor(ContextCompat.getColor(this,R.color.secondary_text_color))
             binding.timerText.visibility = View.VISIBLE
         }

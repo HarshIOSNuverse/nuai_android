@@ -60,7 +60,7 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/lbl_choose_your_plan"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_marginTop="@dimen/dp_30"
                             android:gravity="center_horizontal"
                             android:text="@string/choose_your_plan"
@@ -72,7 +72,7 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/lbl_choose_your_plan_msg"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_marginTop="@dimen/dp_20"
                             android:gravity="center_horizontal"
                             android:text="@string/choose_the_plan_right_for_you"
@@ -96,11 +96,10 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/lbl_more_info"
-                            style="@style/TextViewStyleRegular"
+                            style="@style/TextViewStyleLight"
                             android:layout_width="0dp"
                             android:layout_marginTop="@dimen/dp_25"
                             android:text="@string/more_information"
-                            android:textColor="@color/secondary_text_color"
                             android:textSize="@dimen/sp_15"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -163,7 +162,7 @@
                     android:layout_marginHorizontal="@dimen/dp_25"
                     android:layout_marginBottom="@dimen/dp_40"
                     android:background="@drawable/rc_black_filled_c25"
-                    android:fontFamily="@font/switzer_medium"
+                    android:fontFamily="@font/switzer_regular"
                     android:onClick="@{onClickListener}"
                     android:text="@string/continue_"
                     android:textAllCaps="false"

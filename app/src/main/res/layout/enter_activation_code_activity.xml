@@ -30,7 +30,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title_txt"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dp_20"
@@ -44,7 +44,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/message_txt"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
@@ -64,12 +64,12 @@
             android:layout_marginTop="@dimen/dp_25"
             android:layout_marginEnd="-5dp"
             android:background="@android:color/transparent"
-            android:fontFamily="@font/switzer_medium"
+            android:fontFamily="@font/switzer_light"
             android:includeFontPadding="false"
             android:inputType="numberPassword"
             android:textColor="@color/et_text_color"
             android:textSelectHandle="@drawable/text_handle"
-            android:textSize="@dimen/sp_30"
+            android:textSize="@dimen/sp_20"
             app:bottomTextPaddingDp="@dimen/dp_1"
             app:cornerRadius="5dp"
             app:fieldBgColor="@color/white"
@@ -93,7 +93,7 @@
             android:layout_marginBottom="@dimen/dp_20"
             android:background="@drawable/rc_gray_filled_c25"
             android:enabled="false"
-            android:fontFamily="@font/switzer_medium"
+            android:fontFamily="@font/switzer_regular"
             android:onClick="@{onClickListener}"
             android:text="@string/activate"
             android:textAllCaps="false"

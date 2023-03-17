@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/tvTutorialHeader"
-            style="@style/TextViewStyleMedium"
+            style="@style/TextViewStyleLight"
             android:gravity="center"
             android:textSize="@dimen/sp_26"
             app:layout_constraintBottom_toTopOf="@+id/tvTutorialDesc"
@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/tvTutorialDesc"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_marginTop="@dimen/dp_20"
             android:gravity="center"
             android:textColor="@color/secondary_text_color"

@@ -19,7 +19,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_face_scanning_msg"
-            style="@style/TextViewStyleRegular"
+            style="@style/TextViewStyleLight"
             android:layout_marginTop="@dimen/dp_10"
             android:gravity="center_horizontal"
             android:text="@string/face_scanning_msg"
@@ -42,7 +42,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_reading"
-                style="@style/TextViewStyleRegular"
+                style="@style/TextViewStyleLight"
                 android:layout_marginEnd="@dimen/dp_8"
                 android:gravity="center_horizontal"
                 android:text="0"
@@ -54,7 +54,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_reading_unit"
-                style="@style/TextViewStyleRegular"
+                style="@style/TextViewStyleLight"
                 android:gravity="center_horizontal"
                 android:text="@string/bpm"
                 android:textSize="@dimen/sp_22"
@@ -65,7 +65,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_error"
-                style="@style/TextViewStyleRegular"
+                style="@style/TextViewStyleLight"
                 android:layout_marginBottom="@dimen/dp_25"
                 android:gravity="center_horizontal"
                 android:text="@string/pls_dont_remove_your_finger"
@@ -99,7 +99,7 @@
             android:layout_height="@dimen/dp_50"
             android:layout_marginTop="@dimen/dp_20"
             android:background="@drawable/rc_black_filled_c25"
-            android:fontFamily="@font/switzer_medium"
+            android:fontFamily="@font/switzer_regular"
             android:onClick="@{onClickListener}"
             android:text="@string/stop"
             android:textAllCaps="false"
