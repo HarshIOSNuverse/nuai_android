@@ -5,8 +5,6 @@ import ai.binah.hrv.HealthMonitorManager.HealthMonitorManagerInfoListener
 import ai.binah.hrv.api.*
 import ai.binah.hrv.api.HealthMonitorSession.SessionState
 import ai.binah.hrv.api.HealthMonitorSession.StateListener
-import ai.binah.hrv.api.v4.Gender
-import ai.binah.hrv.api.v4.SubjectDemographic
 import ai.binah.hrv.api.v4.alerts.ErrorData
 import ai.binah.hrv.api.v4.alerts.WarningData
 import ai.binah.hrv.api.v4.imagedata.ImageData
@@ -25,7 +23,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -78,7 +75,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
     private var mTime = 0
     private var mTimeCountHandler: Handler? = null
     private var mWarningDialogTimeoutHandler: Handler? = null
-    private var mMessageDialog: AlertDialog? = null
+//    private var mMessageDialog: AlertDialog? = null
     private var progressPercent: Double = 0.0
     private var mWarningDialog: AlertDialog? = null
 
@@ -178,7 +175,8 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
     }
 
     override fun onHealthManagerError(errorCode: Int, messageCode: Int) {
-        showErrorDialog(messageCode)
+        CommonUtils.showToast(this, "$messageCode")
+//        showErrorDialog(messageCode)
         updateUi(Enums.UiState.IDLE)
     }
 
@@ -293,7 +291,8 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
             updateUi(Enums.UiState.LOADING)
             mManager = HealthMonitorManager(this, LicenseData(BuildConfig.LICENCE_KEY), this)
         } catch (e: HealthMonitorException) {
-            showErrorDialog(e.errorCode, "HearMotionManager Error: (" + e.errorCode + ")")
+            CommonUtils.showToast(this, "HearMotionManager Error: (" + e.errorCode + ")")
+//            showErrorDialog(e.errorCode, "HearMotionManager Error: (" + e.errorCode + ")")
         }
     }
 
@@ -318,25 +317,25 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                     "createSession called mDeviceEnabledVitalSigns: $mDeviceEnabledVitalSigns"
                 )
             } else {
-                val user = Pref.user
-                var gender = Gender.MALE
-                var weight = 75.0
-                if (user?.bodyInfo != null) {
-                    gender = when (user.bodyInfo!!.gender!!.lowercase()) {
-                        Enums.Gender.MALE.toString().lowercase() -> {
-                            Gender.MALE
-                        }
-                        Enums.Gender.FEMALE.toString().lowercase() -> {
-                            Gender.FEMALE
-                        }
-                        else -> {
-                            Gender.UNSPECIFIED
-                        }
-                    }
-                    if (user.bodyInfo?.weight != null)
-                        weight = user.bodyInfo?.weight!!
-                }
-                val subjectDemographic = SubjectDemographic(gender, 35.0, weight)
+//                val user = Pref.user
+//                var gender = Gender.MALE
+//                var weight = 75.0
+//                if (user?.bodyInfo != null) {
+//                    gender = when (user.bodyInfo!!.gender!!.lowercase()) {
+//                        Enums.Gender.MALE.toString().lowercase() -> {
+//                            Gender.MALE
+//                        }
+//                        Enums.Gender.FEMALE.toString().lowercase() -> {
+//                            Gender.FEMALE
+//                        }
+//                        else -> {
+//                            Gender.UNSPECIFIED
+//                        }
+//                    }
+//                    if (user.bodyInfo?.weight != null)
+//                        weight = user.bodyInfo?.weight!!
+//                }
+//                val subjectDemographic = SubjectDemographic(gender, 35.0, weight)
                 mSession = mManager?.createFaceSessionBuilder(
                     baseContext,
                     AppConstant.BINAH_AI_SCANNING_TIME_SECONDS
@@ -356,7 +355,8 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
 //                binding.measurementsLayout.root.visibility = View.VISIBLE
             }, 300)
         } catch (e: HealthMonitorException) {
-            showErrorDialog(e.errorCode)
+            CommonUtils.showToast(this, "${e.errorCode}")
+//            showErrorDialog(e.errorCode)
         }
     }
 
@@ -374,15 +374,30 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
             updateUi(Enums.UiState.MEASURING)
         } catch (e: HealthMonitorException) {
             when (e.errorCode) {
-                HealthMonitorCodes.DEVICE_CODE_MINIMUM_BATTERY_LEVEL_ERROR -> showErrorDialog(
-                    e.errorCode,
-                    getString(R.string.low_battery_error)
-                )
-                HealthMonitorCodes.DEVICE_CODE_LOW_POWER_MODE_ENABLED_ERROR -> showErrorDialog(
-                    e.errorCode,
-                    getString(R.string.power_save_error)
-                )
-                else -> showErrorDialog(e.errorCode, getString(R.string.cannot_start_session))
+                HealthMonitorCodes.DEVICE_CODE_MINIMUM_BATTERY_LEVEL_ERROR -> {
+                    CommonUtils.showToast(
+                        this,
+                        "${e.errorCode} ${getString(R.string.low_battery_error)}")
+//                    showErrorDialog(
+//                        e.errorCode,
+//                        getString(R.string.low_battery_error)
+//                    )
+                }
+                HealthMonitorCodes.DEVICE_CODE_LOW_POWER_MODE_ENABLED_ERROR -> {
+                    CommonUtils.showToast(
+                        this,
+                        "${e.errorCode} ${getString(R.string.power_save_error)}")
+//                    showErrorDialog(
+//                        e.errorCode,
+//                        getString(R.string.power_save_error)
+//                    )
+                }
+                else -> {
+                    CommonUtils.showToast(
+                        this,
+                        "${e.errorCode} ${getString(R.string.cannot_start_session)}")
+//                    showErrorDialog(e.errorCode, getString(R.string.cannot_start_session))
+                }
             }
         } catch (e: java.lang.IllegalStateException) {
             showWarning("Start Error - Session in illegal state")
@@ -689,32 +704,29 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         }, AppConstant.RESULT_SCREEN_DELAY_TIME.toLong())
     }
 
-    private fun showErrorDialog(code: Int) {
-        if ((mMessageDialog != null && mMessageDialog!!.isShowing) || code == 3500) {
-            return
-        }
-        mMessageDialog = AlertDialog.Builder(this)
-            .setMessage(String.format(getString(R.string.error_message), code))
-            .setPositiveButton(R.string.ok, null)
-            .show()
-    }
+//    private fun showErrorDialog(code: Int) {
+//        if ((mMessageDialog != null && mMessageDialog!!.isShowing) || code == 3500) {
+//            return
+//        }
+//        mMessageDialog = AlertDialog.Builder(this)
+//            .setMessage(String.format(getString(R.string.error_message), code))
+//            .setPositiveButton(R.string.ok, null)
+//            .show()
+//    }
 
-    /*
-       Method called to show error popup
-    */
-    private fun showErrorDialog(errorCode: Int, message: String) {
-        if ((mMessageDialog != null && mMessageDialog!!.isShowing) || errorCode == 3500) {
-            return
-        }
-        mMessageDialog =
-            AlertDialog.Builder(this).setMessage(
-                String.format(
-                    getString(R.string.error_code_message), errorCode, message
-                )
-            ).setPositiveButton(R.string.ok) { _, _ ->
-                //                        updateUi(UiState.SCREEN_PAUSED);
-            }.show()
-    }
+//    private fun showErrorDialog(errorCode: Int, message: String) {
+//        if ((mMessageDialog != null && mMessageDialog!!.isShowing) || errorCode == 3500) {
+//            return
+//        }
+//        mMessageDialog =
+//            AlertDialog.Builder(this).setMessage(
+//                String.format(
+//                    getString(R.string.error_code_message), errorCode, message
+//                )
+//            ).setPositiveButton(R.string.ok) { _, _ ->
+//                //                        updateUi(UiState.SCREEN_PAUSED);
+//            }.show()
+//    }
 
     private fun showWarning(code: Int) {
         if (mWarningDialog != null && mWarningDialog!!.isShowing) {

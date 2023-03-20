@@ -9,6 +9,7 @@ import com.nuai.network.CommonResponse
 import com.nuai.network.Status
 import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
+import com.nuai.profile.model.api.request.PurchaseRequest
 import com.nuai.profile.model.api.request.SendFeedbackRequest
 import com.nuai.profile.model.api.request.UpdateProfileRequest
 import com.nuai.profile.model.api.response.MyPlansResponse
@@ -38,6 +39,8 @@ class ProfileViewModel @Inject constructor(
     val paymentListState = MutableStateFlow(ApiResponseState(Status.LOADING, PaymentListResponse()))
     val paymentDetailState =
         MutableStateFlow(ApiResponseState(Status.LOADING, PaymentDetailResponse()))
+    val subscriptionState =
+        MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
 
     fun getMe() {
         if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
@@ -188,6 +191,29 @@ class ProfileViewModel @Inject constructor(
                         paymentDetailState.value = ApiResponseState.error(it.message, 100)
                     }.collect {
                         paymentDetailState.value =
+                            if (it.data != null) ApiResponseState.success(it.data, it.code)
+                            else ApiResponseState.error(it.message, it.code)
+                    }
+                }
+            }
+        }
+    }
+
+    fun addSubscription(request: PurchaseRequest) {
+        when {
+            (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
+                subscriptionState.value = ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
+            }
+            else -> {
+                subscriptionState.value = ApiResponseState.loading()
+                viewModelScope.launch {
+                    profileRepository.addSubscription(request).catch {
+                        subscriptionState.value = ApiResponseState.error(it.message, 100)
+                    }.collect {
+                        subscriptionState.value =
                             if (it.data != null) ApiResponseState.success(it.data, it.code)
                             else ApiResponseState.error(it.message, it.code)
                     }

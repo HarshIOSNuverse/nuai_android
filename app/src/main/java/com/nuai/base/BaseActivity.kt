@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.TypedValue.COMPLEX_UNIT_SP
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -87,8 +88,10 @@ open class BaseActivity : AppCompatActivity() {
         if (show) {
             toolbarIcon.visibility = View.VISIBLE
             tvToolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.switzer_bold)
+            tvToolbarTitle.setTextSize(COMPLEX_UNIT_SP, 19f)
         } else {
             tvToolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.switzer_regular)
+            tvToolbarTitle.setTextSize(COMPLEX_UNIT_SP, 17f)
             toolbarIcon.visibility = View.GONE
         }
     }

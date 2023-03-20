@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -28,17 +27,6 @@ class MyPlansActivity : BaseActivity(), View.OnClickListener {
         fun startActivity(activity: Activity) {
             Intent(activity, MyPlansActivity::class.java).run {
                 activity.startActivity(this)
-                AnimationsHandler.playActivityAnimation(
-                    activity, AnimationsHandler.Animations.RightToLeft
-                )
-            }
-        }
-
-        fun startActivityForResult(
-            activity: Activity, profileLauncher: ActivityResultLauncher<Intent>
-        ) {
-            Intent(activity, MyPlansActivity::class.java).run {
-                profileLauncher.launch(this)
                 AnimationsHandler.playActivityAnimation(
                     activity, AnimationsHandler.Animations.RightToLeft
                 )

@@ -11,6 +11,7 @@ import com.nuai.home.model.api.response.MeasurementResponse
 import com.nuai.onboarding.model.api.request.*
 import com.nuai.onboarding.model.api.response.LoginResponse
 import com.nuai.onboarding.model.api.response.MyProfileResponse
+import com.nuai.profile.model.api.request.PurchaseRequest
 import com.nuai.profile.model.api.request.SendFeedbackRequest
 import com.nuai.profile.model.api.request.UpdateProfileRequest
 import com.nuai.profile.model.api.response.MyPlansResponse
@@ -148,7 +149,9 @@ constructor(
         @Headers("$HEADER_BEAR: true")
         @GET(Url.API + "transactions/{id}")
         suspend fun getPaymentDetail(@Query("id") id: String?): Response<PaymentDetailResponse?>
-
+        @Headers("$HEADER_BEAR: true")
+        @POST(Url.API + "transaction")
+        suspend fun addSubscription(@Body request: PurchaseRequest): Response<CommonResponse?>
 
         /* @Headers("$HEADER_BEAR: true")
          @POST(Url.API + "register-device")

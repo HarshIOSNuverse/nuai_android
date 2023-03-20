@@ -16,13 +16,14 @@ import com.android.billingclient.api.BillingClient.ProductType
 import com.nuai.R
 import com.nuai.base.BaseActivity
 import com.nuai.databinding.SubscriptionPlansActivityBinding
+import com.nuai.network.ResponseStatus
+import com.nuai.network.Status
 import com.nuai.profile.model.SubscriptionPlan
+import com.nuai.profile.model.api.request.PurchaseRequest
 import com.nuai.profile.ui.adapters.SubscriptionPlanListAdapter
 import com.nuai.profile.viewmodel.ProfileViewModel
-import com.nuai.utils.AnimationsHandler
-import com.nuai.utils.CommonUtils
+import com.nuai.utils.*
 import com.nuai.utils.CommonUtils.TAG
-import com.nuai.utils.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -74,13 +75,13 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         subscriptionList.clear()
         subscriptionList.add(SubscriptionPlan().apply {
-            id = 1
+            id = "subscription_premium_monthly_android"
             title = "Monthly"
             observedValue = "$2.95"
             shortDesc = "No Limit for Scan"
         })
         subscriptionList.add(SubscriptionPlan().apply {
-            id = 2
+            id = "subscription_premium_yearly_android"
             title = "Yearly"
             observedValue = "$30"
             shortDesc = "You save $6.00"
@@ -99,26 +100,24 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
 
     private fun initObserver() {
         lifecycleScope.launch {
-//            profileViewModel.updateProfileState.collect {
-//                when (it.status) {
-//                    Status.LOADING -> {
-//                        showHideProgress(it.data == null)
-//                    }
-//                    Status.SUCCESS -> {
-//                        if (it.data != null
-//                            && (it.code == ResponseStatus.STATUS_CODE_SUCCESS
-//                                    || it.code == ResponseStatus.STATUS_CODE_CREATED)
-//                        ) {
-//                            setResult(Activity.RESULT_OK)
-//                            profileViewModel.getMe()
-//                        }
-//                    }
-//                    Status.ERROR -> {
-//                        showHideProgress(false)
-//                        CommonUtils.showToast(this@SubscriptionPlansActivity, it.message)
-//                    }
-//                }
-//            }
+            profileViewModel.subscriptionState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+                        showHideProgress(it.data == null)
+                    }
+                    Status.SUCCESS -> {
+                        if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
+                            CommonUtils.showToast(this@SubscriptionPlansActivity, it.data.message)
+                            setResult(Activity.RESULT_OK)
+                            finish()
+                        }
+                    }
+                    Status.ERROR -> {
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@SubscriptionPlansActivity, it.message)
+                    }
+                }
+            }
         }
     }
 
@@ -157,7 +156,7 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                 BillingClient.BillingResponseCode.OK -> {
                     if (!purchases.isNullOrEmpty()) {
                         runOnUiThread {
-//                            addSubscription(purchases[0])
+                            addSubscription(purchases[0])
                         }
                     }
                 }
@@ -172,6 +171,24 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+
+    private fun addSubscription(purchase: Purchase?) {
+        if (CommonUtils.isNetworkAvailable(this)) {
+            val selectedPlan = binding.adapter!!.selectedSubscription
+            if (selectedPlan != null) {
+                val request = PurchaseRequest(
+                    selectedPlan.id,
+                    selectedPlan.skuDetailsResult?.oneTimePurchaseOfferDetails?.formattedPrice,
+                    selectedPlan.skuDetailsResult?.oneTimePurchaseOfferDetails?.priceCurrencyCode,
+                    purchase?.originalJson, purchase?.orderId,
+                    purchase?.packageName, purchase?.purchaseToken
+                )
+                profileViewModel.addSubscription(request)
+            }
+        } else {
+            CommonUtils.showToast(this, getString(R.string.no_internet_connection))
+        }
+    }
 
     private fun initBilling() {
         billingClient =
@@ -198,17 +215,15 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun querySkuDetailsAsync() {
-        val productList = ArrayList<String>()
-        productList.add("product_id_example")
         val params = QueryProductDetailsParams.newBuilder()
         params.setProductList(
             arrayListOf(
                 QueryProductDetailsParams.Product.newBuilder()
-                    .setProductId("product_id_example")
+                    .setProductId("subscription_premium_monthly_android")
                     .setProductType(ProductType.SUBS)
                     .build(),
                 QueryProductDetailsParams.Product.newBuilder()
-                    .setProductId("product_id_example_1")
+                    .setProductId("subscription_premium_yearly_android")
                     .setProductType(ProductType.SUBS)
                     .build()
             )

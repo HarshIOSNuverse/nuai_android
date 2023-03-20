@@ -7,12 +7,14 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import com.nuai.BuildConfig
 import com.nuai.R
@@ -20,6 +22,7 @@ import com.nuai.base.BaseActivity
 import com.nuai.databinding.AboutAppActivityBinding
 import com.nuai.onboarding.ui.activity.WebActivity
 import com.nuai.utils.AnimationsHandler
+import com.nuai.utils.CustomTypefaceSpan
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -66,10 +69,11 @@ class AboutAppActivity : BaseActivity() {
     private fun setSpannableColor(
         view: TextView, fulltext: String, subtext1: String, color: Int
     ) {
+        val regular = ResourcesCompat.getFont(this, R.font.switzer_regular)
         val str: Spannable = SpannableString(fulltext)
         val i1 = fulltext.indexOf(subtext1)
         str.setSpan(
-            ForegroundColorSpan(color), i1, i1 + subtext1.length,
+            CustomTypefaceSpan("", regular), i1, i1 + subtext1.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         str.setSpan(object : ClickableSpan() {
@@ -80,9 +84,18 @@ class AboutAppActivity : BaseActivity() {
                     subtext1
                 )
             }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+            }
         }, i1, i1 + subtext1.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        view.setText(str, TextView.BufferType.SPANNABLE)
+        str.setSpan(
+            ForegroundColorSpan(color), i1, i1 + subtext1.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         view.movementMethod = LinkMovementMethod.getInstance()
+        view.text = str
         view.highlightColor = Color.TRANSPARENT
     }
 

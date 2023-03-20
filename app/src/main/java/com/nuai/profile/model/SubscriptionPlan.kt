@@ -4,12 +4,11 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.android.billingclient.api.ProductDetails
 import com.google.gson.annotations.SerializedName
-import com.nuai.network.CommonResponse
 
 class SubscriptionPlan() : Parcelable {
 
     @SerializedName("id")
-    var id: Int = 0
+    var id: String? = null
 
     @SerializedName("title")
     var title: String? = null
@@ -24,14 +23,14 @@ class SubscriptionPlan() : Parcelable {
     var skuDetailsResult: ProductDetails? = null
 
     constructor(parcel: Parcel) : this() {
-        id = parcel.readInt()
+        id = parcel.readString()
         title = parcel.readString()
         observedValue = parcel.readString()
         shortDesc = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
+        parcel.writeString(id)
         parcel.writeString(title)
         parcel.writeString(observedValue)
         parcel.writeString(shortDesc)

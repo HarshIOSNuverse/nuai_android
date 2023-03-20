@@ -5,8 +5,6 @@ import ai.binah.hrv.HealthMonitorManager.HealthMonitorManagerInfoListener
 import ai.binah.hrv.api.*
 import ai.binah.hrv.api.HealthMonitorSession.SessionState
 import ai.binah.hrv.api.HealthMonitorSession.StateListener
-import ai.binah.hrv.api.v4.Gender
-import ai.binah.hrv.api.v4.SubjectDemographic
 import ai.binah.hrv.api.v4.alerts.ErrorData
 import ai.binah.hrv.api.v4.alerts.WarningData
 import ai.binah.hrv.api.v4.imagedata.ImageData
@@ -17,7 +15,6 @@ import ai.binah.hrv.api.v4.vitals.*
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
@@ -74,7 +71,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     private var mTime = 0
     private var mTimeCountHandler: Handler? = null
     private var mWarningDialogTimeoutHandler: Handler? = null
-    private var mMessageDialog: AlertDialog? = null
+//    private var mMessageDialog: AlertDialog? = null
     private var progressPercent: Double = 0.0
 
 
@@ -171,7 +168,8 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     }
 
     override fun onHealthManagerError(errorCode: Int, messageCode: Int) {
-        showErrorDialog(messageCode)
+        CommonUtils.showToast(this, "$messageCode")
+//        showErrorDialog(messageCode)
         updateUi(Enums.UiState.IDLE)
     }
 
@@ -294,7 +292,8 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             updateUi(Enums.UiState.LOADING)
             mManager = HealthMonitorManager(this, LicenseData(BuildConfig.LICENCE_KEY), this)
         } catch (e: HealthMonitorException) {
-            showErrorDialog(e.errorCode, "HearMotionManager Error: (" + e.errorCode + ")")
+            CommonUtils.showToast(this, "HearMotionManager Error: (" + e.errorCode + ")")
+//            showErrorDialog(e.errorCode, "HearMotionManager Error: (" + e.errorCode + ")")
         }
     }
 
@@ -304,25 +303,25 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         }
         updateUi(Enums.UiState.LOADING)
         try {
-            val user = Pref.user
-            var gender = Gender.MALE
-            var weight = 75.0
-            if (user?.bodyInfo != null) {
-                gender = when (user.bodyInfo!!.gender!!.lowercase()) {
-                    Enums.Gender.MALE.toString().lowercase() -> {
-                        Gender.MALE
-                    }
-                    Enums.Gender.FEMALE.toString().lowercase() -> {
-                        Gender.FEMALE
-                    }
-                    else -> {
-                        Gender.UNSPECIFIED
-                    }
-                }
-                if (user.bodyInfo?.weight != null)
-                    weight = user.bodyInfo?.weight!!
-            }
-            val subjectDemographic = SubjectDemographic(gender, 35.0, weight)
+//            val user = Pref.user
+//            var gender = Gender.MALE
+//            var weight = 75.0
+//            if (user?.bodyInfo != null) {
+//                gender = when (user.bodyInfo!!.gender!!.lowercase()) {
+//                    Enums.Gender.MALE.toString().lowercase() -> {
+//                        Gender.MALE
+//                    }
+//                    Enums.Gender.FEMALE.toString().lowercase() -> {
+//                        Gender.FEMALE
+//                    }
+//                    else -> {
+//                        Gender.UNSPECIFIED
+//                    }
+//                }
+//                if (user.bodyInfo?.weight != null)
+//                    weight = user.bodyInfo?.weight!!
+//            }
+//            val subjectDemographic = SubjectDemographic(gender, 35.0, weight)
             mSession = mManager?.createFaceSessionBuilder(
                 baseContext,
                 AppConstant.BINAH_AI_SCANNING_TIME_SECONDS
@@ -339,7 +338,8 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                     startMeasuring()
             }, 300)
         } catch (e: HealthMonitorException) {
-            showErrorDialog(e.errorCode)
+            CommonUtils.showToast(this, "" + e.errorCode)
+//            showErrorDialog(e.errorCode)
         }
     }
 
@@ -357,15 +357,24 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             updateUi(Enums.UiState.MEASURING)
         } catch (e: HealthMonitorException) {
             when (e.errorCode) {
-                HealthMonitorCodes.DEVICE_CODE_MINIMUM_BATTERY_LEVEL_ERROR -> showErrorDialog(
-                    e.errorCode,
-                    getString(R.string.low_battery_error)
-                )
-                HealthMonitorCodes.DEVICE_CODE_LOW_POWER_MODE_ENABLED_ERROR -> showErrorDialog(
-                    e.errorCode,
-                    getString(R.string.power_save_error)
-                )
-                else -> showErrorDialog(e.errorCode, getString(R.string.cannot_start_session))
+                HealthMonitorCodes.DEVICE_CODE_MINIMUM_BATTERY_LEVEL_ERROR -> {
+                    CommonUtils.showToast(this,"${e.errorCode} ${getString(R.string.low_battery_error)}")
+//                    showErrorDialog(
+//                        e.errorCode,
+//                        getString(R.string.low_battery_error)
+//                    )
+                }
+                HealthMonitorCodes.DEVICE_CODE_LOW_POWER_MODE_ENABLED_ERROR -> {
+                    CommonUtils.showToast(this,"${e.errorCode} ${getString(R.string.power_save_error)}")
+//                    showErrorDialog(
+//                        e.errorCode,
+//                        getString(R.string.power_save_error)
+//                    )
+                }
+                else -> {
+                    CommonUtils.showToast(this,"${e.errorCode} ${getString(R.string.cannot_start_session)}")
+//                    showErrorDialog(e.errorCode, getString(R.string.cannot_start_session))
+                }
             }
         } catch (e: java.lang.IllegalStateException) {
             showWarning("Start Error - Session in illegal state")
@@ -409,10 +418,6 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
             }
             Enums.UiState.MANUALLY_STOPPED -> {
-//                binding.rippleStart.setVisibility(View.VISIBLE)
-//                binding.simpleProgressBar.setVisibility(View.GONE)
-//                binding.layoutCamera.setVisibility(View.VISIBLE)
-//                binding.layoutMeasurementFace.setVisibility(View.GONE)
                 if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
                     binding.crFaceNotDetectWarning.visibility = View.GONE
                 }
@@ -421,10 +426,6 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             }
             Enums.UiState.MEASUREMENT_COMPLETED -> {
                 stopMeasuring()
-//                binding.rippleStart.setVisibility(View.VISIBLE)
-//                binding.simpleProgressBar.setVisibility(View.GONE)
-//                binding.layoutCamera.setVisibility(View.VISIBLE)
-//                binding.layoutMeasurementFace.setVisibility(View.GONE)
                 if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
                     binding.crFaceNotDetectWarning.visibility = View.GONE
                 }
@@ -432,22 +433,11 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 stopTimeCount()
             }
             Enums.UiState.SCREEN_PAUSED -> {
-//                binding.rippleStart.setVisibility(View.VISIBLE)
-//                binding.simpleProgressBar.setVisibility(View.GONE)
-//                binding.layoutCamera.setVisibility(View.VISIBLE)
-//                binding.layoutMeasurementFace.setVisibility(View.GONE)
                 if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
                     binding.crFaceNotDetectWarning.visibility = View.GONE
                 }
-//                if (binding.warningLayout.getVisibility() === View.VISIBLE) {
-//                    binding.warningLayout.setVisibility(View.GONE)
-//                }
             }
             Enums.UiState.SCREEN_RESUMED -> {
-//                binding.rippleStart.setVisibility(View.GONE)
-//                binding.simpleProgressBar.setVisibility(View.VISIBLE)
-//                binding.layoutCamera.setVisibility(View.VISIBLE)
-//                binding.layoutMeasurementFace.setVisibility(View.VISIBLE)
 //                if (mTestMode === SessionMode.FACE) {
 //                    if (binding.roiWarning.getVisibility() === View.VISIBLE) {
 //                        binding.roiWarning.setVisibility(View.GONE)
@@ -684,38 +674,34 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         }, AppConstant.RESULT_SCREEN_DELAY_TIME.toLong())
     }
 
-    private fun showErrorDialog(code: Int) {
-        if (mMessageDialog != null && mMessageDialog!!.isShowing) {
-            return
-        }
-        mMessageDialog = AlertDialog.Builder(this)
-            .setMessage(String.format(getString(R.string.error_message), code))
-            .setPositiveButton(R.string.ok, null)
-            .show()
-    }
+//    private fun showErrorDialog(code: Int) {
+//        if (mMessageDialog != null && mMessageDialog!!.isShowing) {
+//            return
+//        }
+//        mMessageDialog = AlertDialog.Builder(this)
+//            .setMessage(String.format(getString(R.string.error_message), code))
+//            .setPositiveButton(R.string.ok, null)
+//            .show()
+//    }
 
-    /*
-       Method called to show error popup
-    */
-    private fun showErrorDialog(errorCode: Int, message: String) {
-        /*Toast.makeText(requireActivity(), "ERROR: " + message, Toast.LENGTH_LONG).show();*/
-        if (mMessageDialog != null && mMessageDialog!!.isShowing) {
-            return
-        }
-        mMessageDialog =
-            AlertDialog.Builder(this) //                .setMessage(message)
-                .setMessage(
-                    String.format(
-                        getString(R.string.error_code_message),
-                        errorCode,
-                        message
-                    )
-                )
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    //                        updateUi(UiState.SCREEN_PAUSED);
-                }
-                .show()
-    }
+//    private fun showErrorDialog(errorCode: Int, message: String) {
+//        if (mMessageDialog != null && mMessageDialog!!.isShowing) {
+//            return
+//        }
+//        mMessageDialog =
+//            AlertDialog.Builder(this) //                .setMessage(message)
+//                .setMessage(
+//                    String.format(
+//                        getString(R.string.error_code_message),
+//                        errorCode,
+//                        message
+//                    )
+//                )
+//                .setPositiveButton(R.string.ok) { _, _ ->
+//                    //                        updateUi(UiState.SCREEN_PAUSED);
+//                }
+//                .show()
+//    }
 
     private fun showWarning(text: String) {
         showWarning(text, null)
@@ -777,13 +763,17 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 
     private fun paintRect(canvas: Canvas, faceRect: RectF) {
         val paint = Paint(Paint.DITHER_FLAG)
-        paint.style = Paint.Style.STROKE
-        paint.strokeWidth = 12f
-        paint.color = resources.getColor(R.color.faceRect, null)
-        paint.strokeJoin = Paint.Join.MITER
+//        paint.style = Paint.Style.STROKE
+//        paint.strokeWidth = 12f
+//        paint.color = resources.getColor(R.color.faceRect, null)
+//        paint.strokeJoin = Paint.Join.MITER
         val path = Path()
         path.addRect(faceRect, Path.Direction.CW)
-        canvas.drawPath(path, paint)
+        // For rectangle setting
+//        canvas.drawPath(path, paint)
+        // For image setting
+        val icon = BitmapFactory.decodeResource(resources, R.drawable.face)
+        canvas.drawBitmap(icon, null, faceRect, paint)
     }
 
     private fun rescaleFaceRect(bitmap: Bitmap, faceRect: RectF): RectF {
