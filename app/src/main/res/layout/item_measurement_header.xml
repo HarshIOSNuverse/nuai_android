@@ -10,6 +10,10 @@
             type="com.nuai.home.model.HealthBasicInfo" />
 
         <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="resultCategoryAdapter"
             type="com.nuai.home.ui.adapters.ResultCategorySelectListAdapter" />
     </data>
@@ -45,10 +49,10 @@
                 android:id="@+id/tv_time"
                 style="@style/TextViewStyleLight"
                 android:layout_width="0dp"
-                android:textSize="@dimen/sp_14"
                 android:layout_marginStart="@dimen/dp_10"
                 android:gravity="end"
                 android:text="@{history.resultTime}"
+                android:textSize="@dimen/sp_14"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_date" />
@@ -118,13 +122,25 @@
                 android:id="@+id/lbl_wellness_score"
                 style="@style/TextViewStyleLight"
                 android:layout_marginTop="@dimen/dp_20"
-                android:drawableEnd="@drawable/ic_info"
-                android:drawablePadding="@dimen/dp_5"
                 android:gravity="center"
                 android:text="@string/wellness_score"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/iv_wellness_score"
+                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cr_wellness_score_reading" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_wellness_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_5"
+                android:onClick="@{onClickListener}"
+                android:paddingHorizontal="@dimen/dp_5"
+                android:src="@drawable/ic_info"
+                app:layout_constraintBottom_toBottomOf="@+id/lbl_wellness_score"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/lbl_wellness_score"
+                app:layout_constraintTop_toTopOf="@+id/lbl_wellness_score" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/lbl_wellness_msg"

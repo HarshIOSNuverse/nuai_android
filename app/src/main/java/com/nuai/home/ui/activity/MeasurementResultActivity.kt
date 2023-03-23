@@ -19,6 +19,7 @@ import com.nuai.home.model.ResultWrapper
 import com.nuai.home.model.api.response.MeasurementResponse
 import com.nuai.home.ui.adapters.MeasurementScreenAdapter
 import com.nuai.home.ui.fragments.AbnormalResultsDialogFragment
+import com.nuai.home.ui.fragments.WellnessScoreDialogFragment
 import com.nuai.interfaces.DialogClickListener
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
@@ -201,6 +202,18 @@ class MeasurementResultActivity : BaseActivity(), View.OnClickListener {
             MeasurementScreenAdapter(screenList).apply {
                 measurementListener =
                     object : MeasurementScreenAdapter.MeasurementListener {
+                        override fun onWellnessScoreClick() {
+                            val fragmentManager = supportFragmentManager
+                            val fragmentTransaction = fragmentManager.beginTransaction()
+                            fragmentTransaction.addToBackStack(WellnessScoreDialogFragment.TAG)
+                            val filterDialogFragment: WellnessScoreDialogFragment =
+                                WellnessScoreDialogFragment.onNewInstance(measurementDetail?.basicInfo?.wellnessScore!!,true)
+                            filterDialogFragment.show(
+                                fragmentTransaction,
+                                WellnessScoreDialogFragment.TAG
+                            )
+                        }
+
                         override fun onLearnMoreClick(reading: Reading) {
                             LearnMoreActivity.startActivity(this@MeasurementResultActivity, reading)
                         }

@@ -96,7 +96,6 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
 
     private fun updateView(checkedId: Int) {
         if (checkedId == R.id.chk_face) {
-
             binding.ivTopIcon.setImageResource(R.drawable.face_option_select_top_icon)
             if (!user?.firstName.isNullOrEmpty()) {
                 binding.tvTitle.text =
@@ -135,7 +134,6 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
                     if (user!!.numberOfSubscriptions == 0) {
                         if (user!!.availableFreeScanCount > 0) {
                             showInformationDialog(
-                                Enums.PopupType.FREE_SCAN_REMAINING,
                                 title =
                                 String.format(
                                     getString(R.string.you_have_value_free_scans_now),
@@ -148,7 +146,6 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
                             )
                         } else if (user!!.availableFreeScanCount == 0) {
                             showInformationDialog(
-                                Enums.PopupType.FREE_SCAN_ENDED,
                                 title =
                                 String.format(
                                     getString(R.string.your_value_free_scans_expired),
@@ -158,7 +155,7 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
                                 ContextCompat.getColor(this, R.color.error_msg_text_color),
                                 msg = getString(R.string.purchase_subscription_now_for_unlimited_scans),
                                 button1Message = getString(R.string.subscribe_now),
-                                isContinueScan = false,
+                                isContinueScan = true,
                                 cancelable = true
                             )
                         } else {
@@ -174,7 +171,6 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
                         ) {
                             Pref.planAboutToExpireWarningShownDate = currentDate
                             showInformationDialog(
-                                Enums.PopupType.PLAN_ABOUT_TO_EXPIRE,
                                 title =
                                 getString(R.string.your_plan_is_about_to_expire),
                                 titleColor =
@@ -186,7 +182,6 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
                             )
                         } else if (!user!!.hasActiveSubscription) {
                             showInformationDialog(
-                                Enums.PopupType.PLAN_EXPIRED,
                                 title =
                                 getString(R.string.your_plan_is_expired),
                                 titleColor =
@@ -214,7 +209,6 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun showInformationDialog(
-        popupType: Enums.PopupType,
         title: String? = null,
         titleColor: Int = ContextCompat.getColor(this, R.color.primary_text_color),
         msg: String? = null, button1Message: String? = null,

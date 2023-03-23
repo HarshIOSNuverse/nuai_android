@@ -72,6 +72,7 @@
                     android:id="@+id/tv_message"
                     style="@style/TextViewStyleLight"
                     android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginBottom="@dimen/dp_20"
                     android:gravity="center"
                     android:paddingHorizontal="@dimen/dp_40"
                     android:text="@string/face_option_select_msg"

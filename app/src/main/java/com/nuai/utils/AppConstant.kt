@@ -4,6 +4,7 @@ package com.nuai.utils
     This is a place where all the constants used in app are defined here
  */
 object AppConstant {
+    const val BINAH_AI_URL = "https://www.binah.ai/wellness-score"
     const val BINAH_AI_SCANNING_TIME_SECONDS: Long = 70
     const val RESULT_SCREEN_DELAY_TIME = 1500
     const val HEART_RATE_MIN = 20

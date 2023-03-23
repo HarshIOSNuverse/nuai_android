@@ -3,6 +3,7 @@ package com.nuai.home.ui.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -81,6 +82,9 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
                 holder.binding.crWellnessScoreReading.setBackgroundResource(
                     getWellnessImage(context, basicInfo.wellnessScore)
                 )
+                holder.binding.onClickListener = View.OnClickListener {
+                    measurementListener?.onWellnessScoreClick()
+                }
                 val categoryList: ArrayList<String> = arrayListOf()
                 categoryList.add(Enums.ResultCategory.VITAL_SIGNS.toString())
                 categoryList.add(Enums.ResultCategory.BLOOD.toString())
@@ -144,6 +148,7 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
         }
         holder.binding.executePendingBindings()
     }
+
     override fun getItemCount(): Int {
         return items.size
     }
@@ -159,6 +164,7 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
     }
 
     interface MeasurementListener {
+        fun onWellnessScoreClick()
         fun onLearnMoreClick(reading: Reading)
         fun onCategoryClick(index: Int)
         fun onDeleteClicked()

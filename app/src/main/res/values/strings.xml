@@ -308,4 +308,17 @@ Blood Pressure is categorized as low, normal, or elevated: low blood pressure is
     <string name="view_payment_details">View Payment Details</string>
     <string name="upgrade_now">Upgrade Now</string>
     <string name="no_payment_data_found">No Payment Data Found</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="_7">7</string>
+    <string name="_8">8</string>
+    <string name="_9">9</string>
+    <string name="_10">10</string>
+    <string name="wellness_score_msg_1">The Wellness Score is a prediction risk score that is used to predict a person\'s cardiovascular risk for the next 5 to 10 years. The Wellness Score is based on the vital signs measured by Binah\'s technology, and is designed to serve as a reference when measured at rest, under similar conditions during all of the measurements, and if the score is consistent in repeated measurements over time.\n\nThe higher the wellness score, the lower the cardiovascular risk.\n\nHow is it calculated?\nYour Wellness Score is calculated using your vitals results from any single measurement. The values of each one of the vital sign measurements affect your Wellness Score prediction.\nGenerally, a lower Heart Rate at rest implies more efficient heart function and better cardiovascular fitness. Therefore, a higher Heart Rate reduces your Wellness Score - even when the heart rate is within the normal range. For example, heart rates that are higher than 65 reduce the wellness score to a medium score, and values that are higher than 84 reduce the wellness score to a low score.\n\nHRV measures the variation in time between heartbeats. The Stress Level that is calculated from this variance also affects your Wellness Score. Thus. Very High and High stress levels are correlated with a low score, while Mild and Normal stress levels are correlated with a medium score.</string>
+    <string name="wellness_score_msg_2">Your Oxygen Saturation level measures the amount of oxygen in the blood delivered from the lungs to the rest of the body. A higher level implies a more efficient function, thus, a lower Oxygen Saturation level reduces the Wellness Score.\n\nIn addition, High Blood Pressure readings at rest may pose a higher risk of health problems and therefore may reduce the Wellness Score.\n\nLearn more at: %s</string>
+    <string name="measurement_not_completed_msg">Measurement is not completed, Are you sure want to stop?</string>
 </resources>

@@ -38,6 +38,7 @@ import com.nuai.databinding.ScanByFingerActivityBinding
 import com.nuai.history.viewmodel.HistoryViewModel
 import com.nuai.home.model.ScanningResultData
 import com.nuai.home.model.api.request.SendScanRequest
+import com.nuai.interfaces.DialogClickListener
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
 import com.nuai.onboarding.ui.activity.TutorialActivity
@@ -75,7 +76,8 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
     private var mTime = 0
     private var mTimeCountHandler: Handler? = null
     private var mWarningDialogTimeoutHandler: Handler? = null
-//    private var mMessageDialog: AlertDialog? = null
+
+    //    private var mMessageDialog: AlertDialog? = null
     private var progressPercent: Double = 0.0
     private var mWarningDialog: AlertDialog? = null
 
@@ -377,7 +379,8 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                 HealthMonitorCodes.DEVICE_CODE_MINIMUM_BATTERY_LEVEL_ERROR -> {
                     CommonUtils.showToast(
                         this,
-                        "${e.errorCode} ${getString(R.string.low_battery_error)}")
+                        "${e.errorCode} ${getString(R.string.low_battery_error)}"
+                    )
 //                    showErrorDialog(
 //                        e.errorCode,
 //                        getString(R.string.low_battery_error)
@@ -386,7 +389,8 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                 HealthMonitorCodes.DEVICE_CODE_LOW_POWER_MODE_ENABLED_ERROR -> {
                     CommonUtils.showToast(
                         this,
-                        "${e.errorCode} ${getString(R.string.power_save_error)}")
+                        "${e.errorCode} ${getString(R.string.power_save_error)}"
+                    )
 //                    showErrorDialog(
 //                        e.errorCode,
 //                        getString(R.string.power_save_error)
@@ -395,7 +399,8 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                 else -> {
                     CommonUtils.showToast(
                         this,
-                        "${e.errorCode} ${getString(R.string.cannot_start_session)}")
+                        "${e.errorCode} ${getString(R.string.cannot_start_session)}"
+                    )
 //                    showErrorDialog(e.errorCode, getString(R.string.cannot_start_session))
                 }
             }
@@ -855,7 +860,6 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
 
     private fun initClickListener() {
         binding.onClickListener = this
-        binding.measurementsLayout.onClickListener = this
     }
 
     override fun onClick(v: View?) {
@@ -863,11 +867,29 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
             R.id.retry_btn -> {
                 TutorialActivity.startActivity(this, TutorialActivity.Companion.From.SETTINGS)
             }
-            R.id.stop_btn, R.id.stop_btn_1 -> {
-                stopTimeCount()
-                stopMeasuring()
-                closeSession()
-                finish()
+            R.id.btn_stop, R.id.stop_btn_1 -> {
+                AlertDialogManager.showConfirmationDialog(
+                    this,
+                    getString(R.string.app_name),
+                    getString(R.string.measurement_not_completed_msg),
+                    button1Message = getString(R.string.yes),
+                    button2Message = getString(R.string.no),
+                    dialogClickListener = object : DialogClickListener {
+                        override fun onButton1Clicked() {
+                            stopTimeCount()
+                            stopMeasuring()
+                            closeSession()
+                            finish()
+                        }
+
+                        override fun onButton2Clicked() {
+                        }
+
+                        override fun onCloseClicked() {
+                        }
+                    }
+
+                )
             }
         }
     }

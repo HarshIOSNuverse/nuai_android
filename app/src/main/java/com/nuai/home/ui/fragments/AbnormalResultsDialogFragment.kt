@@ -41,7 +41,6 @@ class AbnormalResultsDialogFragment : BottomSheetDialogFragment(), View.OnClickL
                 container,
                 false
             )
-        isFilterDialogShowing = true
         initAdapter()
         init()
         return binding.root
@@ -103,6 +102,8 @@ class AbnormalResultsDialogFragment : BottomSheetDialogFragment(), View.OnClickL
         binding.adapter = MeasurementScreenAdapter(abnormalResultList).apply {
             measurementListener =
                 object : MeasurementScreenAdapter.MeasurementListener {
+                    override fun onWellnessScoreClick() {}
+
                     override fun onLearnMoreClick(reading: Reading) {
                         LearnMoreActivity.startActivity(
                             this@AbnormalResultsDialogFragment.requireActivity(), reading
@@ -113,8 +114,7 @@ class AbnormalResultsDialogFragment : BottomSheetDialogFragment(), View.OnClickL
                         binding.recyclerView.scrollToPosition(index + 1)
                     }
 
-                    override fun onDeleteClicked() {
-                    }
+                    override fun onDeleteClicked() {}
                 }
         }
     }
@@ -135,7 +135,6 @@ class AbnormalResultsDialogFragment : BottomSheetDialogFragment(), View.OnClickL
     companion object {
 
         val TAG: String = AbnormalResultsDialogFragment::class.java.simpleName
-        var isFilterDialogShowing = false
         fun onNewInstance(
             result: Result?, cancellable: Boolean
         ): AbnormalResultsDialogFragment {

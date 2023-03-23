@@ -52,6 +52,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_stop"
+                style="@style/TextViewStyleRegular"
+                android:layout_margin="@dimen/dp_20"
+                android:onClick="@{onClickListener}"
+                android:padding="@dimen/dp_5"
+                android:text="@string/stop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cr_finger_hint"
@@ -87,6 +96,7 @@
                     android:fontFamily="@font/switzer_regular"
                     android:onClick="@{onClickListener}"
                     android:text="@string/stop"
+                    android:visibility="invisible"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_20"

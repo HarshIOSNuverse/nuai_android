@@ -2,13 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="onClickListener"
-            type="android.view.View.OnClickListener" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cr_scanning_progress"
         android:layout_width="match_parent"
@@ -83,6 +76,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_25"
             android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginBottom="@dimen/dp_20"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cr_reading_or_error"
             app:rpbBackgroundColor="#E7E7E7"
@@ -93,21 +88,5 @@
             app:rpbTextPadding="12dp"
             app:rpbTextSize="@dimen/sp_17" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/stop_btn"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp_50"
-            android:layout_marginTop="@dimen/dp_20"
-            android:background="@drawable/rc_black_filled_c25"
-            android:fontFamily="@font/switzer_regular"
-            android:onClick="@{onClickListener}"
-            android:text="@string/stop"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_20"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reading_progress_bar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

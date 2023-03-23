@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="onClickLister"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="adapter"
+            type="com.nuai.home.ui.adapters.MeasurementScreenAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/line_View"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_15"
+            android:background="#E8E8E8"
+            app:layout_constraintBottom_toTopOf="@+id/lbl_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/lbl_title"
+            style="@style/TextViewStyleLight"
+            android:layout_marginTop="@dimen/dp_15"
+            android:gravity="center"
+            android:text="@string/wellness_score"
+            android:textSize="@dimen/sp_20"
+            app:layout_constraintBottom_toTopOf="@+id/tv_wellness_score"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line_View"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            android:id="@+id/tv_wellness_score"
+            style="@style/TextViewStyleLight"
+            android:layout_margin="@dimen/dp_10"
+            android:gravity="center"
+            android:text="@string/wellness_score"
+            app:layout_constraintBottom_toTopOf="@+id/ll_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_title"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="RelativeOverlap" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/ll_color"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            app:cardCornerRadius="@dimen/dp_25"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="false"
+            app:layout_constraintBottom_toTopOf="@+id/ll_indicator_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_wellness_score">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:weightSum="10"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#FC0012" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#DE6566" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#E89999" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#E58F42" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#F5B071" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#FEE49F" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#FFF1CF" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#B7D7AB" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#94C382" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#39A759" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <SeekBar
+                    android:id="@+id/progress_bar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_20"
+                    android:background="@null"
+                    android:indeterminate="false"
+                    android:progress="0"
+                    android:progressDrawable="@null"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/thumb_transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_indicator_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:weightSum="10"
+            app:layout_constraintBottom_toTopOf="@+id/scroll_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_color">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewStyleLight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_5"
+                android:text="@string/_1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewStyleLight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_5"
+                android:text="@string/_2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewStyleLight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_5"
+                android:text="@string/_3" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewStyleLight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_5"
+                android:text="@string/_4" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewStyleLight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_5"
+                android:text="@string/_5" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewStyleLight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_5"
+                android:text="@string/_6" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewStyleLight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_5"
+                android:text="@string/_7" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewStyleLight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_5"
+                android:text="@string/_8" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewStyleLight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_5"
+                android:text="@string/_9" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewStyleLight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_5"
+                android:text="@string/_10" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.72"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_indicator_label"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_msg_1"
+                    style="@style/TextViewStyleLight"
+                    android:layout_width="0dp"
+                    android:layout_marginHorizontal="@dimen/dp_25"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:text='@string/wellness_score_msg_1'
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_image_1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_image_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp_25"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:src="@drawable/stress_level_img_2"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_msg_2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_msg_1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_msg_2"
+                    style="@style/TextViewStyleLight"
+                    android:layout_width="0dp"
+                    android:layout_marginHorizontal="@dimen/dp_25"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:layout_marginBottom="@dimen/dp_30"
+                    android:text='@string/wellness_score_msg_2'
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_image_1" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -37,6 +37,7 @@ import com.nuai.databinding.ScanByFaceActivityBinding
 import com.nuai.history.viewmodel.HistoryViewModel
 import com.nuai.home.model.ScanningResultData
 import com.nuai.home.model.api.request.SendScanRequest
+import com.nuai.interfaces.DialogClickListener
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
 import com.nuai.utils.*
@@ -71,7 +72,8 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     private var mTime = 0
     private var mTimeCountHandler: Handler? = null
     private var mWarningDialogTimeoutHandler: Handler? = null
-//    private var mMessageDialog: AlertDialog? = null
+
+    //    private var mMessageDialog: AlertDialog? = null
     private var progressPercent: Double = 0.0
 
 
@@ -358,21 +360,30 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         } catch (e: HealthMonitorException) {
             when (e.errorCode) {
                 HealthMonitorCodes.DEVICE_CODE_MINIMUM_BATTERY_LEVEL_ERROR -> {
-                    CommonUtils.showToast(this,"${e.errorCode} ${getString(R.string.low_battery_error)}")
+                    CommonUtils.showToast(
+                        this,
+                        "${e.errorCode} ${getString(R.string.low_battery_error)}"
+                    )
 //                    showErrorDialog(
 //                        e.errorCode,
 //                        getString(R.string.low_battery_error)
 //                    )
                 }
                 HealthMonitorCodes.DEVICE_CODE_LOW_POWER_MODE_ENABLED_ERROR -> {
-                    CommonUtils.showToast(this,"${e.errorCode} ${getString(R.string.power_save_error)}")
+                    CommonUtils.showToast(
+                        this,
+                        "${e.errorCode} ${getString(R.string.power_save_error)}"
+                    )
 //                    showErrorDialog(
 //                        e.errorCode,
 //                        getString(R.string.power_save_error)
 //                    )
                 }
                 else -> {
-                    CommonUtils.showToast(this,"${e.errorCode} ${getString(R.string.cannot_start_session)}")
+                    CommonUtils.showToast(
+                        this,
+                        "${e.errorCode} ${getString(R.string.cannot_start_session)}"
+                    )
 //                    showErrorDialog(e.errorCode, getString(R.string.cannot_start_session))
                 }
             }
@@ -825,7 +836,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 //    }
     private fun initClickListener() {
         binding.onClickListener = this
-        binding.mainContent.measurementsLayout.onClickListener = this
+        binding.mainContent.onClickListener = this
     }
 
     override fun onClick(v: View?) {
@@ -834,11 +845,29 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 if (mSession?.state != SessionState.MEASURING)
                     startMeasuring()
             }
-            R.id.stop_btn -> {
-                stopTimeCount()
-                stopMeasuring()
-                closeSession()
-                finish()
+            R.id.btn_stop -> {
+                AlertDialogManager.showConfirmationDialog(
+                    this,
+                    getString(R.string.app_name),
+                    getString(R.string.measurement_not_completed_msg),
+                    button1Message = getString (R.string.yes),
+                    button2Message = getString(R.string.no),
+                    dialogClickListener = object : DialogClickListener {
+                        override fun onButton1Clicked() {
+                            stopTimeCount()
+                            stopMeasuring()
+                            closeSession()
+                            finish()
+                        }
+
+                        override fun onButton2Clicked() {
+                        }
+
+                        override fun onCloseClicked() {
+                        }
+                    }
+                )
+
             }
         }
     }
