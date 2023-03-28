@@ -20,69 +20,58 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <include
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainContent"
-            layout="@layout/main_content"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbarLayout" />
+            app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cr_face_not_detect_warning"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rc_top_white_filled_30"
-            android:padding="@dimen/dp_25"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_face_not_detect_title"
-                style="@style/TextViewStyleLight"
-                android:layout_marginTop="@dimen/dp_5"
-                android:text="@string/face_not_detected"
-                android:textColor="@color/red"
-                android:textSize="@dimen/sp_20"
-                app:layout_constraintBottom_toTopOf="@+id/tv_face_not_detect_msg"
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="-30dp"
+                app:layout_constraintBottom_toTopOf="@+id/measurementsLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextureView
+                    android:id="@+id/cameraView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/faceFrame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/face_frame_normal" />
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_stop"
+                style="@style/TextViewStyleRegular"
+                android:layout_margin="@dimen/dp_20"
+                android:onClick="@{onClickListener}"
+                android:padding="@dimen/dp_5"
+                android:text="@string/stop"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_face_not_detect_msg"
-                style="@style/TextViewStyleLight"
-                android:layout_marginTop="@dimen/dp_10"
-                android:gravity="center_horizontal"
-                android:text="@string/face_not_detected_msg"
-                android:textColor="@color/secondary_text_color"
-                app:layout_constraintBottom_toTopOf="@+id/retry_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_face_not_detect_title" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/retry_btn"
+            <include
+                android:id="@+id/measurementsLayout"
+                layout="@layout/measurements_layout"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_50"
-                android:layout_marginTop="@dimen/dp_20"
-                android:layout_marginBottom="@dimen/dp_20"
-                android:background="@drawable/rc_black_filled_c25"
-                android:enabled="false"
-                android:fontFamily="@font/switzer_regular"
-                android:onClick="@{onClickListener}"
-                android:text="@string/retry"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_20"
+                android:layout_height="200dp"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_face_not_detect_msg" />
+                app:layout_constraintStart_toStartOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

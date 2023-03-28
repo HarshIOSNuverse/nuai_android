@@ -34,10 +34,9 @@
             android:adapter="@{adapter}"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cr_abnormal_result"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:paddingBottom="@dimen/dp_70"
             app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

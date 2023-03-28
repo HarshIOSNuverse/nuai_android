@@ -22,9 +22,15 @@ import android.graphics.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -41,7 +47,6 @@ import com.nuai.home.model.api.request.SendScanRequest
 import com.nuai.interfaces.DialogClickListener
 import com.nuai.network.ResponseStatus
 import com.nuai.network.Status
-import com.nuai.onboarding.ui.activity.TutorialActivity
 import com.nuai.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -79,7 +84,6 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
 
     //    private var mMessageDialog: AlertDialog? = null
     private var progressPercent: Double = 0.0
-    private var mWarningDialog: AlertDialog? = null
 
     private var mDeviceEnabledVitalSigns: HealthMonitorEnabledVitalSigns? = null
 
@@ -213,13 +217,13 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         runOnUiThread {
             when (warningData.code) {
                 HealthMonitorCodes.MEASUREMENT_CODE_UNSUPPORTED_ORIENTATION_WARNING -> if (mSession != null && mSession?.state == SessionState.MEASURING) {
-                    showWarning(warningData.code)
+                    showWarning(""+warningData.code)
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_WARNING -> {
                     resetMeasurements()
-                    showWarning(warningData.code)
+                    showWarning(""+warningData.code)
                 }
-                else -> showWarning(warningData.code)
+                else -> showWarning(""+warningData.code)
             }
         }
     }
@@ -233,6 +237,25 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                 HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_ERROR -> {
                     stopMeasuring()
                     updateUi(Enums.UiState.MANUALLY_STOPPED)
+                    binding.measurementsLayout.root.visibility = View.INVISIBLE
+                    AlertDialogManager.showInformationDialog(
+                        this@ScanByFingerActivity,
+                        0,
+                        null,
+                        getString(R.string.moving_or_disruption_identified_msg),
+                        getString(R.string.retry),
+                        dialogClickListener = object : DialogClickListener {
+                            override fun onButton1Clicked() {
+                                startMeasuring()
+                            }
+
+                            override fun onButton2Clicked() {
+                            }
+
+                            override fun onCloseClicked() {
+                            }
+                        }
+                    )
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_INVALID_RECENT_DETECTION_RATE_ERROR -> {
                     stopMeasuring()
@@ -377,9 +400,24 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         } catch (e: HealthMonitorException) {
             when (e.errorCode) {
                 HealthMonitorCodes.DEVICE_CODE_MINIMUM_BATTERY_LEVEL_ERROR -> {
-                    CommonUtils.showToast(
-                        this,
-                        "${e.errorCode} ${getString(R.string.low_battery_error)}"
+                    binding.measurementsLayout.root.visibility = View.INVISIBLE
+                    AlertDialogManager.showInformationDialog(
+                        this@ScanByFingerActivity,
+                        0,
+                        getString(R.string.low_battery_error),
+                        getString(R.string.low_battery_msg),
+                        getString(R.string.try_again),
+                        dialogClickListener = object : DialogClickListener {
+                            override fun onButton1Clicked() {
+                                startMeasuring()
+                            }
+
+                            override fun onButton2Clicked() {
+                            }
+
+                            override fun onCloseClicked() {
+                            }
+                        }
                     )
 //                    showErrorDialog(
 //                        e.errorCode,
@@ -387,9 +425,24 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
 //                    )
                 }
                 HealthMonitorCodes.DEVICE_CODE_LOW_POWER_MODE_ENABLED_ERROR -> {
-                    CommonUtils.showToast(
-                        this,
-                        "${e.errorCode} ${getString(R.string.power_save_error)}"
+                    binding.measurementsLayout.root.visibility = View.INVISIBLE
+                    AlertDialogManager.showInformationDialog(
+                        this@ScanByFingerActivity,
+                        0,
+                        getString(R.string.low_power_mode_title),
+                        getString(R.string.low_power_mode_msg),
+                        getString(R.string.try_again),
+                        dialogClickListener = object : DialogClickListener {
+                            override fun onButton1Clicked() {
+                                startMeasuring()
+                            }
+
+                            override fun onButton2Clicked() {
+                            }
+
+                            override fun onCloseClicked() {
+                            }
+                        }
                     )
 //                    showErrorDialog(
 //                        e.errorCode,
@@ -514,20 +567,23 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         }
     }
 
+    private var isDetected = false
     private fun handleRoiDetection(detected: Boolean) {
         if (mSession == null || mSession!!.state != SessionState.MEASURING) {
             return
         }
+        isDetected = detected
         binding.measurementsLayout.root.visibility = View.VISIBLE
         binding.crFingerHint.visibility = View.GONE
         if (detected) {
             binding.measurementsLayout.root.visibility = View.VISIBLE
             binding.ivFingerMask.setImageResource(R.drawable.ic_finger_white_elipse)
-            binding.measurementsLayout.tvFaceScanningMsg.text =
-                getString(R.string.finger_scanning_msg)
+            updateReadingProgressMsg()
+            binding.measurementsLayout.tvScanningMsg.setTextColor(
+                ContextCompat.getColor(this, R.color.primary_text_color)
+            )
             binding.measurementsLayout.tvReading.visibility = View.VISIBLE
             binding.measurementsLayout.tvReadingUnit.visibility = View.VISIBLE
-            binding.measurementsLayout.tvError.visibility = View.GONE
             binding.measurementsLayout.readingProgressBar.setProgressDrawableColor(
                 ContextCompat.getColor(this, R.color.green_text_color)
             )
@@ -535,19 +591,41 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         } else {
 //            binding.measurementsLayout.root.visibility = View.INVISIBLE
             binding.ivFingerMask.setImageResource(R.drawable.ic_finger_red_elipse)
-            binding.measurementsLayout.tvFaceScanningMsg.text =
+            binding.measurementsLayout.tvScanningMsg.text =
                 getString(R.string.could_not_collect_data_over_seconds)
-            binding.measurementsLayout.tvError.text =
-                getString(R.string.pls_dont_remove_your_finger)
+            val msg =
+                getString(R.string.could_not_collect_data_over_seconds) + "\n\n" + getString(R.string.pls_dont_remove_your_finger)
+            setSpannableColor(
+                binding.measurementsLayout.tvScanningMsg,
+                msg,
+                getString(R.string.pls_dont_remove_your_finger),
+                ContextCompat.getColor(this, R.color.error_msg_text_color)
+            )
+
             binding.measurementsLayout.tvReading.visibility = View.GONE
             binding.measurementsLayout.tvReadingUnit.visibility = View.GONE
-            binding.measurementsLayout.tvError.visibility = View.VISIBLE
             binding.measurementsLayout.readingProgressBar.setProgressDrawableColor(
                 ContextCompat.getColor(this, R.color.error_msg_text_color)
             )
         }
     }
-
+    private fun setSpannableColor(
+        view: TextView, fulltext: String, subtext1: String, color: Int
+    ) {
+        val str: Spannable = SpannableString(fulltext)
+        val i1 = fulltext.indexOf(subtext1)
+        str.setSpan(
+            ForegroundColorSpan(color), i1, i1 + subtext1.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+//        str.setSpan(
+//            AbsoluteSizeSpan(17, true), i1 + subtext1.length, fulltext.length,
+//            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+//        )
+        view.movementMethod = LinkMovementMethod.getInstance()
+        view.text = str
+        view.highlightColor = Color.TRANSPARENT
+    }
     private fun resetMeasurements() {
         val measurementsBinding: MeasurementsLayoutBinding = binding.measurementsLayout
         measurementsBinding.tvReading.text =
@@ -733,16 +811,6 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
 //            }.show()
 //    }
 
-    private fun showWarning(code: Int) {
-        if (mWarningDialog != null && mWarningDialog!!.isShowing) {
-            return
-        }
-        mWarningDialog = AlertDialog.Builder(this)
-            .setMessage(String.format(getString(R.string.error_message), code))
-            .setPositiveButton(R.string.ok, null)
-            .show()
-    }
-
     private fun showWarning(text: String) {
         showWarning(text, null)
     }
@@ -755,17 +823,13 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         if (errorCode != null) {
             text += " ($errorCode)"
         }
-        if (mWarningDialog != null && mWarningDialog!!.isShowing) {
-            return
+        if (errorCode != null) {
+            text += " ($errorCode)"
         }
-        mWarningDialog = AlertDialog.Builder(this)
-            .setMessage(String.format(getString(R.string.warning_message_1), text))
-            .setPositiveButton(R.string.ok, null)
-            .show()
+        binding.measurementsLayout.tvScanningMsg.text = text
         mWarningDialogTimeoutHandler = Handler(Looper.getMainLooper())
         mWarningDialogTimeoutHandler!!.postDelayed(
             {
-                mWarningDialog?.dismiss()
             }, 1000
         )
     }
@@ -864,22 +928,35 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.retry_btn -> {
-                TutorialActivity.startActivity(this, TutorialActivity.Companion.From.SETTINGS)
-            }
             R.id.btn_stop, R.id.stop_btn_1 -> {
                 AlertDialogManager.showConfirmationDialog(
                     this,
-                    getString(R.string.app_name),
+                    null,
                     getString(R.string.measurement_not_completed_msg),
                     button1Message = getString(R.string.yes),
                     button2Message = getString(R.string.no),
                     dialogClickListener = object : DialogClickListener {
                         override fun onButton1Clicked() {
-                            stopTimeCount()
-                            stopMeasuring()
-                            closeSession()
-                            finish()
+                            AlertDialogManager.showInformationDialog(
+                                this@ScanByFingerActivity,
+                                title = null,
+                                msg = getString(R.string.no_enough_data_was_recorded),
+                                button1Message = getString(R.string.try_again),
+                                dialogClickListener = object : DialogClickListener {
+                                    override fun onButton1Clicked() {
+                                        stopTimeCount()
+                                        stopMeasuring()
+                                        closeSession()
+                                        finish()
+                                    }
+
+                                    override fun onButton2Clicked() {
+                                    }
+
+                                    override fun onCloseClicked() {
+                                    }
+                                }
+                            )
                         }
 
                         override fun onButton2Clicked() {
@@ -920,6 +997,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
             override fun run() {
 
                 mTime++
+                updateReadingProgressMsg()
                 try {
                     progressPercent =
                         ((mTime.toDouble() / AppConstant.BINAH_AI_SCANNING_TIME_SECONDS) * 100)
@@ -932,6 +1010,57 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                 mTimeCountHandler?.postDelayed(this, 1000)
             }
         })
+    }
+
+    private fun updateReadingProgressMsg() {
+        if (isDetected) {
+            when (mTime) {
+                in 0..6 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.finger_scanning_msg)
+                }
+                7 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.sit_still_during_the_measurement)
+                }
+                in 8..14 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.symptoms_of_hypoxemia_include_wheezing)
+                }
+                in 15..21 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.prq_is_calculate_by_dividing_heart_rate)
+                }
+                in 22..28 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.wait_until_end_for_best_result)
+                }
+                in 29..35 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.normal_resting_heart_rate)
+                }
+                in 36..42 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.make_sure_that_your_finger_completely_covers_the_camera)
+                }
+                in 43..49 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.high_blood_pressure_may_exist_wth_no_noticeable)
+                }
+                in 50..56 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.normal_prq_is_4_to_5)
+                }
+                in 57..63 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.tracking_heart_rate_provide)
+                }
+                in 64..70 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.hold_on_all_the_result_will_appear)
+                }
+            }
+        }
     }
 
     /*

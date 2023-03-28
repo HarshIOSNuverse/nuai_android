@@ -207,7 +207,10 @@ class MeasurementResultActivity : BaseActivity(), View.OnClickListener {
                             val fragmentTransaction = fragmentManager.beginTransaction()
                             fragmentTransaction.addToBackStack(WellnessScoreDialogFragment.TAG)
                             val filterDialogFragment: WellnessScoreDialogFragment =
-                                WellnessScoreDialogFragment.onNewInstance(measurementDetail?.basicInfo?.wellnessScore!!,true)
+                                WellnessScoreDialogFragment.onNewInstance(
+                                    measurementDetail?.basicInfo?.wellnessScore!!,
+                                    true
+                                )
                             filterDialogFragment.show(
                                 fragmentTransaction,
                                 WellnessScoreDialogFragment.TAG

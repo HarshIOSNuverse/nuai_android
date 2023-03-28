@@ -7,7 +7,6 @@
     <string name="no_internet_connection">No internet connection, Please try again</string>
     <string name="error_message_no_network">You are not currently connected to the internet.\n Please try again when you get online.</string>
     <string name="retry">Retry</string>
-    <string name="permission_denied">Permission needed. Please allow in App Settings for additional functionality.</string>
     <string name="loading">Loading…</string>
     <string name="no_result_found">No Result Found</string>
     <string name="sign_in">Sign In</string>
@@ -44,7 +43,6 @@
     <string name="please_select_dob">Please select date of birth</string>
     <string name="date_of_birth">Date of Birth</string>
     <string name="please_select_gender">Please select gender</string>
-    <string name="gender">Gender</string>
     <string name="weight_in_kg">Weight (in Kgs)</string>
     <string name="height_in_cms">Height (in cms)</string>
     <string name="pls_enter_first_name">Please enter first name</string>
@@ -84,7 +82,6 @@
     <string name="your_password_has_been_reset">Your password has been successfully reset!</string>
     <string name="you_can_now_use_new_password">You can now use your new password to log in to your account.</string>
     <string name="return_to_login">Return to Login</string>
-    <string name="please_enter_otp">Please enter OTP</string>
     <string name="are_you_sure_want_to_logout">Are you sure want to logout?</string>
     <string name="done">Done</string>
     <string name="health_history">Health History</string>
@@ -131,16 +128,12 @@
     <string name="brpm">brpm</string>
     <string name="ms">ms</string>
     <string name="moving_or_disruption_identified_msg">Movements or other disruptions were identified. Try again, looking directly into the camera without moving until the measurement is complete.</string>
-    <string name="you_cancel_camera_permission">You cancelled camera permission</string>
     <!--    face detect bottom sheet   -->
     <string name="face_not_detected">Face not detected</string>
     <string name="face_not_detected_msg">Please point the camera to your face and make sure you are not too far or too close.</string>
     <string name="face_scanning_msg">Please stay still and avoid unnecessary movements until face detection is complete.</string>
     <string name="stop">Stop</string>
-    <string name="blood_pressure_value">%d / %d</string>
     <string name="error_message">Error (%d)</string>
-    <string name="error_code_message">Error (%d) - %s</string>
-    <string name="warning_message">Warning (%d)</string>
     <string name="warning_message_1">Warning (%s)</string>
     <string name="ok">Ok</string>
     <string name="no_finger_detected">Place your finger on the rear camera</string>
@@ -166,7 +159,7 @@
     <string name="face_reset_error">Movements or other disruptions were identified. Try again, looking directly into the camera without moving until the measurement is complete.</string>
     <string name="finger_reset_error">Movements or other disruptions were identified. Try again, making sure that your finger is completely covering the camera, and that you do not move until the measurement is complete.</string>
     <string name="reset_warning">Could not collect data for over one second. Please try not to move.</string>
-    <string name="low_battery_error">Required battery level: 20%</string>
+    <string name="low_battery_error">Required battery level : 20%</string>
     <string name="power_save_error">Low power mode is not supported</string>
     <string name="cannot_start_session">Cannot start measurement.</string>
     <string name="face_not_detected_error">Your face was not detected for the minimum time required to start measuring. please try again.</string>
@@ -321,4 +314,24 @@ Blood Pressure is categorized as low, normal, or elevated: low blood pressure is
     <string name="wellness_score_msg_1">The Wellness Score is a prediction risk score that is used to predict a person\'s cardiovascular risk for the next 5 to 10 years. The Wellness Score is based on the vital signs measured by Binah\'s technology, and is designed to serve as a reference when measured at rest, under similar conditions during all of the measurements, and if the score is consistent in repeated measurements over time.\n\nThe higher the wellness score, the lower the cardiovascular risk.\n\nHow is it calculated?\nYour Wellness Score is calculated using your vitals results from any single measurement. The values of each one of the vital sign measurements affect your Wellness Score prediction.\nGenerally, a lower Heart Rate at rest implies more efficient heart function and better cardiovascular fitness. Therefore, a higher Heart Rate reduces your Wellness Score - even when the heart rate is within the normal range. For example, heart rates that are higher than 65 reduce the wellness score to a medium score, and values that are higher than 84 reduce the wellness score to a low score.\n\nHRV measures the variation in time between heartbeats. The Stress Level that is calculated from this variance also affects your Wellness Score. Thus. Very High and High stress levels are correlated with a low score, while Mild and Normal stress levels are correlated with a medium score.</string>
     <string name="wellness_score_msg_2">Your Oxygen Saturation level measures the amount of oxygen in the blood delivered from the lungs to the rest of the body. A higher level implies a more efficient function, thus, a lower Oxygen Saturation level reduces the Wellness Score.\n\nIn addition, High Blood Pressure readings at rest may pose a higher risk of health problems and therefore may reduce the Wellness Score.\n\nLearn more at: %s</string>
     <string name="measurement_not_completed_msg">Measurement is not completed, Are you sure want to stop?</string>
+    <string name="_0">0</string>
+    <string name="sit_still_during_the_measurement">Sit still during the measurement.</string>
+    <string name="avoid_moving_or_talk">Avoid moving or talking.</string>
+    <string name="stay_focused_on_screen">Stay focused on the screen.</string>
+    <string name="wait_until_end_for_best_result">Wait until the end for the best results.</string>
+    <string name="normal_prq_range">Normal PRQ range is 4 to 5.</string>
+    <string name="normal_resting_heart_rate">Normal resting heart rate is 60 to 100 bpm.</string>
+    <string name="tracking_heart_rate_provide">Tracking heart rate can provide insight into fitness levels.</string>
+    <string name="athletes_may_track_hrv">Athletes may track HRV to optimise their training program.</string>
+    <string name="high_levels_of_hrv">High levels of HRV generally indicate aerobic and general fitness.</string>
+    <string name="hold_on_all_the_result_will_appear">Hold on, all the results will appear in a few seconds. ( Final message before scan results appear )</string>
+    <string name="symptoms_of_hypoxemia_include_wheezing">Symptoms of hypoxemia include wheezing and confusion.</string>
+    <string name="prq_is_calculate_by_dividing_heart_rate">PRQ is calculated by dividing the Heart Rate by the Breathing Rate.</string>
+    <string name="make_sure_that_your_finger_completely_covers_the_camera">Make sure that your finger completely covers the camera</string>
+    <string name="high_blood_pressure_may_exist_wth_no_noticeable">High blood pressure may exist with no noticeable warning signs.</string>
+    <string name="normal_prq_is_4_to_5">Normal PRQ is 4 to 5.</string>
+    <string name="try_again">Try Again</string>
+    <string name="low_power_mode_title">"You are in low power mode "</string>
+    <string name="low_power_mode_msg">Please turn off low power mode in order to start a new measurement.</string>
+    <string name="low_battery_msg">Please charge battery in order to start a new measurement.</string>
 </resources>

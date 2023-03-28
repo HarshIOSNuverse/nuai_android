@@ -21,9 +21,17 @@ import android.graphics.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.method.ScrollingMovementMethod
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -89,6 +97,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         setUpToolNewBar(binding.toolbarLayout)
         setToolBarTitle(getString(R.string.app_name))
         showToolbarIcon(true)
+        binding.measurementsLayout.tvScanningMsg.movementMethod = ScrollingMovementMethod()
         initObserver()
         initClickListener()
         init()
@@ -96,7 +105,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 
     @SuppressLint("SetTextI18n")
     private fun init() {
-        binding.mainContent.measurementsLayout.readingProgressBar.setProgressPercentage(0.0, true)
+        binding.measurementsLayout.readingProgressBar.setProgressPercentage(0.0, true)
         // Asking the user for Camera permission. without it, the SDK can't operate
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.CAMERA
@@ -209,7 +218,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                     if (mSession != null && mSession?.state == SessionState.MEASURING) {
                         showWarning("" + warningData.code)
                     }
-                    binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_error)
+                    binding.faceFrame.setImageResource(R.drawable.face_frame_error)
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_WARNING -> {
                     resetMeasurements()
@@ -221,18 +230,37 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     }
 
     override fun onError(errorData: ErrorData) {
-        binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_normal)
+        binding.faceFrame.setImageResource(R.drawable.face_frame_normal)
         runOnUiThread {
             when (errorData.code) {
                 HealthMonitorCodes.MEASUREMENT_CODE_UNSUPPORTED_ORIENTATION_WARNING -> {
                     if (mSession != null && mSession!!.state == SessionState.MEASURING) {
                         showWarning(getString(R.string.orientation_not_supported))
                     }
-                    binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_error)
+                    binding.faceFrame.setImageResource(R.drawable.face_frame_error)
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_ERROR -> {
                     stopMeasuring()
                     updateUi(Enums.UiState.MANUALLY_STOPPED)
+                    binding.measurementsLayout.root.visibility = View.INVISIBLE
+                    AlertDialogManager.showInformationDialog(
+                        this@ScanByFaceActivity,
+                        0,
+                        null,
+                        getString(R.string.moving_or_disruption_identified_msg),
+                        getString(R.string.retry),
+                        dialogClickListener = object : DialogClickListener {
+                            override fun onButton1Clicked() {
+                                startMeasuring()
+                            }
+
+                            override fun onButton2Clicked() {
+                            }
+
+                            override fun onCloseClicked() {
+                            }
+                        }
+                    )
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_INVALID_RECENT_DETECTION_RATE_ERROR -> {
                     stopMeasuring()
@@ -247,7 +275,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                     updateUi(Enums.UiState.MANUALLY_STOPPED)
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_WARNING -> {
-                    binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_error)
+                    binding.faceFrame.setImageResource(R.drawable.face_frame_error)
                     resetMeasurements()
                     showWarning(getString(R.string.error_warning), errorData.code)
                 }
@@ -275,7 +303,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 
     // Implementation =============================================================================
     private fun handleVitalSign(vitalSign: VitalSign) {
-        val measurementLayout: MeasurementsLayoutBinding = binding.mainContent.measurementsLayout
+        val measurementLayout: MeasurementsLayoutBinding = binding.measurementsLayout
         Log.i(
             tag,
             "onVitalSign Message Type: " + vitalSign.type + " message: " + vitalSign.value
@@ -360,9 +388,24 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         } catch (e: HealthMonitorException) {
             when (e.errorCode) {
                 HealthMonitorCodes.DEVICE_CODE_MINIMUM_BATTERY_LEVEL_ERROR -> {
-                    CommonUtils.showToast(
-                        this,
-                        "${e.errorCode} ${getString(R.string.low_battery_error)}"
+                    binding.measurementsLayout.root.visibility = View.INVISIBLE
+                    AlertDialogManager.showInformationDialog(
+                        this@ScanByFaceActivity,
+                        0,
+                        getString(R.string.low_battery_error),
+                        getString(R.string.low_battery_msg),
+                        getString(R.string.try_again),
+                        dialogClickListener = object : DialogClickListener {
+                            override fun onButton1Clicked() {
+                                startMeasuring()
+                            }
+
+                            override fun onButton2Clicked() {
+                            }
+
+                            override fun onCloseClicked() {
+                            }
+                        }
                     )
 //                    showErrorDialog(
 //                        e.errorCode,
@@ -370,9 +413,24 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 //                    )
                 }
                 HealthMonitorCodes.DEVICE_CODE_LOW_POWER_MODE_ENABLED_ERROR -> {
-                    CommonUtils.showToast(
-                        this,
-                        "${e.errorCode} ${getString(R.string.power_save_error)}"
+                    binding.measurementsLayout.root.visibility = View.INVISIBLE
+                    AlertDialogManager.showInformationDialog(
+                        this@ScanByFaceActivity,
+                        0,
+                        getString(R.string.low_power_mode_title),
+                        getString(R.string.low_power_mode_msg),
+                        getString(R.string.try_again),
+                        dialogClickListener = object : DialogClickListener {
+                            override fun onButton1Clicked() {
+                                startMeasuring()
+                            }
+
+                            override fun onButton2Clicked() {
+                            }
+
+                            override fun onCloseClicked() {
+                            }
+                        }
                     )
 //                    showErrorDialog(
 //                        e.errorCode,
@@ -409,15 +467,15 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     private fun updateUi(state: Enums.UiState?) {
         when (state) {
             Enums.UiState.IDLE -> {
-                if (binding.mainContent.cameraView.visibility == View.INVISIBLE) {
-                    binding.mainContent.cameraView.visibility = View.VISIBLE
+                if (binding.cameraView.visibility == View.INVISIBLE) {
+                    binding.cameraView.visibility = View.VISIBLE
                     clearCanvas()
                 }
                 window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 stopTimeCount()
             }
             Enums.UiState.LOADING -> {
-                binding.mainContent.cameraView.visibility = View.INVISIBLE
+                binding.cameraView.visibility = View.INVISIBLE
                 stopTimeCount()
             }
             Enums.UiState.MEASURING -> {
@@ -425,28 +483,20 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 resetMeasurements()
                 startTimeCount()
                 window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-                binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_normal)
-                binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
+                binding.faceFrame.setImageResource(R.drawable.face_frame_normal)
+                binding.measurementsLayout.root.visibility = View.VISIBLE
             }
             Enums.UiState.MANUALLY_STOPPED -> {
-                if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
-                    binding.crFaceNotDetectWarning.visibility = View.GONE
-                }
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 stopTimeCount()
             }
             Enums.UiState.MEASUREMENT_COMPLETED -> {
                 stopMeasuring()
-                if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
-                    binding.crFaceNotDetectWarning.visibility = View.GONE
-                }
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 stopTimeCount()
             }
             Enums.UiState.SCREEN_PAUSED -> {
-                if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
-                    binding.crFaceNotDetectWarning.visibility = View.GONE
-                }
+
             }
             Enums.UiState.SCREEN_RESUMED -> {
 //                if (mTestMode === SessionMode.FACE) {
@@ -466,23 +516,67 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         }
     }
 
+    private var isDetected = false
     private fun handleRoiDetection(detected: Boolean) {
         if (mSession == null || mSession!!.state != SessionState.MEASURING) {
             return
         }
+        isDetected = detected
         if (detected) {
-            binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
-            binding.crFaceNotDetectWarning.visibility = View.GONE
-            binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_normal)
+            binding.measurementsLayout.root.visibility = View.VISIBLE
+            //            binding.crFaceNotDetectWarning.visibility = View.GONE
+            binding.faceFrame.setImageResource(R.drawable.face_frame_normal)
+            updateReadingProgressMsg()
+            binding.measurementsLayout.tvScanningMsg.setTextSize(
+                TypedValue.COMPLEX_UNIT_SP, 20f
+            )
+            binding.measurementsLayout.tvScanningMsg.setTextColor(
+                ContextCompat.getColor(this, R.color.primary_text_color)
+            )
+            binding.measurementsLayout.tvReading.visibility = View.VISIBLE
+            binding.measurementsLayout.tvReadingUnit.visibility = View.VISIBLE
+            binding.measurementsLayout.readingProgressBar.visibility = View.VISIBLE
         } else {
-            binding.mainContent.measurementsLayout.root.visibility = View.INVISIBLE
-            binding.crFaceNotDetectWarning.visibility = View.VISIBLE
-            binding.mainContent.faceFrame.setImageResource(R.drawable.face_frame_error)
+//            binding.measurementsLayout.root.visibility = View.INVISIBLE
+//            binding.crFaceNotDetectWarning.visibility = View.VISIBLE
+            binding.faceFrame.setImageResource(R.drawable.face_frame_error)
+            binding.measurementsLayout.tvScanningMsg.setTextColor(
+                ContextCompat.getColor(this, R.color.secondary_text_color)
+            )
+            val msg =
+                getString(R.string.face_not_detected) + "\n\n" + getString(R.string.face_not_detected_msg)
+            setSpannableColor(
+                binding.measurementsLayout.tvScanningMsg,
+                msg,
+                getString(R.string.face_not_detected),
+                ContextCompat.getColor(this, R.color.error_msg_text_color)
+            )
+            binding.measurementsLayout.tvReading.visibility = View.GONE
+            binding.measurementsLayout.tvReadingUnit.visibility = View.GONE
+            binding.measurementsLayout.readingProgressBar.visibility = View.GONE
         }
     }
 
+    private fun setSpannableColor(
+        view: TextView, fulltext: String, subtext1: String, color: Int
+    ) {
+        val str: Spannable = SpannableString(fulltext)
+        val i1 = fulltext.indexOf(subtext1)
+        str.setSpan(
+            ForegroundColorSpan(color), i1, i1 + subtext1.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        str.setSpan(
+            AbsoluteSizeSpan(17, true), i1 + subtext1.length, fulltext.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        view.movementMethod = LinkMovementMethod.getInstance()
+        view.text = str
+        view.highlightColor = Color.TRANSPARENT
+    }
+
     private fun resetMeasurements() {
-        val measurementsBinding: MeasurementsLayoutBinding = binding.mainContent.measurementsLayout
+        val measurementsBinding: MeasurementsLayoutBinding = binding.measurementsLayout
         measurementsBinding.tvReading.text =
             if (mLicenseEnabledVitalSigns.isHeartRateEnabled) "--" else "N/A"
     }
@@ -497,7 +591,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     @SuppressLint("SetTextI18n")
     private fun handleFinalResults(finalResults: VitalSignsResults) {
         val enabledVitalSigns = resolveEnabledVitalSigns()
-        val measurementsLayout: MeasurementsLayoutBinding = binding.mainContent.measurementsLayout
+        val measurementsLayout: MeasurementsLayoutBinding = binding.measurementsLayout
         if (enabledVitalSigns!!.isHeartRateEnabled) {
             val heartRate = finalResults.getResult(VitalSignTypes.HEART_RATE)
             if (heartRate?.value == null) {
@@ -506,7 +600,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 measurementsLayout.tvReading.text = "" + heartRate.value
             }
         }
-        binding.mainContent.measurementsLayout.root.visibility = View.VISIBLE
+        binding.measurementsLayout.root.visibility = View.VISIBLE
 
         val scanningResultData = ScanningResultData()
 
@@ -720,20 +814,16 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 
     private fun showWarning(text1: String, errorCode: Int?) {
         var text: String? = text1
-        if (binding.crFaceNotDetectWarning.visibility == View.VISIBLE) {
-            return
-        }
         if (mWarningDialogTimeoutHandler != null) {
             mWarningDialogTimeoutHandler!!.removeCallbacksAndMessages(null)
         }
         if (errorCode != null) {
             text += " ($errorCode)"
         }
-        binding.tvFaceNotDetectMsg.text = text
-        binding.crFaceNotDetectWarning.visibility = View.VISIBLE
+        binding.measurementsLayout.tvScanningMsg.text = text
         mWarningDialogTimeoutHandler = Handler(Looper.getMainLooper())
         mWarningDialogTimeoutHandler!!.postDelayed(
-            { binding.crFaceNotDetectWarning.visibility = View.INVISIBLE },
+            { },
             2000
         )
     }
@@ -742,7 +832,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         if (bitmap == null) {
             return
         }
-        val canvas: Canvas? = binding.mainContent.cameraView.lockCanvas()
+        val canvas: Canvas? = binding.cameraView.lockCanvas()
         if (canvas != null) {
             if (mTestMode == Enums.SessionMode.FACE) {
                 flipCanvas(canvas)
@@ -753,15 +843,15 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 Rect(
                     0,
                     0,
-                    binding.mainContent.cameraView.width,
-                    binding.mainContent.cameraView.bottom - binding.mainContent.cameraView.top
+                    binding.cameraView.width,
+                    binding.cameraView.bottom - binding.cameraView.top
                 ),
                 null
             )
             if (mTestMode == Enums.SessionMode.FACE && faceRect != null) {
                 paintRect(canvas, rescaleFaceRect(bitmap, faceRect))
             }
-            binding.mainContent.cameraView.unlockCanvasAndPost(canvas)
+            binding.cameraView.unlockCanvasAndPost(canvas)
         }
     }
 
@@ -794,18 +884,18 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         val m = Matrix()
         m.postScale(1f, 1f, width / 2f, height / 2f)
         m.postScale(
-            binding.mainContent.cameraView.width / width,
-            binding.mainContent.cameraView.height / height
+            binding.cameraView.width / width,
+            binding.cameraView.height / height
         )
         m.mapRect(rect)
         return rect
     }
 
     private fun clearCanvas() {
-        val canvas: Canvas? = binding.mainContent.cameraView.lockCanvas()
+        val canvas: Canvas? = binding.cameraView.lockCanvas()
         canvas?.drawColor(ContextCompat.getColor(baseContext, R.color.colorScreenBackground))
         if (canvas != null)
-            binding.mainContent.cameraView.unlockCanvasAndPost(canvas)
+            binding.cameraView.unlockCanvasAndPost(canvas)
     }
 
     /*
@@ -836,28 +926,45 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 //    }
     private fun initClickListener() {
         binding.onClickListener = this
-        binding.mainContent.onClickListener = this
+        binding.onClickListener = this
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.retry_btn -> {
-                if (mSession?.state != SessionState.MEASURING)
-                    startMeasuring()
-            }
+//            R.id.retry_btn -> {
+//                if (mSession?.state != SessionState.MEASURING)
+//                    startMeasuring()
+//            }
             R.id.btn_stop -> {
                 AlertDialogManager.showConfirmationDialog(
                     this,
-                    getString(R.string.app_name),
+                    null,
                     getString(R.string.measurement_not_completed_msg),
-                    button1Message = getString (R.string.yes),
+                    button1Message = getString(R.string.yes),
                     button2Message = getString(R.string.no),
                     dialogClickListener = object : DialogClickListener {
                         override fun onButton1Clicked() {
-                            stopTimeCount()
-                            stopMeasuring()
-                            closeSession()
-                            finish()
+                            AlertDialogManager.showInformationDialog(
+                                this@ScanByFaceActivity,
+                                0,
+                                null,
+                                getString(R.string.no_enough_data_was_recorded),
+                                getString(R.string.try_again),
+                                dialogClickListener = object : DialogClickListener {
+                                    override fun onButton1Clicked() {
+                                        stopTimeCount()
+                                        stopMeasuring()
+                                        closeSession()
+                                        finish()
+                                    }
+
+                                    override fun onButton2Clicked() {
+                                    }
+
+                                    override fun onCloseClicked() {
+                                    }
+                                }
+                            )
                         }
 
                         override fun onButton2Clicked() {
@@ -886,7 +993,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     */
     private fun startTimeCount() {
         Log.e(tag, "startTimeCount called")
-        binding.mainContent.measurementsLayout.readingProgressBar.visibility = View.VISIBLE
+        binding.measurementsLayout.readingProgressBar.visibility = View.VISIBLE
         if (mTimeCountHandler != null) {
             mTimeCountHandler?.removeCallbacksAndMessages(null)
         }
@@ -897,10 +1004,11 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             override fun run() {
 
                 mTime++
+                updateReadingProgressMsg()
                 try {
                     progressPercent =
                         ((mTime.toDouble() / AppConstant.BINAH_AI_SCANNING_TIME_SECONDS) * 100)
-                    binding.mainContent.measurementsLayout.readingProgressBar.setProgressPercentage(
+                    binding.measurementsLayout.readingProgressBar.setProgressPercentage(
                         progressPercent, true
                     )
                 } catch (e: Exception) {
@@ -911,11 +1019,62 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         })
     }
 
+    private fun updateReadingProgressMsg() {
+        if (isDetected) {
+            when (mTime) {
+                in 0..6 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.face_scanning_msg)
+                }
+                7 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.sit_still_during_the_measurement)
+                }
+                in 8..14 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.avoid_moving_or_talk)
+                }
+                in 15..21 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.stay_focused_on_screen)
+                }
+                in 22..28 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.wait_until_end_for_best_result)
+                }
+                in 29..35 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.normal_prq_range)
+                }
+                in 36..42 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.normal_resting_heart_rate)
+                }
+                in 43..49 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.tracking_heart_rate_provide)
+                }
+                in 50..56 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.athletes_may_track_hrv)
+                }
+                in 57..63 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.high_levels_of_hrv)
+                }
+                in 64..70 -> {
+                    binding.measurementsLayout.tvScanningMsg.text =
+                        getString(R.string.hold_on_all_the_result_will_appear)
+                }
+            }
+        }
+    }
+
     /*
        Method to hide progress or timer when scanning is stopped
     */
     private fun stopTimeCount() {
-        binding.mainContent.measurementsLayout.readingProgressBar.visibility = View.GONE
+        binding.measurementsLayout.readingProgressBar.visibility = View.GONE
         mTimeCountHandler?.removeCallbacksAndMessages(null)
     }
 

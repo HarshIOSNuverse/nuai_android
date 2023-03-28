@@ -20,7 +20,7 @@ import com.nuai.home.model.api.response.Result
 import com.nuai.home.ui.activity.LearnMoreActivity
 
 @AndroidEntryPoint
-class AbnormalResultsDialogFragment : BottomSheetDialogFragment(), View.OnClickListener {
+class AbnormalResultsDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: AbnormalResultsBottomSheetBinding
     private val abnormalResultList: ArrayList<Any> = arrayListOf()
@@ -28,7 +28,7 @@ class AbnormalResultsDialogFragment : BottomSheetDialogFragment(), View.OnClickL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+        setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
     }
 
     override fun onCreateView(
@@ -91,11 +91,6 @@ class AbnormalResultsDialogFragment : BottomSheetDialogFragment(), View.OnClickL
             }
         }
         binding.adapter!!.notifyDataSetChanged()
-    }
-
-    override fun onClick(v: View?) {
-        when (v!!.id) {
-        }
     }
 
     private fun initAdapter() {

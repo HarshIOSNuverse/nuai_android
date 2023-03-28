@@ -128,7 +128,6 @@
             android:layout_marginVertical="@dimen/dp_30"
             android:gravity="center_horizontal"
             android:padding="@dimen/dp_5"
-            android:text="00"
             android:textColor="@color/otp_timer_text_color"
             android:textSize="@dimen/sp_17"
             app:layout_constraintEnd_toEndOf="parent"

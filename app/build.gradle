@@ -26,14 +26,14 @@ android {
 
     signingConfigs {
         debug {
-//            storeFile file(keyStoreDebug)
+            storeFile file(keyStoreDebug)
         }
 
         release {
-//            storeFile file(keyStoreRelease)
-//            keyAlias keyStoreAlias
-//            keyPassword keyStorePass
-//            storePassword keyStoreAliasPass
+            storeFile file(keyStoreRelease)
+            keyAlias keyStoreAlias
+            keyPassword keyStorePass
+            storePassword keyStoreAliasPass
         }
     }
     buildTypes {

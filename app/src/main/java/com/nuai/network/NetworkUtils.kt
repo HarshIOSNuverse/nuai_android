@@ -1,7 +1,6 @@
 package com.nuai.network
 
 import android.util.Base64
-import androidx.annotation.Nullable
 import com.nuai.BuildConfig
 import com.nuai.utils.Logger
 
@@ -58,11 +57,11 @@ open class NetworkUtils {
             return auth
         }
 
-        fun isEmpty(@Nullable text: String?): Boolean {
+        private fun isEmpty(text: String?): Boolean {
             return text == null || text.isEmpty()
         }
 
-        fun isNotEmpty(@Nullable text: String?): Boolean {
+        fun isNotEmpty(text: String?): Boolean {
             return !isEmpty(text)
         }
     }
