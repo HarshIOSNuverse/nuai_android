@@ -97,7 +97,6 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
         setUpToolNewBar(binding.toolbarLayout)
         setToolBarTitle(getString(R.string.app_name))
         showToolbarIcon(true)
-        binding.measurementsLayout.tvScanningMsg.movementMethod = ScrollingMovementMethod()
         initObserver()
         initClickListener()
         init()
