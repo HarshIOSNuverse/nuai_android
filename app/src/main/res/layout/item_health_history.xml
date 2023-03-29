@@ -49,8 +49,8 @@
                 style="@style/TextViewStyleRegular"
                 android:layout_marginStart="@dimen/dp_10"
                 android:text="@string/wellness_score"
-                android:textSize="@dimen/sp_12"
                 android:textColor="@color/secondary_text_color"
+                android:textSize="@dimen/sp_12"
                 app:layout_constraintStart_toEndOf="@+id/iv_indicator"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,9 +58,9 @@
                 android:id="@+id/tv_wellness_score"
                 style="@style/TextViewStyleRegular"
                 android:layout_width="0dp"
-                android:textSize="@dimen/sp_12"
                 android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_2"
+                android:textSize="@dimen/sp_12"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_indicator"
                 app:layout_constraintTop_toBottomOf="@+id/lbl_wellness_score" />
@@ -71,9 +71,9 @@
                 android:layout_width="0dp"
                 android:layout_marginHorizontal="@dimen/dp_10"
                 android:gravity="end"
-                android:textSize="@dimen/sp_10"
                 android:text="@{history.resultTime}"
                 android:textColor="@color/secondary_text_color"
+                android:textSize="@dimen/sp_10"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/iv_measure_type"
                 app:layout_constraintStart_toEndOf="@+id/lbl_wellness_score"
@@ -263,7 +263,6 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_stress_level"
             style="@style/TextViewStyleLight"
-            android:text='@{""+history.stressLevel}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_stress_level"
             app:layout_constraintEnd_toEndOf="parent"

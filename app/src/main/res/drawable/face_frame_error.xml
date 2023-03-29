@@ -4,7 +4,7 @@
     android:height="450dp"
     android:autoMirrored="true"
     android:viewportWidth="375"
-    android:viewportHeight="500"
+    android:viewportHeight="550"
     tools:ignore="VectorRaster">
     <group>
         <clip-path android:pathData="M0,0h375v610h-375z" />

@@ -4,7 +4,7 @@
     android:height="450dp"
     android:autoMirrored="true"
     android:viewportWidth="375"
-    android:viewportHeight="500"
+    android:viewportHeight="550"
     tools:ignore="VectorRaster">
     <path
         android:fillAlpha="0.3"

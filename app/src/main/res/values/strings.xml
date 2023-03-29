@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CheckMySelf</string>
+    <string name="you_cancel_location_permission">You canceled location permission</string>
     <string name="login">Login</string>
     <string name="create_an_account">Create an Account</string>
     <string name="your_health_vitals_at_your_fingertips">Your health vitals at your fingertips</string>
@@ -99,7 +100,7 @@
     <string name="send_feedback">Send Feedback</string>
     <string name="terms_of_service">Terms of Service</string>
     <string name="got_it">Got it</string>
-    <string name="face_option_select_title">%s, ready to measure\nyour vital signs?</string>
+    <string name="face_option_select_title">%s, ready to measure your vital signs?</string>
     <string name="face_option_select_msg">Sit still, ensure your face is evenly illuminated and there is no light source behind you.</string>
     <string name="finger_option_select_title">Place your finger on the rear camera (not on the selfie camera).</string>
     <string name="finger_option_select_msg">Place your finger on the camera\n(not the flashlight), applying moderate pressure. Click Measure Now.</string>
@@ -149,6 +150,7 @@
     <string name="pls_enter_feedback">Please enter feedback</string>
     <string name="high">High</string>
     <string name="medium">Medium</string>
+    <string name="normal">Normal</string>
     <string name="low">Low</string>
 
     <string name="orientation_not_supported">Unsupported orientation. Return to portrait mode</string>
@@ -160,7 +162,6 @@
     <string name="finger_reset_error">Movements or other disruptions were identified. Try again, making sure that your finger is completely covering the camera, and that you do not move until the measurement is complete.</string>
     <string name="reset_warning">Could not collect data for over one second. Please try not to move.</string>
     <string name="low_battery_error">Required battery level : 20%</string>
-    <string name="power_save_error">Low power mode is not supported</string>
     <string name="cannot_start_session">Cannot start measurement.</string>
     <string name="face_not_detected_error">Your face was not detected for the minimum time required to start measuring. please try again.</string>
     <!--    <string name="finger_not_detected_error">Your finger was not detected for the minimum time required to start measuring. please try again.</string>-->
@@ -324,7 +325,7 @@ Blood Pressure is categorized as low, normal, or elevated: low blood pressure is
     <string name="tracking_heart_rate_provide">Tracking heart rate can provide insight into fitness levels.</string>
     <string name="athletes_may_track_hrv">Athletes may track HRV to optimise their training program.</string>
     <string name="high_levels_of_hrv">High levels of HRV generally indicate aerobic and general fitness.</string>
-    <string name="hold_on_all_the_result_will_appear">Hold on, all the results will appear in a few seconds. ( Final message before scan results appear )</string>
+    <string name="hold_on_all_the_result_will_appear">Hold on, all the results will appear in a few seconds.</string>
     <string name="symptoms_of_hypoxemia_include_wheezing">Symptoms of hypoxemia include wheezing and confusion.</string>
     <string name="prq_is_calculate_by_dividing_heart_rate">PRQ is calculated by dividing the Heart Rate by the Breathing Rate.</string>
     <string name="make_sure_that_your_finger_completely_covers_the_camera">Make sure that your finger completely covers the camera</string>

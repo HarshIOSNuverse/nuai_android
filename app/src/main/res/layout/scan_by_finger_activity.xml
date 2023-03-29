@@ -59,6 +59,7 @@
                 android:onClick="@{onClickListener}"
                 android:padding="@dimen/dp_5"
                 android:text="@string/stop"
+                android:textSize="@dimen/sp_20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

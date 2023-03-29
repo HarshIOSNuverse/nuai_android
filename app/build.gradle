@@ -127,5 +127,6 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
     // In-App Purchase
     implementation 'com.android.billingclient:billing-ktx:5.1.0'
-
+    // Location
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
 }

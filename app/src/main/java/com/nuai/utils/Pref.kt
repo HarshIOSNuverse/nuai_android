@@ -17,6 +17,8 @@ object Pref {
         const val FCM_TOKEN = "fcm_token"
         const val IS_SEND_FCM_TOKEN = "is_send_fcm_token"
         const val PLAN_ABOUT_TO_EXPIRE_DATE = "PLAN_ABOUT_TO_EXPIRE_DATE"
+        const val LAT = "lat"
+        const val LONG = "long"
     }
 
     private val prefs: SharedPreferences =
@@ -69,6 +71,13 @@ object Pref {
         get() = prefs.getString(PrefConstant.PLAN_ABOUT_TO_EXPIRE_DATE, "")!!
         set(value) = prefs.edit().putString(PrefConstant.PLAN_ABOUT_TO_EXPIRE_DATE, value).apply()
 
+    var currentLatitude: Double
+        get() = prefs.getString(PrefConstant.LAT, "0.0")!!.toDouble()
+        set(value) = prefs.edit().putString(PrefConstant.LAT, value.toString()).apply()
+
+    var currentLongitude: Double
+        get() = prefs.getString(PrefConstant.LONG, "0.0")!!.toDouble()
+        set(value) = prefs.edit().putString(PrefConstant.LONG, value.toString()).apply()
 
     //    var customSizes: ArrayList<Size1>?
 //        get() {

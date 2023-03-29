@@ -89,6 +89,7 @@ internal class HealthHistoryListAdapter(items: ArrayList<HealthBasicInfo>) :
             }
         }
         holder.binding.tvWellnessScore.text = wellnessScore
+        holder.binding.tvStressLevel.text = CommonUtils.getStressLevel(history.stressLevel)
         if (!history.scanBy.isNullOrEmpty()) {
             when (history.scanBy) {
                 Enums.ScanType.FACE.toString() -> {

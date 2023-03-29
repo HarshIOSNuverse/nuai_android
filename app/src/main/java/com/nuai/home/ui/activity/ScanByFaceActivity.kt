@@ -110,7 +110,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 this, Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), RP_CAMERA)
         } else {
             createHealthMonitorManager()
 //            createSession()
@@ -316,7 +316,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     }
 
 
-    private fun createHealthMonitorManager() {
+    fun createHealthMonitorManager() {
         try {
             updateUi(Enums.UiState.LOADING)
             mManager = HealthMonitorManager(this, LicenseData(BuildConfig.LICENCE_KEY), this)
@@ -765,8 +765,8 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                     scanningResultData.prq,
                     scanningResultData.wellnessScore,
                     scanningResultData.recoveryAbility,
-                    0.0,
-                    0.0
+                    Pref.currentLatitude,
+                    Pref.currentLongitude
                 )
                 if (request.bloodPressure == "0" && request.heartRate == "0" && request.oxygenSaturation == "0" && request.prq == "0") {
 //                    CommonUtils.showToast(this, getString(R.string.no_result_found))
@@ -1075,20 +1075,5 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     private fun stopTimeCount() {
         binding.measurementsLayout.readingProgressBar.visibility = View.GONE
         mTimeCountHandler?.removeCallbacksAndMessages(null)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            createHealthMonitorManager()
-//            createSession()
-        } else {
-            CommonUtils.showToast(this, getString(R.string.required_permission_not_granted))
-            finish()
-        }
     }
 }

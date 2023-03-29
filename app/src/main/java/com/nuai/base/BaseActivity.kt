@@ -1,8 +1,15 @@
 package com.nuai.base
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.IntentSender
+import android.content.pm.PackageManager
 import android.graphics.Point
+import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.TypedValue.COMPLEX_UNIT_SP
 import android.view.MenuItem
@@ -12,20 +19,25 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
 import com.nuai.R
 import com.nuai.databinding.LayoutNoInternetBinding
 import com.nuai.databinding.ToolbarLayoutBinding
+import com.nuai.home.ui.activity.ScanByFaceActivity
+import com.nuai.home.ui.activity.ScanByFingerActivity
 import com.nuai.onboarding.ui.activity.LoginRegisterActivity
 import com.nuai.onboarding.ui.activity.SplashActivity
 import com.nuai.onboarding.ui.activity.SplashAnimationActivity
-import com.nuai.utils.AnimationsHandler
-import com.nuai.utils.ContextWrapper
-import com.nuai.utils.CustomProgressDialog
-import com.nuai.utils.Pref
+import com.nuai.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -33,11 +45,18 @@ import java.util.*
 @AndroidEntryPoint
 open class BaseActivity : AppCompatActivity() {
     companion object {
+        val TAG: String = BaseActivity::class.java.simpleName
+        private const val RP_LOCATION = 34
+        const val RP_CAMERA = 35
     }
 
     private lateinit var toolbarLayoutBinding: ToolbarLayoutBinding
     private lateinit var tvToolbarTitle: AppCompatTextView
     private lateinit var toolbarIcon: ImageView
+
+    private var mFusedLocationClient: FusedLocationProviderClient? = null
+    private var locationRequest: LocationRequest? = null
+    private var locationCallback: LocationCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +74,7 @@ open class BaseActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
             )
         }
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     override fun attachBaseContext(newBase: Context?) {
@@ -182,4 +202,164 @@ open class BaseActivity : AppCompatActivity() {
         view.getLocationOnScreen(location)
         return Point(location[0], location[1])
     }
+
+    fun checkPermissions(): Boolean {
+        return (ActivityCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED)
+    }
+
+    fun requestPermissions() {
+        val shouldProvideRationale =
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        if (shouldProvideRationale) {
+            startLocationPermissionRequest()
+        } else {
+            startLocationPermissionRequest()
+        }
+    }
+
+    private fun startLocationPermissionRequest() {
+        ActivityCompat.requestPermissions(
+            this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), RP_LOCATION
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            RP_LOCATION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    getLastLocation()
+                    startLocationUpdates()
+                } else {
+                    CommonUtils.showToast(
+                        this, getString(R.string.you_cancel_location_permission)
+                    )
+                }
+
+            }
+            RP_CAMERA -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (this is ScanByFaceActivity) {
+                        this.createHealthMonitorManager()
+//                        createSession()
+                    }
+                    if (this is ScanByFingerActivity) {
+                        this.createHealthMonitorManager()
+//                        createSession()
+                    }
+                } else {
+                    CommonUtils.showToast(this, getString(R.string.required_permission_not_granted))
+                    finish()
+                }
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getLastLocation() {
+        mFusedLocationClient?.lastLocation?.addOnCompleteListener(this) { task ->
+            if (task.isSuccessful && task.result != null) {
+                // Need to uncomment
+                val lat = task.result?.latitude!!
+                val lng = task.result?.longitude!!
+                Pref.currentLatitude = lat
+                Pref.currentLongitude = lng
+            } else {
+                Logger.d(TAG, "getLastLocation:exception" + task.exception)
+                startLocationUpdates()
+            }
+        }
+    }
+
+    protected fun startLocationUpdates() {
+        if (locationRequest == null || locationCallback == null) {
+            locationRequest = LocationRequest.Builder(Priority.PRIORITY_BALANCED_POWER_ACCURACY, 10 * 1000)
+                .setWaitForAccurateLocation(false)
+                .setMinUpdateIntervalMillis(1000)
+                .setMaxUpdateDelayMillis(10 * 1000)
+                .build()
+            locationCallback = object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+//                    if (locationResult == null)
+//                        return
+                    super.onLocationResult(locationResult)
+                    for (location: Location in locationResult.locations) {
+                        Pref.currentLatitude = location.latitude
+                        Pref.currentLongitude = location.longitude
+
+                    }
+                    stopLocationUpdates()
+                }
+            }
+        }
+        requestLocationSettings(locationRequest!!, locationCallback!!)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestLocationSettings(
+        locationRequest: LocationRequest,
+        locationCallback: LocationCallback
+    ) {
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        builder.setAlwaysShow(true)
+        val client = LocationServices.getSettingsClient(this)
+        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+        task.addOnSuccessListener(this) {
+            if (ActivityCompat.checkSelfPermission(
+                    this, Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                mFusedLocationClient!!.requestLocationUpdates(
+                    locationRequest, locationCallback, Looper.getMainLooper()
+                )
+            }
+        }.addOnFailureListener {
+            if (it is ResolvableApiException) {
+                // Location settings are not satisfied, but this can be fixed
+                // by showing the user a dialog.
+                try {
+                    // Show the dialog by calling startResolutionForResult(),
+                    // and check the result in onActivityResult().
+                    checkSettingLauncher.launch(IntentSenderRequest.Builder(it.resolution).build())
+//                    it.startResolutionForResult(
+//                        this, REQUEST_CHECK_SETTINGS
+//                    )
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    // Ignore the error.
+                    sendEx.printStackTrace()
+                }
+            }
+        }
+    }
+
+
+    //
+    private fun stopLocationUpdates() {
+        if (mFusedLocationClient != null && locationCallback != null) {
+            mFusedLocationClient?.removeLocationUpdates(locationCallback!!)
+        }
+    }
+
+    private val checkSettingLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            when (result.resultCode) {
+                Activity.RESULT_OK -> {
+                    startLocationUpdates()
+                }
+                Activity.RESULT_CANCELED -> {
+                    CommonUtils.showToast(this, getString(R.string.you_cancel_location_permission))
+//                    startLocationUpdates()
+                }
+            }
+        }
+
 }

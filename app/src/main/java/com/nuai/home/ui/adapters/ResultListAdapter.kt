@@ -48,6 +48,14 @@ internal class ResultListAdapter(items: ArrayList<Reading>) :
             R.drawable.rc_black_border_c25,
             holder.binding.ivReadingIndicator
         )
+        holder.binding.tvObservedValue.text = if (!reading.observedValue.isNullOrEmpty()) {
+            if (reading.title == "Stress Level")
+                CommonUtils.getStressLevel(reading.observedValue)
+            else
+                reading.observedValue
+        } else {
+            "N/A"
+        }
         val bgColor = if (!reading.colorCode.isNullOrEmpty()) {
             reading.colorCode!!.toColorInt()
         } else {

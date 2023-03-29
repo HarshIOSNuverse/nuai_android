@@ -112,7 +112,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                 this, Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), RP_CAMERA)
         } else {
             createHealthMonitorManager()
 //            createSession()
@@ -217,13 +217,13 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         runOnUiThread {
             when (warningData.code) {
                 HealthMonitorCodes.MEASUREMENT_CODE_UNSUPPORTED_ORIENTATION_WARNING -> if (mSession != null && mSession?.state == SessionState.MEASURING) {
-                    showWarning(""+warningData.code)
+                    showWarning("" + warningData.code)
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_WARNING -> {
                     resetMeasurements()
-                    showWarning(""+warningData.code)
+                    showWarning("" + warningData.code)
                 }
-                else -> showWarning(""+warningData.code)
+                else -> showWarning("" + warningData.code)
             }
         }
     }
@@ -311,7 +311,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
     }
 
 
-    private fun createHealthMonitorManager() {
+    fun createHealthMonitorManager() {
         try {
             updateUi(Enums.UiState.LOADING)
             mManager = HealthMonitorManager(this, LicenseData(BuildConfig.LICENCE_KEY), this)
@@ -609,6 +609,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
             )
         }
     }
+
     private fun setSpannableColor(
         view: TextView, fulltext: String, subtext1: String, color: Int
     ) {
@@ -626,6 +627,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
         view.text = str
         view.highlightColor = Color.TRANSPARENT
     }
+
     private fun resetMeasurements() {
         val measurementsBinding: MeasurementsLayoutBinding = binding.measurementsLayout
         measurementsBinding.tvReading.text =
@@ -774,8 +776,8 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                     scanningResultData.prq,
                     scanningResultData.wellnessScore,
                     scanningResultData.recoveryAbility,
-                    0.0,
-                    0.0
+                    Pref.currentLatitude,
+                    Pref.currentLongitude
                 )
                 if (request.bloodPressure == "0" && request.heartRate == "0" && request.oxygenSaturation == "0" && request.prq == "0") {
 //                    CommonUtils.showToast(this, getString(R.string.no_result_found))
@@ -1070,20 +1072,4 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
 //        binding.measurementsLayout.readingProgressBar.visibility = View.GONE
         mTimeCountHandler?.removeCallbacksAndMessages(null)
     }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            createHealthMonitorManager()
-//            createSession()
-        } else {
-            CommonUtils.showToast(this, getString(R.string.required_permission_not_granted))
-            finish()
-        }
-    }
-
 }
