@@ -75,16 +75,16 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         subscriptionList.clear()
         subscriptionList.add(SubscriptionPlan().apply {
-            id = "subscription_premium_monthly_android"
+            id = AppConstant.MONTHLY_PLAN_ID
             title = "Monthly"
             observedValue = "$2.95"
-            shortDesc = "No Limit for Scan"
+            shortDesc = getString(R.string.no_limit_for_scan)
         })
         subscriptionList.add(SubscriptionPlan().apply {
-            id = "subscription_premium_yearly_android"
+            id = AppConstant.YEARLY_PLAN_ID
             title = "Yearly"
             observedValue = "$30"
-            shortDesc = "You save $6.00"
+            shortDesc = getString(R.string.you_save_doller_6)
         })
         binding.adapter!!.notifyDataSetChanged()
         setNoResult()
@@ -215,20 +215,19 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun querySkuDetailsAsync() {
-        val params = QueryProductDetailsParams.newBuilder()
-        params.setProductList(
-            arrayListOf(
+        val params = QueryProductDetailsParams.newBuilder().setProductList(
+            listOf(
                 QueryProductDetailsParams.Product.newBuilder()
-                    .setProductId("subscription_premium_monthly_android")
+                    .setProductId(AppConstant.MONTHLY_PLAN_ID)
                     .setProductType(ProductType.SUBS)
                     .build(),
                 QueryProductDetailsParams.Product.newBuilder()
-                    .setProductId("subscription_premium_yearly_android")
+                    .setProductId(AppConstant.YEARLY_PLAN_ID)
                     .setProductType(ProductType.SUBS)
                     .build()
             )
-        )
-        billingClient!!.queryProductDetailsAsync(params.build()) { _, productDetailsList ->
+        ).build()
+        billingClient!!.queryProductDetailsAsync(params) { _, productDetailsList ->
             if (productDetailsList.isNotEmpty()) {
                 for (j in productDetailsList.indices) {
                     val skuDetails = productDetailsList[j]

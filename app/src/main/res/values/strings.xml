@@ -335,4 +335,6 @@ Blood Pressure is categorized as low, normal, or elevated: low blood pressure is
     <string name="low_power_mode_title">"You are in low power mode "</string>
     <string name="low_power_mode_msg">Please turn off low power mode in order to start a new measurement.</string>
     <string name="low_battery_msg">Please charge battery in order to start a new measurement.</string>
+    <string name="no_limit_for_scan">No Limit for Scan</string>
+    <string name="you_save_doller_6">You save $6.00</string>
 </resources>
