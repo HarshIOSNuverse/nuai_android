@@ -85,6 +85,7 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
                             && (it.code == ResponseStatus.STATUS_CODE_SUCCESS
                                     || it.code == ResponseStatus.STATUS_CODE_CREATED)
                         ) {
+                            CommonUtils.showToast(this@ProfileActivity, it.data.message)
                             setResult(Activity.RESULT_OK)
                             profileViewModel.getMe()
                         }
@@ -103,8 +104,8 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
                         showHideProgress(it.data == null)
                     }
                     Status.SUCCESS -> {
+                        showHideProgress(false)
                         if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
-                            showHideProgress(false)
                             Pref.user = it.data.user
                             setUserDetails()
                         }

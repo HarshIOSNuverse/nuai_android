@@ -78,18 +78,27 @@
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/chk_accept_terms"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:button="@drawable/checkbox_selector"
+            android:padding="0dp"
+            android:textColor="@color/primary_text_color"
+            app:layout_constraintEnd_toStartOf="@+id/tv_accept_terms"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_accept_terms"
+            tools:ignore="RtlSymmetry" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_accept_terms"
             style="@style/TextViewStyleRegular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_30"
-            android:button="@drawable/checkbox_selector"
-            android:onClick="@{onClickListener}"
-            android:paddingStart="@dimen/dp_5"
             android:text="@string/already_have_account"
             android:textColor="@color/primary_text_color"
             app:layout_constraintBottom_toTopOf="@+id/continue_btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/chk_accept_terms"
             tools:ignore="RtlSymmetry" />
 
         <androidx.appcompat.widget.AppCompatButton

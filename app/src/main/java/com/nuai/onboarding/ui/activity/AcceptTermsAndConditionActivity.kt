@@ -50,7 +50,7 @@ class AcceptTermsAndConditionActivity : BaseActivity(), View.OnClickListener {
             enableDisableButton(binding.continueBtn, isChecked)
         }
         setSpannableColor(
-            binding.chkAcceptTerms,
+            binding.tvAcceptTerms,
             getString(R.string.term_check_full_text),
             getString(R.string.term_of_use),
             getString(R.string.privacy_policy),
@@ -67,14 +67,10 @@ class AcceptTermsAndConditionActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setSpannableColor(
-        view: CheckBox, fulltext: String, subtext1: String, subtext2: String, color: Int
+        view: TextView, fulltext: String, subtext1: String, subtext2: String, color: Int
     ) {
         val str: Spannable = SpannableString(fulltext)
         val i1 = fulltext.indexOf(subtext1)
-        str.setSpan(
-            ForegroundColorSpan(color), i1, i1 + subtext1.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
         str.setSpan(object : ClickableSpan() {
             override fun onClick(widget: View) {
                 WebActivity.startActivity(
@@ -86,10 +82,6 @@ class AcceptTermsAndConditionActivity : BaseActivity(), View.OnClickListener {
         }, i1, i1 + subtext1.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         val i2 = fulltext.indexOf(subtext2)
-        str.setSpan(
-            ForegroundColorSpan(color), i2, i2 + subtext2.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
         str.setSpan(object : ClickableSpan() {
             override fun onClick(widget: View) {
                 WebActivity.startActivity(
@@ -99,7 +91,14 @@ class AcceptTermsAndConditionActivity : BaseActivity(), View.OnClickListener {
                 )
             }
         }, i2, i2 + subtext2.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
+        str.setSpan(
+            ForegroundColorSpan(color), i1, i1 + subtext1.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        str.setSpan(
+            ForegroundColorSpan(color), i2, i2 + subtext2.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         view.setText(str, TextView.BufferType.SPANNABLE)
         view.movementMethod = LinkMovementMethod.getInstance()
         view.highlightColor = Color.TRANSPARENT

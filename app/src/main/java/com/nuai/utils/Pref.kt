@@ -101,6 +101,7 @@ object Pref {
 //
     fun logout() {
         user = null
+        accessToken = null
         removeTokens()
     }
 

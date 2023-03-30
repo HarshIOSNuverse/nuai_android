@@ -160,10 +160,10 @@ object CommonUtils {
 
     fun isValidPassword(password: String): Boolean {
         val pattern: Pattern
-        val specialCharacters = "-@%\\[\\}+'!/#$^?:;,\\(\"\\)~`.*=&\\{>\\]<_"
+        val specialCharacters = "@%!#\$^&"
         val passwordExp =
 //            "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[$specialCharacters])(?=\\S+$).{8,20}$"
-            "^(?=.*[a-zA-Z])(?=.*[$specialCharacters])(?=\\S+$).{8,20}$"
+            "^(?=.*[A-Z])(?=.*[$specialCharacters])(?=[a-zA-Z\\d$specialCharacters]+$).{8,20}$"
         pattern = Pattern.compile(passwordExp)
         val matcher: Matcher = pattern.matcher(password)
         return matcher.matches()

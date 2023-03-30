@@ -294,7 +294,7 @@
                     android:background="@null"
                     android:hint="@string/weight_in_kg"
                     android:inputType="numberDecimal"
-                    android:text='@{""+user.bodyInfo.weight}'
+                    android:text='@{user.bodyInfo.weight != 0.0? ""+user.bodyInfo.weight: ""}'
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cr_gender" />
@@ -332,7 +332,7 @@
                     android:background="@null"
                     android:hint="@string/height_in_cms"
                     android:inputType="numberDecimal"
-                    android:text='@{""+user.bodyInfo.height}'
+                    android:text='@{user.bodyInfo.height != 0.0? ""+user.bodyInfo.height:""}'
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/weight_error_text" />
@@ -376,8 +376,8 @@
 
                     <TextView
                         android:id="@+id/lbl_your_bmi"
-                        android:layout_width="0dp"
                         style="@style/TextViewStyleLight"
+                        android:layout_width="0dp"
                         android:gravity="center"
                         android:text="@string/your_bmi"
                         app:layout_constraintBottom_toTopOf="@+id/bmi_text"
@@ -388,8 +388,8 @@
 
                     <TextView
                         android:id="@+id/bmi_text"
-                        android:layout_width="0dp"
                         style="@style/TextViewStyleSemiBold"
+                        android:layout_width="0dp"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="center"
                         android:text='@{""+user.bodyInfo.bmiIndex}'
@@ -429,8 +429,8 @@
 
                     <TextView
                         android:id="@+id/category_text"
-                        android:layout_width="0dp"
                         style="@style/TextViewStyleSemiBold"
+                        android:layout_width="0dp"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="center"
                         android:text='@{user.bodyInfo.category?? ""}'
