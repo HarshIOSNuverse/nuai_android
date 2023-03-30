@@ -13,6 +13,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "nuai_android"
+rootProject.name = "checkmyself"
 include ':app'
 include ':bnhhrlib'

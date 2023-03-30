@@ -7,11 +7,11 @@
 
         <variable
             name="history"
-            type="com.nuai.home.model.HealthBasicInfo" />
+            type="com.checkmyself.home.model.HealthBasicInfo" />
 
         <variable
             name="historyListener"
-            type="com.nuai.history.ui.adapter.HealthHistoryListAdapter.SelectHealthHistoryListener" />
+            type="com.checkmyself.history.ui.adapter.HealthHistoryListAdapter.SelectHealthHistoryListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

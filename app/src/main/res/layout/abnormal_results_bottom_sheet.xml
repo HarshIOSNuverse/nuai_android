@@ -11,7 +11,7 @@
 
         <variable
             name="adapter"
-            type="com.nuai.home.ui.adapters.MeasurementScreenAdapter" />
+            type="com.checkmyself.home.ui.adapters.MeasurementScreenAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

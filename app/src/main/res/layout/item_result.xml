@@ -6,11 +6,11 @@
 
         <variable
             name="reading"
-            type="com.nuai.home.model.Reading" />
+            type="com.checkmyself.home.model.Reading" />
 
         <variable
             name="resultListener"
-            type="com.nuai.home.ui.adapters.ResultListAdapter.ResultListener" />
+            type="com.checkmyself.home.ui.adapters.ResultListAdapter.ResultListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

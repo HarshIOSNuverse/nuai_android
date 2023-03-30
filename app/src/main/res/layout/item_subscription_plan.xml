@@ -6,11 +6,11 @@
 
         <variable
             name="subscription"
-            type="com.nuai.profile.model.SubscriptionPlan" />
+            type="com.checkmyself.profile.model.SubscriptionPlan" />
 
         <variable
             name="subscriptionListener"
-            type="com.nuai.profile.ui.adapters.SubscriptionPlanListAdapter.SubscriptionListener" />
+            type="com.checkmyself.profile.ui.adapters.SubscriptionPlanListAdapter.SubscriptionListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

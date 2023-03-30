@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace 'com.nuai'
+    namespace 'com.checkmyself'
     compileSdk 33
 
     defaultConfig {

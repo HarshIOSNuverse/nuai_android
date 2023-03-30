@@ -11,7 +11,7 @@
 
         <variable
             name="selectCategoryListener"
-            type="com.nuai.home.ui.adapters.ResultCategorySelectListAdapter.SelectCategoryListener" />
+            type="com.checkmyself.home.ui.adapters.ResultCategorySelectListAdapter.SelectCategoryListener" />
     </data>
 
     <androidx.appcompat.widget.AppCompatTextView

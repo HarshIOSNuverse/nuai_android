@@ -9,7 +9,7 @@
 
         <variable
             name="adapter"
-            type="com.nuai.profile.ui.adapters.SubscriptionPlanListAdapter" />
+            type="com.checkmyself.profile.ui.adapters.SubscriptionPlanListAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

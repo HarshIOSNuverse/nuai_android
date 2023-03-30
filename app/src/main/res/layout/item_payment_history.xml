@@ -6,11 +6,11 @@
 
         <variable
             name="payment"
-            type="com.nuai.profile.model.PaymentInfo" />
+            type="com.checkmyself.profile.model.PaymentInfo" />
 
         <variable
             name="paymentListener"
-            type="com.nuai.profile.ui.adapters.PaymentHistoryListAdapter.PaymentHistoryListener" />
+            type="com.checkmyself.profile.ui.adapters.PaymentHistoryListAdapter.PaymentHistoryListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

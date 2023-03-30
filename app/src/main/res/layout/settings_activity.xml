@@ -11,7 +11,7 @@
 
         <variable
             name="user"
-            type="com.nuai.profile.model.User" />
+            type="com.checkmyself.profile.model.User" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
