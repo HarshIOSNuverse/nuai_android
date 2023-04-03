@@ -11,7 +11,9 @@ import androidx.core.content.ContextCompat
 import com.checkmyself.R
 
 class SpinnerAdapter(
-    context: Context?, resourceId: Int, val list: List<Any>
+    context: Context?, resourceId: Int,
+    private val list: List<Any>,
+    private val disabledPosition: Int = 0
 ) : ArrayAdapter<Any>(context!!, resourceId, list) {
     private var inflater: LayoutInflater? = null
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -55,7 +57,7 @@ class SpinnerAdapter(
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = super.getDropDownView(position, convertView, parent)
         val tv = view as TextView
-        if (position == 0) {
+        if (position == disabledPosition) {
             // Set the hint text color gray
             tv.setTextColor(ContextCompat.getColor(context, R.color.et_hint_color))
         } else {
@@ -65,7 +67,7 @@ class SpinnerAdapter(
     }
 
     override fun isEnabled(position: Int): Boolean {
-        return position != 0
+        return position != disabledPosition
     }
 
     private inner class ViewHolder {

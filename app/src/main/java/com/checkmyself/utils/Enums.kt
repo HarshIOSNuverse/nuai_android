@@ -58,4 +58,12 @@ object Enums {
         FREE_SCAN_REMAINING, FREE_SCAN_ENDED, PLAN_ABOUT_TO_EXPIRE, PLAN_EXPIRED
     }
 
+    enum class SubscriptionType {
+        MONTHLY, YEARLY
+    }
+
+    enum class PurchaseStatus {
+        SUCCESS, FAILED
+    }
+
 }

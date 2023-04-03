@@ -6,8 +6,10 @@ import java.util.*
 
 
 object DateFormatter {
-    const val yyyy ="yyyy"
+    const val yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss"
+    const val yyyy = "yyyy"
     const val MMMM_d_yyyy = "MMMM d, yyyy"
+    const val MMMM_d_yyyy_hh_mm_a = "MMMM d, yyyy, hh:mm a"
 
     //    private const val SERVER_STANDARD_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
     const val SERVER_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"

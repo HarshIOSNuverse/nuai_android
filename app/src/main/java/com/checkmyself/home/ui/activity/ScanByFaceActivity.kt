@@ -89,6 +89,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     private var handlerPublishReport: Handler? = null
     private var isResultPublishedTimePassed = false
     private var faceResultID: Long = 0
+    private var isErrorDialogShowing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -241,7 +242,33 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                     stopMeasuring()
                     updateUi(Enums.UiState.MANUALLY_STOPPED)
                     binding.measurementsLayout.root.visibility = View.INVISIBLE
-                    AlertDialogManager.showInformationDialog(
+                    if (!isErrorDialogShowing) {
+                        isErrorDialogShowing = true
+                        AlertDialogManager.showInformationDialog(
+                            this,
+                            0,
+                            msg = getString(R.string.face_or_finger_not_detected_2_times_msg),
+                            button1Message = getString(R.string.retry),
+                            dialogClickListener = object : DialogClickListener {
+                                override fun onButton1Clicked() {
+                                    isErrorDialogShowing = false
+                                    startMeasuring()
+                                }
+
+                                override fun onButton2Clicked() {
+                                }
+
+                                override fun onCloseClicked() {
+                                    isErrorDialogShowing = false
+                                    stopTimeCount()
+                                    stopMeasuring()
+                                    closeSession()
+                                    finish()
+                                }
+                            }
+                        )
+                    }
+                    /*AlertDialogManager.showInformationDialog(
                         this@ScanByFaceActivity,
                         0,
                         null,
@@ -258,7 +285,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                             override fun onCloseClicked() {
                             }
                         }
-                    )
+                    )*/
                 }
                 HealthMonitorCodes.MEASUREMENT_CODE_INVALID_RECENT_DETECTION_RATE_ERROR -> {
                     stopMeasuring()
@@ -393,6 +420,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                         getString(R.string.low_battery_error),
                         getString(R.string.low_battery_msg),
                         getString(R.string.try_again),
+                        isClose = true,
                         dialogClickListener = object : DialogClickListener {
                             override fun onButton1Clicked() {
                                 startMeasuring()
@@ -402,6 +430,10 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                             }
 
                             override fun onCloseClicked() {
+                                stopTimeCount()
+                                stopMeasuring()
+                                closeSession()
+                                finish()
                             }
                         }
                     )
@@ -418,6 +450,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                         getString(R.string.low_power_mode_title),
                         getString(R.string.low_power_mode_msg),
                         getString(R.string.try_again),
+                        isClose = true,
                         dialogClickListener = object : DialogClickListener {
                             override fun onButton1Clicked() {
                                 startMeasuring()
@@ -427,6 +460,10 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                             }
 
                             override fun onCloseClicked() {
+                                stopTimeCount()
+                                stopMeasuring()
+                                closeSession()
+                                finish()
                             }
                         }
                     )
@@ -436,18 +473,24 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
 //                    )
                 }
                 else -> {
-                    CommonUtils.showToast(
-                        this,
-                        "${e.errorCode} ${getString(R.string.cannot_start_session)}"
-                    )
+                    showWarning(BinahErrorMessage.getErrorMessage(e.errorCode))
+                    hideReadingAndProgress()
 //                    showErrorDialog(e.errorCode, getString(R.string.cannot_start_session))
                 }
             }
         } catch (e: java.lang.IllegalStateException) {
             showWarning("Start Error - Session in illegal state")
+            hideReadingAndProgress()
         } catch (e: NullPointerException) {
             showWarning("Start Error - Session not initialized")
+            hideReadingAndProgress()
         }
+    }
+
+    private fun hideReadingAndProgress() {
+        binding.measurementsLayout.tvReading.visibility = View.GONE
+        binding.measurementsLayout.tvReadingUnit.visibility = View.GONE
+        binding.measurementsLayout.readingProgressBar.visibility = View.GONE
     }
 
     private fun stopMeasuring() {
@@ -494,19 +537,8 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                 stopTimeCount()
             }
             Enums.UiState.SCREEN_PAUSED -> {
-
             }
             Enums.UiState.SCREEN_RESUMED -> {
-//                if (mTestMode === SessionMode.FACE) {
-//                    if (binding.roiWarning.getVisibility() === View.VISIBLE) {
-//                        binding.roiWarning.setVisibility(View.GONE)
-//                    }
-//                } else {
-//                    Log.e(com.checkmyself.ui.fragments.FragmentFace.tag, "Show finger ui")
-//                }
-//                if (binding.warningLayout.getVisibility() === View.VISIBLE) {
-//                    binding.warningLayout.setVisibility(View.GONE)
-//                }
             }
             else -> {
 

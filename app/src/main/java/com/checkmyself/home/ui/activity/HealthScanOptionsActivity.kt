@@ -155,7 +155,7 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
                                 ContextCompat.getColor(this, R.color.error_msg_text_color),
                                 msg = getString(R.string.purchase_subscription_now_for_unlimited_scans),
                                 button1Message = getString(R.string.subscribe_now),
-                                isContinueScan = true,
+                                isContinueScan = false,
                                 cancelable = true
                             )
                         } else {

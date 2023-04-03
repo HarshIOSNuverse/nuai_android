@@ -3,11 +3,10 @@ package com.checkmyself.profile.model.api.request
 import com.google.gson.annotations.SerializedName
 
 data class PurchaseRequest constructor(
-    @SerializedName("subscription_id") val subscriptionId: String?,
     @SerializedName("amount") var amount: String? = "",
     @SerializedName("currency") var currency: String? = "",
-    @SerializedName("order_object") var orderObject: String? = "",
-    @SerializedName("orderId") var orderId: String? = "",
-    @SerializedName("package_name") var packageName: String? = "",
-    @SerializedName("purchase_token") var purchaseToken: String? = ""
+    @SerializedName("plan_type") val planType: String?,
+    @SerializedName("trx_ref_no") val trxRefNo: String?,
+    @SerializedName("trx_datetime") val trxDatetime: String?,
+    @SerializedName("status") val status: String?,
 )

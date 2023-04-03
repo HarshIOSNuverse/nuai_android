@@ -17,14 +17,13 @@ import com.checkmyself.databinding.PaymentHistoryListActivityBinding
 import com.checkmyself.network.ResponseStatus
 import com.checkmyself.network.Status
 import com.checkmyself.onboarding.ui.adapters.SpinnerAdapter
-import com.checkmyself.profile.model.PaymentInfo
+import com.checkmyself.profile.model.MyPlan
 import com.checkmyself.profile.ui.adapters.PaymentHistoryListAdapter
 import com.checkmyself.profile.viewmodel.ProfileViewModel
 import com.checkmyself.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -43,7 +42,7 @@ class PaymentHistoryListActivity : BaseActivity() {
     private lateinit var binding: PaymentHistoryListActivityBinding
     private val profileViewModel: ProfileViewModel by viewModels()
     private var selectedYear: String? = ""
-    private val paymentList: ArrayList<PaymentInfo> = arrayListOf()
+    private val paymentList: ArrayList<MyPlan> = arrayListOf()
     private val yearList: ArrayList<String> = arrayListOf()
     private var offset = 0
     private var loading = false
@@ -121,8 +120,6 @@ class PaymentHistoryListActivity : BaseActivity() {
                             if (!it.data.paymentList.isNullOrEmpty()) {
                                 paymentList.addAll(it.data.paymentList!!)
                             }
-                            paymentList.add(PaymentInfo())
-                            paymentList.add(PaymentInfo())
                             if (loading) {
                                 binding.adapter!!.notifyItemInserted(paymentList.size)
                             } else {
@@ -168,7 +165,7 @@ class PaymentHistoryListActivity : BaseActivity() {
         binding.adapter = PaymentHistoryListAdapter(paymentList).apply {
             paymentHistoryListener =
                 object : PaymentHistoryListAdapter.PaymentHistoryListener {
-                    override fun onViewDetailClick(payment: PaymentInfo?) {
+                    override fun onViewDetailClick(payment: MyPlan?) {
                         if (payment != null) {
                             PaymentDetailActivity.startActivity(
                                 this@PaymentHistoryListActivity, payment.uuid
@@ -197,7 +194,7 @@ class PaymentHistoryListActivity : BaseActivity() {
     private fun initGenderSpinnerAdapter() {
         binding.genderSpinner.apply {
             adapter =
-                SpinnerAdapter(this@PaymentHistoryListActivity, R.layout.spinner_item, yearList)
+                SpinnerAdapter(this@PaymentHistoryListActivity, R.layout.spinner_item, yearList, -1)
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>, view: View, position: Int, id: Long

@@ -26,10 +26,11 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.gson.Gson
+import com.android.billingclient.api.ProductDetails
 import com.checkmyself.R
 import com.checkmyself.app.MyApplication
 import com.checkmyself.network.Error
+import com.google.gson.Gson
 import okhttp3.ResponseBody
 import java.io.File
 import java.io.IOException
@@ -236,6 +237,23 @@ object CommonUtils {
 
     }
 
+    fun getFirstLatterCap(message: String?): String {
+        val newMessage = java.lang.StringBuilder("")
+        if (!message.isNullOrEmpty()) {
+            val split = message.split(" ")
+            if (split.isNotEmpty()) {
+                for (word in split) {
+                    newMessage.append(word.substring(0, 1).uppercase())
+                    if (word.length > 1) {
+                        newMessage.append(word.substring(1, word.length).lowercase())
+                    }
+                    newMessage.append(" ")
+                }
+            }
+        }
+        return newMessage.toString()
+    }
+
     fun getImage(context: Context, ImageName: String?): Drawable? {
         return try {
             ContextCompat.getDrawable(
@@ -378,4 +396,33 @@ object CommonUtils {
             else -> value
         }
     }
+
+    var currencyLocaleMap: SortedMap<Currency, Locale>? = null
+    fun getCurrencySymbol(currencyCode: String?): String? {
+        if (currencyLocaleMap == null) {
+            currencyLocaleMap = TreeMap { o1, o2 -> o1.currencyCode.compareTo(o2.currencyCode) }
+            for (locale in Locale.getAvailableLocales()) {
+                try {
+                    val currency = Currency.getInstance(locale)
+                    currencyLocaleMap!![currency] = locale
+                } catch (e: java.lang.Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        val currency = Currency.getInstance(currencyCode)
+        return currency.getSymbol(currencyLocaleMap!![currency])
+    }
+
+    fun getPriceWithCurrency(subscription: ProductDetails): String {
+        return getCurrencySymbol(
+            subscription.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                0
+            )?.priceCurrencyCode
+        ) + " " + roundDouble(
+            (subscription.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceAmountMicros / 1000000).toDouble(),
+            2
+        )
+    }
+
 }

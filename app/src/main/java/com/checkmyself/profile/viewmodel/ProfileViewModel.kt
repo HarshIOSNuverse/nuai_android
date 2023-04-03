@@ -15,6 +15,7 @@ import com.checkmyself.profile.model.api.request.UpdateProfileRequest
 import com.checkmyself.profile.model.api.response.MyPlansResponse
 import com.checkmyself.profile.model.api.response.PaymentDetailResponse
 import com.checkmyself.profile.model.api.response.PaymentListResponse
+import com.checkmyself.profile.model.api.response.PurchaseResponse
 import com.checkmyself.profile.repository.ProfileRepository
 import com.checkmyself.utils.CommonUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,7 +41,7 @@ class ProfileViewModel @Inject constructor(
     val paymentDetailState =
         MutableStateFlow(ApiResponseState(Status.LOADING, PaymentDetailResponse()))
     val subscriptionState =
-        MutableStateFlow(ApiResponseState(Status.LOADING, CommonResponse()))
+        MutableStateFlow(ApiResponseState(Status.LOADING, PurchaseResponse()))
 
     fun getMe() {
         if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {

@@ -6,6 +6,6 @@ import com.checkmyself.profile.model.PaymentInfo
 
 class PaymentDetailResponse : CommonResponse() {
 
-    @SerializedName("data")
-    var data: PaymentInfo? = null
+    @SerializedName("info")
+    var info: PaymentInfo? = null
 }

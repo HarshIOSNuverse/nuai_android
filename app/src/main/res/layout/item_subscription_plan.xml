@@ -6,7 +6,7 @@
 
         <variable
             name="subscription"
-            type="com.checkmyself.profile.model.SubscriptionPlan" />
+            type="com.android.billingclient.api.ProductDetails" />
 
         <variable
             name="subscriptionListener"
@@ -36,8 +36,8 @@
             android:id="@+id/tv_subscription_type"
             style="@style/TextViewStyleLight"
             android:layout_width="0dp"
-            android:layout_marginStart="@dimen/dp_20"
-            android:text='@{subscription.title?? ""}'
+            android:layout_marginStart="@dimen/dp_15"
+            android:text='@{subscription.name?? ""}'
             android:textSize="@dimen/sp_22"
             app:layout_constraintBottom_toTopOf="@+id/tv_subscription_msg"
             app:layout_constraintEnd_toStartOf="@+id/tv_price"
@@ -48,7 +48,6 @@
             android:id="@+id/tv_price"
             style="@style/TextViewStyleSemiBold"
             android:layout_width="wrap_content"
-            android:text='@{subscription.observedValue?? ""}'
             android:textSize="@dimen/sp_17"
             app:layout_constraintBottom_toBottomOf="@+id/tv_subscription_type"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,9 +59,8 @@
             android:id="@+id/tv_subscription_msg"
             style="@style/TextViewStyleLight"
             android:layout_width="0dp"
-            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_15"
             android:layout_marginTop="@dimen/dp_5"
-            android:text='@{subscription.shortDesc?? ""}'
             android:textSize="@dimen/sp_15"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -113,7 +113,7 @@
                         android:id="@+id/lbl_name"
                         style="@style/TextViewStyleLight"
                         android:layout_width="0dp"
-                        android:layout_marginTop="@dimen/dp_20"
+                        android:layout_marginTop="@dimen/dp_10"
                         android:text="@string/name"
                         android:textColor="@color/secondary_text_color"
                         android:textSize="@dimen/sp_14"

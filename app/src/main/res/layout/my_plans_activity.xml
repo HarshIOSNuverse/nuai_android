@@ -42,6 +42,7 @@
                     android:layout_height="0dp"
                     android:layout_marginBottom="@dimen/dp_20"
                     android:paddingHorizontal="@dimen/dp_25"
+                    android:scrollbars="none"
                     app:layout_constraintBottom_toTopOf="@id/help_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -102,11 +103,12 @@
                             android:id="@+id/lbl_name"
                             style="@style/TextViewStyleLight"
                             android:layout_width="0dp"
-                            android:layout_marginTop="@dimen/dp_20"
+                            android:layout_marginTop="@dimen/dp_10"
                             android:text="@string/name"
                             android:textColor="@color/secondary_text_color"
                             android:textSize="@dimen/sp_14"
                             app:layout_constraintEnd_toStartOf="@+id/tv_name"
+                            app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/lbl_pay_details" />
 

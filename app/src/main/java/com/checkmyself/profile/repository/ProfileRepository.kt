@@ -11,6 +11,7 @@ import com.checkmyself.profile.model.api.request.UpdateProfileRequest
 import com.checkmyself.profile.model.api.response.MyPlansResponse
 import com.checkmyself.profile.model.api.response.PaymentDetailResponse
 import com.checkmyself.profile.model.api.response.PaymentListResponse
+import com.checkmyself.profile.model.api.response.PurchaseResponse
 import com.checkmyself.utils.CommonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -128,7 +129,7 @@ class ProfileRepository @Inject constructor(private val networkService: NetworkS
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun addSubscription(request: PurchaseRequest): Flow<ApiResponseState<CommonResponse>> {
+    suspend fun addSubscription(request: PurchaseRequest): Flow<ApiResponseState<PurchaseResponse>> {
         return flow {
             val response = networkService.api.addSubscription(request)
             if (response.isSuccessful) {

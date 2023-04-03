@@ -51,7 +51,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         genderList.add(getString(R.string.select_gender))
         genderList.add(getString(R.string.male))
         genderList.add(getString(R.string.female))
-        genderList.add(getString(R.string.other))
+//        genderList.add(getString(R.string.other))
         initGenderSpinnerAdapter()
     }
 

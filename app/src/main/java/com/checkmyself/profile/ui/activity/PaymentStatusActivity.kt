@@ -1,31 +1,40 @@
 package com.checkmyself.profile.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.checkmyself.R
 import com.checkmyself.base.BaseActivity
 import com.checkmyself.databinding.PaymentStatusActivityBinding
 import com.checkmyself.home.ui.activity.HomeActivity
-import com.checkmyself.profile.model.SubscriptionPlan
-import com.checkmyself.utils.AnimationsHandler
-import com.checkmyself.utils.IntentConstant
+import com.checkmyself.network.ResponseStatus
+import com.checkmyself.network.Status
+import com.checkmyself.profile.model.PaymentInfo
+import com.checkmyself.profile.viewmodel.ProfileViewModel
+import com.checkmyself.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class PaymentStatusActivity : BaseActivity(), View.OnClickListener {
     companion object {
-        private var count = 0
-        fun startActivity(activity: Activity, selectedSubscription: SubscriptionPlan?) {
+        fun startActivityForResult(
+            activity: Activity,
+            paymentId: String?,
+            launcher: ActivityResultLauncher<Intent>
+        ) {
             Intent(activity, PaymentStatusActivity::class.java).apply {
-                putExtra(IntentConstant.READING, selectedSubscription)
+                putExtra(IntentConstant.ID, paymentId)
             }.run {
-                activity.startActivity(this)
+                launcher.launch(this)
                 AnimationsHandler.playActivityAnimation(
                     activity, AnimationsHandler.Animations.RightToLeft
                 )
@@ -34,7 +43,9 @@ class PaymentStatusActivity : BaseActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: PaymentStatusActivityBinding
-    private var subscription: SubscriptionPlan? = null
+    private val profileViewModel: ProfileViewModel by viewModels()
+    private var paymentId: String? = null
+    private var paymentInfo: PaymentInfo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,35 +54,81 @@ class PaymentStatusActivity : BaseActivity(), View.OnClickListener {
         hideBackButton()
         setToolBarTitle(getString(R.string.payment_status))
         initClickListener()
+        initObserver()
         init()
     }
 
     @Suppress("DEPRECATION")
     private fun init() {
         intent?.run {
-            subscription = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                getParcelableExtra(IntentConstant.READING, SubscriptionPlan::class.java)
-            } else {
-                getParcelableExtra(IntentConstant.READING)
-            }
+            paymentId = getStringExtra(IntentConstant.ID)
         }
-        setDetails()
+        getMyPlans()
     }
 
-    private fun setDetails() {
-        binding.tvAmount.text = subscription!!.observedValue
-        if (count % 2 == 0) {
-            binding.ivPaymentStatus.setImageResource(R.drawable.payment_status_success)
-            binding.tvPaymentStatusTitle.text = getString(R.string.payment_status_success_title)
-            binding.tvPaymentStatusMsg.text = getString(R.string.payment_status_success_msg)
-            binding.crSuccessDetail.visibility = View.VISIBLE
-            binding.measureNowBtn.text = getString(R.string.measure_now)
-        } else {
-            binding.ivPaymentStatus.setImageResource(R.drawable.payment_status_fail)
-            binding.tvPaymentStatusTitle.text = getString(R.string.payment_status_fail_title)
-            binding.tvPaymentStatusMsg.text = getString(R.string.payment_status_fail_msg)
-            binding.crSuccessDetail.visibility = View.GONE
-            binding.measureNowBtn.text = getString(R.string.retry_payment)
+    private fun getMyPlans() {
+        if (CommonUtils.isNetworkAvailable(this)) {
+            profileViewModel.getPaymentDetail(paymentId)
+        }
+    }
+
+    private fun initObserver() {
+        lifecycleScope.launch {
+            profileViewModel.paymentDetailState.collect {
+                when (it.status) {
+                    Status.LOADING -> {
+                        showHideProgress(false)
+                    }
+                    Status.SUCCESS -> {
+                        showHideProgress(false)
+                        if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
+                            paymentInfo = it.data.info
+                        }
+                        setPaymentDetails()
+                    }
+                    Status.ERROR -> {
+                        setPaymentDetails()
+                        showHideProgress(false)
+                        CommonUtils.showToast(this@PaymentStatusActivity, it.message)
+                    }
+                }
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setPaymentDetails() {
+        if (paymentInfo != null) {
+            if (paymentInfo!!.trxStatus == Enums.PurchaseStatus.SUCCESS.toString()) {
+                binding.ivPaymentStatus.setImageResource(R.drawable.payment_status_success)
+                binding.tvPaymentStatusTitle.text = getString(R.string.payment_status_success_title)
+                binding.tvPaymentStatusMsg.text = getString(R.string.payment_status_success_msg)
+                binding.crSuccessDetail.visibility = View.VISIBLE
+                binding.measureNowBtn.text = getString(R.string.measure_now)
+            } else {
+                binding.ivPaymentStatus.setImageResource(R.drawable.payment_status_fail)
+                binding.tvPaymentStatusTitle.text = getString(R.string.payment_status_fail_title)
+                binding.tvPaymentStatusMsg.text = getString(R.string.payment_status_fail_msg)
+                binding.crSuccessDetail.visibility = View.GONE
+                binding.measureNowBtn.text = getString(R.string.retry_payment)
+            }
+            binding.tvAmount.text =
+                CommonUtils.getCurrencySymbol(paymentInfo?.trxCurrency) + " " + CommonUtils.roundDouble(
+                    paymentInfo!!.trxAmount,
+                    2
+                )
+            if (!paymentInfo?.endDate.isNullOrEmpty())
+                binding.tvPlanExpireDate.text = DateFormatter.getFormattedByString(
+                    DateFormatter.yyyy_MM_dd_DASH, DateFormatter.MMMM_d_yyyy,
+                    paymentInfo?.endDate!!
+                )
+            if (!paymentInfo?.trxDatetime.isNullOrEmpty())
+                binding.tvTransactionDate.text = DateFormatter.getFormattedByString(
+                    DateFormatter.SERVER_DATE_FORMAT, DateFormatter.MMMM_d_yyyy,
+                    paymentInfo?.trxDatetime!!
+                )
+
+            binding.tvTransactionNumber.text = paymentInfo?.trxNo
         }
     }
 
@@ -99,12 +156,17 @@ class PaymentStatusActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun goto() {
-        if (count % 2 == 0) {
-            HomeActivity.startActivity(this)
-            AnimationsHandler.playActivityAnimation(this, AnimationsHandler.Animations.LeftToRight)
-        } else {
-            finish()
+        if (paymentInfo != null) {
+            if (paymentInfo!!.trxStatus == Enums.PurchaseStatus.SUCCESS.toString()) {
+                HomeActivity.startActivity(this)
+                AnimationsHandler.playActivityAnimation(
+                    this,
+                    AnimationsHandler.Animations.LeftToRight
+                )
+            } else {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
         }
-        count++
     }
 }

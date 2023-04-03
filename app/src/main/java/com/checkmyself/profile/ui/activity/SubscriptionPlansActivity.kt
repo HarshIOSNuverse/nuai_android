@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -18,13 +19,14 @@ import com.checkmyself.base.BaseActivity
 import com.checkmyself.databinding.SubscriptionPlansActivityBinding
 import com.checkmyself.network.ResponseStatus
 import com.checkmyself.network.Status
-import com.checkmyself.profile.model.SubscriptionPlan
 import com.checkmyself.profile.model.api.request.PurchaseRequest
 import com.checkmyself.profile.ui.adapters.SubscriptionPlanListAdapter
 import com.checkmyself.profile.viewmodel.ProfileViewModel
 import com.checkmyself.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -53,7 +55,7 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: SubscriptionPlansActivityBinding
     private val profileViewModel: ProfileViewModel by viewModels()
-    private val subscriptionList: ArrayList<SubscriptionPlan> = arrayListOf()
+    private val subscriptionList: ArrayList<ProductDetails> = arrayListOf()
     private var billingClient: BillingClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,21 +74,6 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun init() {
-        subscriptionList.clear()
-        subscriptionList.add(SubscriptionPlan().apply {
-            id = AppConstant.MONTHLY_PLAN_ID
-            title = "Monthly"
-            observedValue = "$2.95"
-            shortDesc = getString(R.string.no_limit_for_scan)
-        })
-        subscriptionList.add(SubscriptionPlan().apply {
-            id = AppConstant.YEARLY_PLAN_ID
-            title = "Yearly"
-            observedValue = "$30"
-            shortDesc = getString(R.string.you_save_doller_6)
-        })
-        binding.adapter!!.notifyDataSetChanged()
-        setNoResult()
     }
 
     private fun setNoResult() {
@@ -106,9 +93,10 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                     }
                     Status.SUCCESS -> {
                         if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
-                            CommonUtils.showToast(this@SubscriptionPlansActivity, it.data.message)
-                            setResult(Activity.RESULT_OK)
-                            finish()
+                            PaymentStatusActivity.startActivityForResult(
+                                this@SubscriptionPlansActivity,
+                                it.data.id, launcher
+                            )
                         }
                     }
                     Status.ERROR -> {
@@ -138,11 +126,7 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                 }*/ else if (!CommonUtils.isNetworkAvailable(this)) {
                     CommonUtils.showToast(this, getString(R.string.no_internet_connection))
                 } else {
-                    PaymentStatusActivity.startActivity(
-                        this,
-                        binding.adapter!!.selectedSubscription
-                    )
-                    callInAppPurchase(selectedPlan.skuDetailsResult)
+                    callInAppPurchase(selectedPlan)
                 }
             }
         }
@@ -166,7 +150,7 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                     CommonUtils.showToast(this, "Already Owned")
                 }
                 else -> {
-                    CommonUtils.showToast(this, "Something went wrong")
+                    CommonUtils.showToast(this, billingResult.debugMessage)
                 }
             }
         }
@@ -174,13 +158,31 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
     private fun addSubscription(purchase: Purchase?) {
         if (CommonUtils.isNetworkAvailable(this)) {
             val selectedPlan = binding.adapter!!.selectedSubscription
-            if (selectedPlan != null) {
+            if (selectedPlan != null && purchase != null) {
+                val price =
+                    (selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceAmountMicros / 1000000).toString()
+                val currencyCode =
+                    selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceCurrencyCode
+
                 val request = PurchaseRequest(
-                    selectedPlan.id,
-                    selectedPlan.skuDetailsResult?.oneTimePurchaseOfferDetails?.formattedPrice,
-                    selectedPlan.skuDetailsResult?.oneTimePurchaseOfferDetails?.priceCurrencyCode,
-                    purchase?.originalJson, purchase?.orderId,
-                    purchase?.packageName, purchase?.purchaseToken
+                    price,
+                    currencyCode,
+                    if (Enums.SubscriptionType.MONTHLY.toString()
+                            .lowercase() == selectedPlan.name.lowercase()
+                    ) Enums.SubscriptionType.MONTHLY.toString()
+                    else Enums.SubscriptionType.YEARLY.toString(),
+                    purchase.orderId,
+                    DateFormatter.getDateTimeInUTC(Date().time, DateFormatter.yyyy_MM_dd_HH_mm_ss),
+                    when (purchase.purchaseState) {
+                        Purchase.PurchaseState.PURCHASED,
+                        Purchase.PurchaseState.PENDING -> {
+                            Enums.PurchaseStatus.SUCCESS.toString()
+                        }
+                        else -> {
+                            Enums.PurchaseStatus.FAILED.toString()
+                        }
+                    }
+
                 )
                 profileViewModel.addSubscription(request)
             }
@@ -228,14 +230,13 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
         ).build()
         billingClient!!.queryProductDetailsAsync(params) { _, productDetailsList ->
             if (productDetailsList.isNotEmpty()) {
-                for (j in productDetailsList.indices) {
-                    val skuDetails = productDetailsList[j]
-                    subscriptionList[j].skuDetailsResult = skuDetails
-                }
-                runOnUiThread {
-                    binding.adapter!!.notifyDataSetChanged()
-                    setNoResult()
-                }
+                subscriptionList.clear()
+                subscriptionList.addAll(productDetailsList)
+            }
+            runOnUiThread {
+                binding.adapter!!.setSaveAmountForYearlyPlan(subscriptionList)
+                binding.adapter!!.notifyDataSetChanged()
+                setNoResult()
             }
         }
     }
@@ -248,7 +249,7 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                     .setProductDetails(productDetails)
                     // to get an offer token, call ProductDetails.subscriptionOfferDetails()
                     // for a list of offers that are available to the user
-//                    .setOfferToken(selectedOfferToken)
+                    .setOfferToken("" + productDetails.subscriptionOfferDetails?.get(0)?.offerToken)
                     .build()
             )
 
@@ -264,11 +265,19 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
         binding.adapter = SubscriptionPlanListAdapter(subscriptionList).apply {
             subscriptionListener = object : SubscriptionPlanListAdapter.SubscriptionListener {
                 @SuppressLint("NotifyDataSetChanged")
-                override fun onSubscriptionClick(reading: SubscriptionPlan) {
+                override fun onSubscriptionClick(reading: ProductDetails) {
                     selectedSubscription = reading
                     binding.adapter!!.notifyDataSetChanged()
                 }
             }
         }
     }
+
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+        }
 }

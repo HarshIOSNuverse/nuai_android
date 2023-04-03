@@ -155,7 +155,7 @@
 
     <string name="orientation_not_supported">Unsupported orientation. Return to portrait mode</string>
     <string name="change_session_mode_error">Failed changing mode. Try again</string>
-    <string name="frames_lost_face_error">"Try again, making sure to look straight into the camera without moving until the measurement is complete.</string>
+    <string name="frames_lost_face_error">Try again, making sure to look straight into the camera without moving until the measurement is complete.</string>
     <string name="frames_lost_finger_error">Try again, making sure not to remove your finger from the camera until the measurement is complete.</string>
     <string name="frames_lost_warning">Could not collect enough data during the last few seconds. Please try not to move.</string>
     <string name="face_reset_error">Movements or other disruptions were identified. Try again, looking directly into the camera without moving until the measurement is complete.</string>
@@ -293,7 +293,7 @@ Blood Pressure is categorized as low, normal, or elevated: low blood pressure is
     <string name="transaction_date">Transaction Date</string>
     <string name="transaction_number">Transaction Number</string>
     <string name="your_plan_is_expired">Your Plan is Expired</string>
-    <string name="purchased_on">Purchased on</string>
+    <string name="purchased_on">Purchased on %s</string>
     <string name="payment_details">Payment Details</string>
     <string name="name">Name</string>
     <string name="need_to_update_your_plan_not_to_worry_you_can_click_on_the_upgrade_now_button_below">Need to update your plan? Not to worry, you can click on the ‘Upgrade Now’ button below.</string>
@@ -332,9 +332,11 @@ Blood Pressure is categorized as low, normal, or elevated: low blood pressure is
     <string name="high_blood_pressure_may_exist_wth_no_noticeable">High blood pressure may exist with no noticeable warning signs.</string>
     <string name="normal_prq_is_4_to_5">Normal PRQ is 4 to 5.</string>
     <string name="try_again">Try Again</string>
-    <string name="low_power_mode_title">"You are in low power mode "</string>
+    <string name="low_power_mode_title">You are in low power mode</string>
     <string name="low_power_mode_msg">Please turn off low power mode in order to start a new measurement.</string>
     <string name="low_battery_msg">Please charge battery in order to start a new measurement.</string>
     <string name="no_limit_for_scan">No Limit for Scan</string>
-    <string name="you_save_doller_6">You save $6.00</string>
+    <string name="you_save_value">You save %s</string>
+    <string name="type_plan">%s Plan</string>
+    <string name="face_or_finger_not_detected_2_times_msg">The face or finger was not detected for a period of over 0.5 second more than 2 times</string>
 </resources>

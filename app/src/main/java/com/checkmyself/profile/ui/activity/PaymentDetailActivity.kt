@@ -1,5 +1,6 @@
 package com.checkmyself.profile.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +16,7 @@ import com.checkmyself.profile.model.PaymentInfo
 import com.checkmyself.profile.viewmodel.ProfileViewModel
 import com.checkmyself.utils.AnimationsHandler
 import com.checkmyself.utils.CommonUtils
+import com.checkmyself.utils.DateFormatter
 import com.checkmyself.utils.IntentConstant
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -76,7 +78,7 @@ class PaymentDetailActivity : BaseActivity() {
                     Status.SUCCESS -> {
                         showHideProgress(false)
                         if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
-                            paymentInfo = it.data.data
+                            paymentInfo = it.data.info
                         }
                         setPaymentDetails()
                     }
@@ -90,9 +92,40 @@ class PaymentDetailActivity : BaseActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setPaymentDetails() {
         if (paymentInfo != null) {
             binding.viewFlipper.displayedChild = 1
+            binding.tvPlanType.text =
+                String.format(
+                    getString(R.string.type_plan),
+                    CommonUtils.getFirstLatterCap(paymentInfo?.planType)
+                )
+            binding.tvPlanAmount.text =
+                CommonUtils.getCurrencySymbol(paymentInfo?.trxCurrency) + " " + CommonUtils.roundDouble(
+                    paymentInfo!!.trxAmount,
+                    2
+                )
+            if (!paymentInfo?.trxDatetime.isNullOrEmpty())
+                binding.tvPurchaseDate.text = String.format(
+                    getString(R.string.purchased_on), DateFormatter.getFormattedByString(
+                        DateFormatter.SERVER_DATE_FORMAT, DateFormatter.MMMM_d_yyyy_hh_mm_a,
+                        paymentInfo?.trxDatetime!!
+                    )
+                )
+            binding.tvName.text = paymentInfo?.user?.fullName
+            if (!paymentInfo?.endDate.isNullOrEmpty())
+                binding.tvPlanExpireDate.text = DateFormatter.getFormattedByString(
+                    DateFormatter.yyyy_MM_dd_DASH, DateFormatter.MMMM_d_yyyy,
+                    paymentInfo?.endDate!!
+                )
+            if (!paymentInfo?.trxDatetime.isNullOrEmpty())
+                binding.tvTransactionDate.text = DateFormatter.getFormattedByString(
+                    DateFormatter.SERVER_DATE_FORMAT, DateFormatter.MMMM_d_yyyy,
+                    paymentInfo?.trxDatetime!!
+                )
+
+            binding.tvTransactionNumber.text = paymentInfo?.trxNo
         } else {
             binding.viewFlipper.displayedChild = 2
         }

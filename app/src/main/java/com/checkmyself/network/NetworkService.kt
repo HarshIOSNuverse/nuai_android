@@ -17,6 +17,7 @@ import com.checkmyself.profile.model.api.request.UpdateProfileRequest
 import com.checkmyself.profile.model.api.response.MyPlansResponse
 import com.checkmyself.profile.model.api.response.PaymentDetailResponse
 import com.checkmyself.profile.model.api.response.PaymentListResponse
+import com.checkmyself.profile.model.api.response.PurchaseResponse
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -147,11 +148,11 @@ constructor(
         ): Response<PaymentListResponse?>
 
         @Headers("$HEADER_BEAR: true")
-        @GET(Url.API + "transactions/{id}")
-        suspend fun getPaymentDetail(@Query("id") id: String?): Response<PaymentDetailResponse?>
+        @GET(Url.API + "transaction/{id}")
+        suspend fun getPaymentDetail(@Path("id") id: String?): Response<PaymentDetailResponse?>
         @Headers("$HEADER_BEAR: true")
         @POST(Url.API + "transaction")
-        suspend fun addSubscription(@Body request: PurchaseRequest): Response<CommonResponse?>
+        suspend fun addSubscription(@Body request: PurchaseRequest): Response<PurchaseResponse?>
 
         /* @Headers("$HEADER_BEAR: true")
          @POST(Url.API + "register-device")
