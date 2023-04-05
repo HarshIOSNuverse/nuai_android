@@ -608,7 +608,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
     private fun resetMeasurements() {
         val measurementsBinding: MeasurementsLayoutBinding = binding.measurementsLayout
         measurementsBinding.tvReading.text =
-            if (mLicenseEnabledVitalSigns.isHeartRateEnabled) "--" else "N/A"
+            if (mLicenseEnabledVitalSigns.isHeartRateEnabled) "--" else "N.A."
     }
 
     /*

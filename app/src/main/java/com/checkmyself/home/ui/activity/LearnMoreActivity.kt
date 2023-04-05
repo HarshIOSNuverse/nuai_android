@@ -68,6 +68,8 @@ class LearnMoreActivity : BaseActivity() {
 
             // This logic is implemented as per client (We suggested that make Enums for that)
             if (!reading?.title.isNullOrEmpty()) {
+                binding.tvObservedValue.text =
+                    if (!reading?.observedValue.isNullOrEmpty()) reading!!.observedValue else "N.A."
                 binding.tvTitle1.text = if (reading?.observedValue.isNullOrEmpty())
                     String.format(getString(R.string.reading_not_recorded_msg), reading?.title)
                 else String.format(
@@ -102,6 +104,10 @@ class LearnMoreActivity : BaseActivity() {
                         binding.tvMsg2.text = getString(R.string.hrv_sdnn_msg_2)
                     }
                     Enums.ResultType.STRESS_LEVEL.type -> {
+                        binding.tvObservedValue.text =
+                            if (!reading?.observedValue.isNullOrEmpty()) CommonUtils.getStressLevel(
+                                reading!!.observedValue
+                            ) else "N.A."
                         binding.progressBar.visibility = View.GONE
                         binding.llProgressbarText.visibility = View.GONE
                         binding.tvMsg1.text = getString(R.string.stress_level_msg_1)

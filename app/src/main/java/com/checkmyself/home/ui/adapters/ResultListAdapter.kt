@@ -53,7 +53,7 @@ internal class ResultListAdapter(items: ArrayList<Reading>) :
             else
                 reading.observedValue
         } else {
-            "N/A"
+            "N.A."
         }
         val bgColor = if (!reading.colorCode.isNullOrEmpty()) {
             reading.colorCode!!.toColorInt()

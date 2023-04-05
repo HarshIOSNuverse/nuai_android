@@ -75,7 +75,6 @@
                         android:layout_width="0dp"
                         android:layout_marginTop="@dimen/dp_5"
                         android:paddingHorizontal="@dimen/dp_7"
-                        android:text='@{reading.observedValue!=null  &amp;&amp; reading.observedValue.length()>0? reading.observedValue: "N/A"}'
                         android:textSize="@dimen/sp_36"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_reading_title" />

@@ -7,7 +7,7 @@ object AppConstant {
     const val MONTHLY_PLAN_ID = "com.app.monthly"
     const val YEARLY_PLAN_ID = "com.app.yearly"
     const val BINAH_AI_URL = "https://www.binah.ai/wellness-score"
-    const val BINAH_AI_SCANNING_TIME_SECONDS: Long = 70
+    const val BINAH_AI_SCANNING_TIME_SECONDS: Long = 60
     const val RESULT_SCREEN_DELAY_TIME = 1500
     const val HEART_RATE_MIN = 20
     const val HEART_RATE_L_1 = 60

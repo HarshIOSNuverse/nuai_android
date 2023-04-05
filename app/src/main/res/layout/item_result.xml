@@ -73,6 +73,7 @@
             android:layout_marginBottom="@dimen/dp_7"
             android:text='@{reading.unit?? ""}'
             android:textSize="@dimen/sp_22"
+            android:visibility='@{reading.observedValue!=null  &amp;&amp; reading.observedValue.length()>0}'
             app:layout_constraintBottom_toBottomOf="@+id/tv_observed_value"
             app:layout_constraintStart_toEndOf="@+id/tv_observed_value" />
 
