@@ -46,7 +46,7 @@ internal class SubscriptionPlanListAdapter(items: ArrayList<ProductDetails>) :
                 .lowercase() == subscription.name.lowercase()
         ) {
             holder.binding.tvSubscriptionMsg.text = context.getString(R.string.no_limit_for_scan)
-        } else if (saving > 0 && Enums.SubscriptionType.YEARLY.toString()
+        }/* else if (saving > 0 && Enums.SubscriptionType.YEARLY.toString()
                 .lowercase() == subscription.name.lowercase()
         ) {
             val msg = CommonUtils.getCurrencySymbol(
@@ -56,7 +56,7 @@ internal class SubscriptionPlanListAdapter(items: ArrayList<ProductDetails>) :
             ) + " " + CommonUtils.roundDouble(saving, 2)
             holder.binding.tvSubscriptionMsg.text =
                 String.format(context.getString(R.string.you_save_value), msg)
-        } else {
+        }*/ else {
             holder.binding.tvSubscriptionMsg.text = context.getString(R.string.no_limit_for_scan)
         }
         if (selectedSubscription != null && selectedSubscription!!.productId == subscription.productId) {

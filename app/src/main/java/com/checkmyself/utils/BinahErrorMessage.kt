@@ -14,7 +14,7 @@ object BinahErrorMessage {
             HealthMonitorCodes.DEVICE_CODE_TORCH_SHUT_DOWN_ERROR -> {
                 "This error happens when the torch shut down during a PPG measurement."
             }
-            HealthMonitorCodes.DEVICE_CODE_INTERNAL_ERROR_1, -> {
+            HealthMonitorCodes.DEVICE_CODE_INTERNAL_ERROR_1 -> {
                 "Internal error when a file can not be opened for reading."
             }
             HealthMonitorCodes.DEVICE_CODE_INTERNAL_ERROR_2 -> {
@@ -67,10 +67,10 @@ object BinahErrorMessage {
                 "The license was revoked."
             }
             HealthMonitorCodes.LICENSE_CODE_INTERNAL_ERROR_4 -> {
-                "Internal error when the country of the current device IP addresses is blocked according to license. By defaul all countries are allowed."
+                "Internal error when the country of the current device IP addresses is blocked according to license. By default all countries are allowed."
             }
             HealthMonitorCodes.LICENSE_CODE_INTERNAL_ERROR_5 -> {
-                "Internal error when the current device IP is blocked according to license. By defaul all IP addresses are allowed."
+                "Internal error when the current device IP is blocked according to license. By default all IP addresses are allowed."
             }
             HealthMonitorCodes.LICENSE_CODE_INTERNAL_ERROR_7,
             HealthMonitorCodes.LICENSE_CODE_INTERNAL_ERROR_8-> {
@@ -116,7 +116,7 @@ object BinahErrorMessage {
                 "Returned on licenses from type \"Pay as You Go\" when the device fails to sync once a month"
             }
             HealthMonitorCodes.LICENSE_CODE_SSL_HANDSHAKE_DEVICE_DATE_ERROR -> {
-                "SSL error, could be beecause the device date is incorrect"
+                "SSL error, could be because the device date is incorrect"
             }
             HealthMonitorCodes.LICENSE_CODE_SSL_HANDSHAKE_CERTIFICATE_EXPIRED_ERROR -> {
                 "SSL error"

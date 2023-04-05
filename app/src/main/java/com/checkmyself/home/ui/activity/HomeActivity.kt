@@ -59,11 +59,11 @@ class HomeActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
-        if(!checkPermissions()){
-            requestPermissions()
-        }else{
-            startLocationUpdates()
-        }
+//        if(!checkPermissions()){
+//            requestPermissions()
+//        }else{
+//            startLocationUpdates()
+//        }
         Handler(Looper.getMainLooper()).postDelayed({
             setUpDrawerView()
         }, 500)
