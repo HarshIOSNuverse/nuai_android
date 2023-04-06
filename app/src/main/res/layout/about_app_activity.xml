@@ -78,10 +78,7 @@
             android:layout_marginHorizontal="@dimen/dp_25"
             android:layout_marginTop="@dimen/dp_30"
             android:layout_marginBottom="@dimen/dp_10"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan,
-risus sem sollicitudin lacus, ut interdum tellus elit sed risus.
-\n\n
-Maecenas eget condimentum velit, sit ame feugiat lectus. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna."
+            android:text="@string/our_company_located_in_ede_the_netherlands_has_a_mission_to_make_social_and_technological_innovations_available_for_healthcare_both_for_professionals_and_patients_as_well_we_consider_that_as_crucial_to_keep_healthcare_qualitative_accessible_and_affordable_our_core_values_are_transparency_integrity_and_human_first"
             android:textColor="@color/secondary_text_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

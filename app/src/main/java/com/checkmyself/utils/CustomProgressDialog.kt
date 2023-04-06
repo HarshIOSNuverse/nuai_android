@@ -24,7 +24,7 @@ object CustomProgressDialog {
                 window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
                 setCancelable(false)
             }
-            progressDialog!!.show()
+            progressDialog?.show()
         }
     }
 

@@ -42,7 +42,7 @@ android {
             signingConfig signingConfigs.debug
 
             buildConfigField "String", "BASE_URL", "\"${debugBaseUrl}\""
-            buildConfigField "String", "BASE_URL_PROTOCOL", "\"HTTPS\""
+            buildConfigField "String", "BASE_URL_PROTOCOL", "\"https\""
             buildConfigField "boolean", "ENABLED", "" + true + ""
             buildConfigField("String", "PREF_FILE", "\"" + prefFile + "\"")
             buildConfigField("String", "PREF_APP_FILE", "\"" + prefAppFile + "\"")
@@ -53,7 +53,7 @@ android {
             signingConfig signingConfigs.release
 
             buildConfigField "String", "BASE_URL", "\"${liveBaseUrl}\""
-            buildConfigField "String", "BASE_URL_PROTOCOL", "\"HTTPS\""
+            buildConfigField "String", "BASE_URL_PROTOCOL", "\"https\""
             buildConfigField "boolean", "ENABLED", "" + false + ""
             buildConfigField("String", "PREF_FILE", "\"" + prefFile + "\"")
             buildConfigField("String", "PREF_APP_FILE", "\"" + prefAppFile + "\"")

@@ -42,10 +42,10 @@ internal class ResultListAdapter(items: ArrayList<Reading>) :
     ) {
         val reading = items[position]
         holder.binding.reading = reading
-        ImageSetter.loadImage(
+        ImageSetter.loadImageResize(
             reading.levelIcon,
             R.drawable.rc_black_border_c25,
-            holder.binding.ivReadingIndicator
+            holder.binding.ivReadingIndicator, 60, 60
         )
         holder.binding.tvObservedValue.text = if (!reading.observedValue.isNullOrEmpty()) {
             if (reading.title == "Stress Level")

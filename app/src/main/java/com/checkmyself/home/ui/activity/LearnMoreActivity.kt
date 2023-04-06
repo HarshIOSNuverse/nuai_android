@@ -60,10 +60,10 @@ class LearnMoreActivity : BaseActivity() {
         CommonUtils.setBgColor(this, binding.crReadingRoot.background, R.color.profile_top_bg_color)
         if (reading != null) {
             binding.reading = reading
-            ImageSetter.loadImage(
+            ImageSetter.loadImageResize(
                 reading?.levelIcon,
                 R.drawable.rc_black_border_c25,
-                binding.ivReadingIndicator
+                binding.ivReadingIndicator, 60, 60
             )
 
             // This logic is implemented as per client (We suggested that make Enums for that)
