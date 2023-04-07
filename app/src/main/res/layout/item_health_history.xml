@@ -232,7 +232,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_blood_pressure"
             style="@style/TextViewStyleLight"
-            android:text='@{history.bloodPressure!=null  &amp;&amp; history.bloodPressure.length()>0? history.bloodPressure: "N.A."}'
+            android:text='@{history.bloodPressure!=null  &amp;&amp; history.bloodPressure.length()>0? history.bloodPressure: @string/na}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_blood_pressure"
             app:layout_constraintEnd_toEndOf="parent"
@@ -293,7 +293,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_recovery_ability"
             style="@style/TextViewStyleLight"
-            android:text='@{history.recoveryAbility!=null  &amp;&amp; history.recoveryAbility.length()>0? history.recoveryAbility: "N.A."}'
+            android:text='@{history.recoveryAbility!=null  &amp;&amp; history.recoveryAbility.length()>0? history.recoveryAbility: @string/na}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_recovery_ability"
             app:layout_constraintEnd_toEndOf="parent"
@@ -324,7 +324,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_stress_response"
             style="@style/TextViewStyleLight"
-            android:text='@{history.stressResponse!=null  &amp;&amp; history.stressResponse.length()>0? history.stressResponse: "N.A."}'
+            android:text='@{history.stressResponse!=null  &amp;&amp; history.stressResponse.length()>0? history.stressResponse: @string/na}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_stress_response"
             app:layout_constraintEnd_toEndOf="parent"

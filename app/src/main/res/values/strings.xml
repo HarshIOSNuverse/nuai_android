@@ -340,4 +340,5 @@ Blood Pressure is categorized as low, normal, or elevated: low blood pressure is
     <string name="type_plan">%s Plan</string>
     <string name="face_or_finger_not_detected_2_times_msg">The face or finger was not detected for a period of over 0.5 second more than 2 times</string>
     <string name="our_company_located_in_ede_the_netherlands_has_a_mission_to_make_social_and_technological_innovations_available_for_healthcare_both_for_professionals_and_patients_as_well_we_consider_that_as_crucial_to_keep_healthcare_qualitative_accessible_and_affordable_our_core_values_are_transparency_integrity_and_human_first">Our company, located in Ede, The Netherlands, has a mission to make social and technological innovations available for healthcare. Both for professionals and patients as well. We consider that as crucial to keep healthcare qualitative, accessible and affordable. Our core values are transparency, integrity and human first.</string>
+    <string name="na">N.A.</string>
 </resources>

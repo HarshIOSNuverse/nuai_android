@@ -69,7 +69,8 @@ class LearnMoreActivity : BaseActivity() {
             // This logic is implemented as per client (We suggested that make Enums for that)
             if (!reading?.title.isNullOrEmpty()) {
                 binding.tvObservedValue.text =
-                    if (!reading?.observedValue.isNullOrEmpty()) reading!!.observedValue else "N.A."
+                    if (!reading?.observedValue.isNullOrEmpty()) reading!!.observedValue
+                    else getString(R.string.na)
                 binding.tvTitle1.text = if (reading?.observedValue.isNullOrEmpty())
                     String.format(getString(R.string.reading_not_recorded_msg), reading?.title)
                 else String.format(
@@ -94,11 +95,7 @@ class LearnMoreActivity : BaseActivity() {
 
                     }
                     Enums.ResultType.HRV_SDNN.type -> {
-                        set2SegmentProgress(
-                            AppConstant.HRV_SDNN_MIN,
-                            AppConstant.HRV_SDNN_L_1,
-                            AppConstant.HRV_SDNN_MAX
-                        )
+                        set2SegmentProgress()
                         binding.tvMsg1.text = getString(R.string.hrv_sdnn_msg_1)
                         binding.ivImage1.setImageResource(R.drawable.hrv_sdnn_img_1)
                         binding.tvMsg2.text = getString(R.string.hrv_sdnn_msg_2)
@@ -107,7 +104,7 @@ class LearnMoreActivity : BaseActivity() {
                         binding.tvObservedValue.text =
                             if (!reading?.observedValue.isNullOrEmpty()) CommonUtils.getStressLevel(
                                 reading!!.observedValue
-                            ) else "N.A."
+                            ) else getString(R.string.na)
                         binding.progressBar.visibility = View.GONE
                         binding.llProgressbarText.visibility = View.GONE
                         binding.tvMsg1.text = getString(R.string.stress_level_msg_1)
@@ -133,13 +130,7 @@ class LearnMoreActivity : BaseActivity() {
                         binding.tvMsg2.text = getString(R.string.stress_response_msg_2)
                     }
                     Enums.ResultType.OXYGEN_SATURATION.type -> {
-                        set4SegmentProgress(
-                            AppConstant.OXYGEN_SATURATION_MIN,
-                            AppConstant.OXYGEN_SATURATION_L_1,
-                            AppConstant.OXYGEN_SATURATION_L_2,
-                            AppConstant.OXYGEN_SATURATION_L_3,
-                            AppConstant.OXYGEN_SATURATION_MAX
-                        )
+                        set4SegmentProgress()
                         binding.tvMsg1.text = getString(R.string.oxygen_saturation_msg_1)
                         binding.ivImage1.setImageResource(R.drawable.oxygen_saturation_img_1)
                         binding.tvMsg2.text = getString(R.string.oxygen_saturation_msg_2)
@@ -189,7 +180,10 @@ class LearnMoreActivity : BaseActivity() {
         }
     }
 
-    private fun set2SegmentProgress(min: Int, label1: Int, max: Int) {
+    private fun set2SegmentProgress() {
+        val min = AppConstant.HRV_SDNN_MIN
+        val label1 = AppConstant.HRV_SDNN_L_1
+        val max = AppConstant.HRV_SDNN_MAX
         binding.progressBar.progressDrawable =
             ContextCompat.getDrawable(this, R.drawable.progress_bg_2)
         binding.progressBar.min = min
@@ -240,7 +234,12 @@ class LearnMoreActivity : BaseActivity() {
         binding.view4.visibility = View.GONE
     }
 
-    private fun set4SegmentProgress(min: Int, label1: Int, label2: Int, label3: Int, max: Int) {
+    private fun set4SegmentProgress() {
+        val min = AppConstant.OXYGEN_SATURATION_MIN
+        val label1 = AppConstant.OXYGEN_SATURATION_L_1
+        val label2 = AppConstant.OXYGEN_SATURATION_L_2
+        val label3 = AppConstant.OXYGEN_SATURATION_L_3
+        val max = AppConstant.OXYGEN_SATURATION_MAX
         binding.progressBar.progressDrawable =
             ContextCompat.getDrawable(this, R.drawable.progress_bg_4)
         binding.progressBar.min = min

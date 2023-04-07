@@ -180,7 +180,7 @@ class HealthHistoryListActivity : BaseActivity() {
             historyViewModel.historyListState.collect {
                 if (screenHeight == 0 || progressOrNoDataHeight == 0) {
                     screenHeight = getScreenHeight()
-                    bottom = (binding.crHeader.y * 1.4).toInt() + binding.crHeader.height
+                    bottom = ((binding.crHeader.y * 1.4) + binding.crHeader.height).toInt()
                     if (bottom != 0)
                         progressOrNoDataHeight = screenHeight - bottom
                 }

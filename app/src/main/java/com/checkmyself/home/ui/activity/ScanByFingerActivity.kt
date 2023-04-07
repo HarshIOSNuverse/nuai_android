@@ -631,7 +631,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
     private fun resetMeasurements() {
         val measurementsBinding: MeasurementsLayoutBinding = binding.measurementsLayout
         measurementsBinding.tvReading.text =
-            if (mLicenseEnabledVitalSigns.isHeartRateEnabled) "--" else "N.A."
+            if (mLicenseEnabledVitalSigns.isHeartRateEnabled) "--" else getString(R.string.na)
     }
 
     /*
@@ -1017,47 +1017,47 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
     private fun updateReadingProgressMsg() {
         if (isDetected) {
             when (mTime) {
-                in 0..6 -> {
+                in 0..5 -> {
                     binding.measurementsLayout.tvScanningMsg.text =
                         getString(R.string.finger_scanning_msg)
                 }
-                7 -> {
+                6 -> {
                     binding.measurementsLayout.tvScanningMsg.text =
                         getString(R.string.sit_still_during_the_measurement)
                 }
-                in 8..14 -> {
+                in 7..12 -> {
                     binding.measurementsLayout.tvScanningMsg.text =
                         getString(R.string.symptoms_of_hypoxemia_include_wheezing)
                 }
-                in 15..21 -> {
+                in 13..18 -> {
                     binding.measurementsLayout.tvScanningMsg.text =
                         getString(R.string.prq_is_calculate_by_dividing_heart_rate)
                 }
-                in 22..28 -> {
+                in 19..24 -> {
                     binding.measurementsLayout.tvScanningMsg.text =
                         getString(R.string.wait_until_end_for_best_result)
                 }
-                in 29..35 -> {
+                in 25..30 -> {
                     binding.measurementsLayout.tvScanningMsg.text =
                         getString(R.string.normal_resting_heart_rate)
                 }
-                in 36..42 -> {
+                in 31..36 -> {
                     binding.measurementsLayout.tvScanningMsg.text =
                         getString(R.string.make_sure_that_your_finger_completely_covers_the_camera)
                 }
-                in 43..49 -> {
+                in 37..42 -> {
                     binding.measurementsLayout.tvScanningMsg.text =
                         getString(R.string.high_blood_pressure_may_exist_wth_no_noticeable)
                 }
-                in 50..56 -> {
+                in 43..48 -> {
                     binding.measurementsLayout.tvScanningMsg.text =
                         getString(R.string.normal_prq_is_4_to_5)
                 }
-                in 57..63 -> {
+                in 49..54 -> {
                     binding.measurementsLayout.tvScanningMsg.text =
                         getString(R.string.tracking_heart_rate_provide)
                 }
-                in 64..70 -> {
+                in 55..60 -> {
                     binding.measurementsLayout.tvScanningMsg.text =
                         getString(R.string.hold_on_all_the_result_will_appear)
                 }

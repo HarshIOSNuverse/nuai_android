@@ -26,6 +26,7 @@
         <me.didik.component.StickyNestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:fillViewport="false"
             android:scrollbars="none"
             android:verticalScrollbarPosition="defaultPosition"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -33,8 +34,7 @@
             app:layout_constraintHorizontal_bias="0.32"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbarLayout"
-            app:layout_constraintVertical_bias="0.0"
-            android:fillViewport="false">
+            app:layout_constraintVertical_bias="0.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_20"
-                    android:layout_marginTop="@dimen/dp_30"
+                    android:layout_marginTop="@dimen/dp_13"
                     android:layout_marginEnd="@dimen/dp_20"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -187,8 +187,8 @@
                         android:layout_marginHorizontal="@dimen/dp_50"
                         android:background="@color/white"
                         android:gravity="center"
-                        android:textSize="@dimen/sp_14"
                         android:text="@string/no_measurement_were_taken"
+                        android:textSize="@dimen/sp_14"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/iv_finger"
