@@ -112,7 +112,7 @@
     <string name="delete">Delete</string>
     <string name="app_version">App Version</string>
     <string name="sdk_version">SDK Version</string>
-    <string name="about_app_link_text">For more information on CheckMySelf visit us at: https://CheckMySelf/app</string>
+    <string name="about_app_link_text">For more information on CheckMySelf visit us at: https://carepointdevelopment.eu/</string>
     <string name="no_measurement_were_taken">No measurements were\ntaken on this date</string>
     <string name="wellness_score">Wellness Score</string>
     <string name="breathing_rate">Breathing Rate</string>

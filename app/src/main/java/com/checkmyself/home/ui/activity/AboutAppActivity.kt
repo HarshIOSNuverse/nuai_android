@@ -61,7 +61,7 @@ class AboutAppActivity : BaseActivity() {
         setSpannableColor(
             binding.linkMessageText,
             getString(R.string.about_app_link_text),
-            "https://CheckMySelf/app",
+            "https://carepointdevelopment.eu/",
             ContextCompat.getColor(this, R.color.blue_text_color)
         )
     }
