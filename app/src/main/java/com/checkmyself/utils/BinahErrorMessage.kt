@@ -146,7 +146,7 @@ object BinahErrorMessage {
                 "Average detection rate is significantly lower than expected. Could be because the device is busy, overloaded, overheated or any other hardware operating system software or hardware issue."
             }
             3009 -> {
-                "Many concecutive frames were received in incorrect order according to their timestamp. This error is received if warning 3506 repeated multiple times."
+                "Many consecutive frames were received in incorrect order according to their timestamp. This error is received if warning 3506 repeated multiple times."
             }
             HealthMonitorCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_WARNING -> {
                 "The face or finger was not detected for a period of over 0.5 second."

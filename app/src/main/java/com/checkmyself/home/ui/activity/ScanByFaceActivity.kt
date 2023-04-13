@@ -391,7 +391,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             Handler(Looper.getMainLooper()).postDelayed({
                 if (mSession?.state != SessionState.MEASURING)
                     startMeasuring()
-            }, 300)
+            }, 500)
         } catch (e: HealthMonitorException) {
             CommonUtils.showToast(this, "" + e.errorCode)
 //            showErrorDialog(e.errorCode)

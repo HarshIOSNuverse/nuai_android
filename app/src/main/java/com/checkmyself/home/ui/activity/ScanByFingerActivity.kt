@@ -402,7 +402,7 @@ class ScanByFingerActivity : BaseActivity(), View.OnClickListener, HealthMonitor
                     startMeasuring()
 //                startTimeCount()
 //                binding.measurementsLayout.root.visibility = View.VISIBLE
-            }, 300)
+            }, 500)
         } catch (e: HealthMonitorException) {
             CommonUtils.showToast(this, "${e.errorCode}")
 //            showErrorDialog(e.errorCode)
