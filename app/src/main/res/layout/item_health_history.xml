@@ -200,7 +200,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_oxygen_saturation"
             style="@style/TextViewStyleLight"
-            android:text='@{""+history.oxygenSaturation+"%"}'
+            android:text='@{history.oxygenSaturation != 0? ""+history.oxygenSaturation+"%": @string/na}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_oxygen_saturation"
             app:layout_constraintEnd_toEndOf="parent"
@@ -355,7 +355,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_hrv_sdnn"
             style="@style/TextViewStyleLight"
-            android:text='@{""+history.hrvSdnn+" "+@string/ms}'
+            android:text='@{history.hrvSdnn != 0? ""+history.hrvSdnn+" "+@string/ms: @string/na}'
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_hrv_sdnn"
             app:layout_constraintEnd_toEndOf="parent"

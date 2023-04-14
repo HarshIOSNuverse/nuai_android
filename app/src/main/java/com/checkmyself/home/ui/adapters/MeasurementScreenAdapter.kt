@@ -11,9 +11,9 @@ import com.checkmyself.R
 import com.checkmyself.databinding.ItemMeasurementHeaderBinding
 import com.checkmyself.databinding.ItemResultDeleteBinding
 import com.checkmyself.databinding.ItemResultWrapperBinding
-import com.checkmyself.home.model.HealthBasicInfo
 import com.checkmyself.home.model.Reading
 import com.checkmyself.home.model.ResultWrapper
+import com.checkmyself.home.model.api.response.MeasurementResponse
 import com.checkmyself.utils.BindingViewHolder
 import com.checkmyself.utils.CommonUtils
 import com.checkmyself.utils.Enums
@@ -65,7 +65,8 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
     ) {
         when (holder.binding) {
             is ItemMeasurementHeaderBinding -> {
-                val basicInfo = items[position] as HealthBasicInfo
+                val measurementDetail = items[position] as MeasurementResponse
+                val basicInfo = measurementDetail.basicInfo!!
                 holder.binding.history = basicInfo
                 if (!basicInfo.scanBy.isNullOrEmpty()) {
                     when (basicInfo.scanBy) {
@@ -86,12 +87,27 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
                     measurementListener?.onWellnessScoreClick()
                 }
                 val categoryList: ArrayList<String> = arrayListOf()
-                categoryList.add(Enums.ResultCategory.VITAL_SIGNS.toString())
-                categoryList.add(Enums.ResultCategory.BLOOD.toString())
-                categoryList.add(Enums.ResultCategory.STRESS_LEVEL.toString())
-                categoryList.add(Enums.ResultCategory.ENERGY.toString())
-                categoryList.add(Enums.ResultCategory.HEART_RATE_VARIABILITY.toString())
-                categoryList.add(Enums.ResultCategory.BLOOD_TEST.toString())
+                if (measurementDetail.result != null) {
+                    val result = measurementDetail.result!!
+                    if (!result.vitalSigns.isNullOrEmpty()) {
+                        categoryList.add(Enums.ResultCategory.VITAL_SIGNS.toString())
+                    }
+                    if (!result.blood.isNullOrEmpty()) {
+                        categoryList.add(Enums.ResultCategory.BLOOD.toString())
+                    }
+                    if (!result.stressLevel.isNullOrEmpty()) {
+                        categoryList.add(Enums.ResultCategory.STRESS_LEVEL.toString())
+                    }
+                    if (!result.energy.isNullOrEmpty()) {
+                        categoryList.add(Enums.ResultCategory.ENERGY.toString())
+                    }
+                    if (!result.heartRateVariability.isNullOrEmpty()) {
+                        categoryList.add(Enums.ResultCategory.HEART_RATE_VARIABILITY.toString())
+                    }
+                    if (!result.bloodTest.isNullOrEmpty()) {
+                        categoryList.add(Enums.ResultCategory.BLOOD_TEST.toString())
+                    }
+                }
                 holder.binding.resultCategoryAdapter =
                     ResultCategorySelectListAdapter(categoryList).apply {
                         selectCategoryListener =
@@ -154,7 +170,7 @@ internal class MeasurementScreenAdapter(items: ArrayList<Any>) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (items[position] is HealthBasicInfo) {
+        return if (items[position] is MeasurementResponse) {
             HEADER
         } else if (items[position] is String) {
             DELETE

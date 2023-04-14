@@ -129,7 +129,7 @@ class MeasurementResultActivity : BaseActivity(), View.OnClickListener {
     private fun setDetails() {
         if (measurementDetail != null) {
             if (measurementDetail?.basicInfo != null) {
-                screenList.add(measurementDetail?.basicInfo!!)
+                screenList.add(measurementDetail!!)
             }
             if (measurementDetail?.result != null) {
                 val result = measurementDetail!!.result!!

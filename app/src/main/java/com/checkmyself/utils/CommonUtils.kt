@@ -393,7 +393,7 @@ object CommonUtils {
             "1" -> MyApplication.instance!!.getString(R.string.low)
             "2" -> MyApplication.instance!!.getString(R.string.normal)
             "3" -> MyApplication.instance!!.getString(R.string.high)
-            else -> value
+            else -> MyApplication.instance!!.getString(R.string.na)
         }
     }
 
