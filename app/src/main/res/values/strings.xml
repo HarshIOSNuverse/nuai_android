@@ -152,6 +152,7 @@
     <string name="medium">Medium</string>
     <string name="normal">Normal</string>
     <string name="low">Low</string>
+    <string name="mild">Mild</string>
 
     <string name="orientation_not_supported">Unsupported orientation. Return to portrait mode</string>
     <string name="change_session_mode_error">Failed changing mode. Try again</string>

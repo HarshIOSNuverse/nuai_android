@@ -392,7 +392,8 @@ object CommonUtils {
         return when (value) {
             "1" -> MyApplication.instance!!.getString(R.string.low)
             "2" -> MyApplication.instance!!.getString(R.string.normal)
-            "3" -> MyApplication.instance!!.getString(R.string.high)
+            "3" -> MyApplication.instance!!.getString(R.string.mild)
+            "4", "5" -> MyApplication.instance!!.getString(R.string.high)
             else -> MyApplication.instance!!.getString(R.string.na)
         }
     }
@@ -415,14 +416,16 @@ object CommonUtils {
     }
 
     fun getPriceWithCurrency(subscription: ProductDetails): String {
-        return getCurrencySymbol(
+        return subscription.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+            0
+        )?.formattedPrice!!/*getCurrencySymbol(
             subscription.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
                 0
             )?.priceCurrencyCode
         ) + " " + roundDouble(
             (subscription.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceAmountMicros / 1000000).toDouble(),
             2
-        )
+        )*/
     }
 
 }
