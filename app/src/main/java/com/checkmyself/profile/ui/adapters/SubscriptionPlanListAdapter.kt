@@ -87,10 +87,18 @@ internal class SubscriptionPlanListAdapter(items: ArrayList<ProductDetails>) :
                         )
             }
             if (monthly != null && yearly != null) {
+                val currencyCode =
+                    monthly.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceCurrencyCode
                 val monthlyPrice =
-                    (monthly.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceAmountMicros / 1000000).toDouble()
+                    CommonUtils.getPriceWithoutCurrency(
+                        currencyCode,
+                        (monthly.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.formattedPrice)
+                    )
                 val yearlyPrice =
-                    (yearly.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceAmountMicros / 1000000).toDouble()
+                    CommonUtils.getPriceWithoutCurrency(
+                        currencyCode,
+                        (yearly.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.formattedPrice)
+                    )
                 if ((monthlyPrice * 12) > yearlyPrice) {
                     saving = (monthlyPrice * 12) - yearlyPrice
                 }

@@ -772,9 +772,6 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
             }
         }
 
-        scanningResultData.latitude = 0.0
-        scanningResultData.longitude = 0.0
-
         if (handlerPublishReport != null) {
             handlerPublishReport!!.removeCallbacksAndMessages(null)
         }
@@ -795,9 +792,7 @@ class ScanByFaceActivity : BaseActivity(), View.OnClickListener, HealthMonitorMa
                     scanningResultData.breathingRate,
                     scanningResultData.prq,
                     scanningResultData.wellnessScore,
-                    scanningResultData.recoveryAbility,
-                    Pref.currentLatitude,
-                    Pref.currentLongitude
+                    scanningResultData.recoveryAbility
                 )
                 if (request.bloodPressure == "0" && request.heartRate == "0" && request.oxygenSaturation == "0" && request.prq == "0") {
 //                    CommonUtils.showToast(this, getString(R.string.no_result_found))

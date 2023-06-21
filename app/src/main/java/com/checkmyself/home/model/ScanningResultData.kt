@@ -56,6 +56,4 @@ class ScanningResultData : Serializable {
     @SerializedName("wellness_score")
     @Expose
     var wellnessScore: String? = ""
-    var latitude = 0.0
-    var longitude = 0.0
 }

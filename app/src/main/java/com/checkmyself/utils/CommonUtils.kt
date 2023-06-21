@@ -9,8 +9,6 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.ShapeDrawable
-import android.location.Address
-import android.location.Geocoder
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -38,6 +36,7 @@ import java.lang.reflect.Type
 import java.net.SocketTimeoutException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import java.text.NumberFormat
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -46,10 +45,10 @@ import kotlin.math.pow
 import kotlin.math.roundToLong
 
 object CommonUtils {
-    val TAG: String = "CommonUtils"
+    private const val TAG: String = "CommonUtils"
 
     fun hasPermissions(context: Context?, vararg permissions: String): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null) {
+        if (context != null) {
             for (permission in permissions) {
                 if (ActivityCompat.checkSelfPermission(
                         context, permission
@@ -130,19 +129,14 @@ object CommonUtils {
     fun isNetworkAvailable(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val activeNetwork = connectivityManager?.activeNetwork ?: return false
-            val networkCapabilities =
-                connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
-            return when {
-                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                else -> false
-            }
-        } else {
-            val activeNetworkInfo = connectivityManager?.activeNetworkInfo ?: return false
-            return activeNetworkInfo.isConnected
+        val activeNetwork = connectivityManager?.activeNetwork ?: return false
+        val networkCapabilities =
+            connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+        return when {
+            networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
         }
     }
 
@@ -154,7 +148,7 @@ object CommonUtils {
 
     fun isValidEmail(email: String): Boolean {
         val emailMatcher =
-            Pattern.compile("^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})\$")
+            Pattern.compile("^[_A-Za-z\\d-+]+(\\.[_A-Za-z\\d-]+)*@[A-Za-z\\d-]+(\\.[A-Za-z\\d]+)*(\\.[A-Za-z]{2,})\$")
                 .matcher(email)
         return !TextUtils.isEmpty(email) && emailMatcher.find()
     }
@@ -254,19 +248,6 @@ object CommonUtils {
         return newMessage.toString()
     }
 
-    fun getImage(context: Context, ImageName: String?): Drawable? {
-        return try {
-            ContextCompat.getDrawable(
-                context, context.resources
-                    .getIdentifier(ImageName, "drawable", context.packageName)
-            )
-        } catch (e: java.lang.Exception) {
-            ContextCompat.getDrawable(
-                context, context.resources.getIdentifier("flag_00", "drawable", context.packageName)
-            )
-        }
-    }
-
     fun setBgColor(mContext: Context, background: Drawable, color: Int) {
         when (background) {
             is ShapeDrawable -> {
@@ -298,69 +279,6 @@ object CommonUtils {
         return (dp * Resources.getSystem().displayMetrics.density)
     }
 
-    fun getAddressFromLAtLng(
-        context: Context, latitude: Double, longitude: Double, isShortAddress: Boolean
-    ): String? {
-        var returnAddress: String? = null
-        val addresses: List<Address>?
-        val geoCoder = Geocoder(context, Locale.getDefault())
-        try {
-            addresses = geoCoder.getFromLocation(
-                latitude, longitude, 1
-            ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
-            if (!addresses.isNullOrEmpty()) {
-                val address: String? = addresses[0]
-                    .getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-
-                val locality: String? = addresses[0].locality
-                val knownName: String? = addresses[0].featureName
-
-                if (isShortAddress) {
-                    if (!knownName.isNullOrEmpty()) {
-                        returnAddress = knownName
-                    } else if (!addresses[0].subLocality.isNullOrEmpty()) {
-                        returnAddress = addresses[0].subLocality
-                    } else if (!addresses[0].subAdminArea.isNullOrEmpty()) {
-                        returnAddress = addresses[0].subAdminArea
-                    } else if (!locality.isNullOrEmpty()) {
-                        returnAddress = locality
-                    } else if (!address.isNullOrEmpty()) {
-                        returnAddress = address
-                    }
-                } else {
-                    // Need to change as per requirement
-                    if (!address.isNullOrEmpty()) {
-                        returnAddress = address
-                    } else {
-                        if (!knownName.isNullOrEmpty()) {
-                            returnAddress = knownName
-                        }
-                        if (!addresses[0].subLocality.isNullOrEmpty()) {
-                            if (!returnAddress.isNullOrEmpty())
-                                returnAddress += ", "
-                            returnAddress += addresses[0].subLocality
-                        }
-                        if (!locality.isNullOrEmpty()) {
-                            if (!returnAddress.isNullOrEmpty())
-                                returnAddress += ", "
-                            returnAddress += locality
-                        }
-                        if (!addresses[0].subAdminArea.isNullOrEmpty()) {
-                            if (!returnAddress.isNullOrEmpty())
-                                returnAddress += ", "
-                            returnAddress += addresses[0].subAdminArea
-                        }
-                    }
-                }
-            }
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-        }
-        return returnAddress
-    }
-
-
     fun scrollToView(view: View) {
         view.parent.requestChildFocus(view, view)
     }
@@ -379,7 +297,7 @@ object CommonUtils {
         }
     }
 
-    fun getStressResponseAndRecoveryAbility(value: Int): String? {
+    fun getStressResponseAndRecoveryAbility(value: Int): String {
         return when (value) {
             1 -> "Low"
             2 -> "Normal"
@@ -388,7 +306,7 @@ object CommonUtils {
         }
     }
 
-    fun getStressLevel(value: String?): String? {
+    fun getStressLevel(value: String?): String {
         return when (value) {
             "1" -> MyApplication.instance!!.getString(R.string.low)
             "2" -> MyApplication.instance!!.getString(R.string.normal)
@@ -398,8 +316,8 @@ object CommonUtils {
         }
     }
 
-    var currencyLocaleMap: SortedMap<Currency, Locale>? = null
-    fun getCurrencySymbol(currencyCode: String?): String? {
+    private var currencyLocaleMap: SortedMap<Currency, Locale>? = null
+    fun getCurrencySymbol(currencyCode: String?): String {
         if (currencyLocaleMap == null) {
             currencyLocaleMap = TreeMap { o1, o2 -> o1.currencyCode.compareTo(o2.currencyCode) }
             for (locale in Locale.getAvailableLocales()) {
@@ -428,4 +346,9 @@ object CommonUtils {
         )*/
     }
 
+    fun getPriceWithoutCurrency(currencyCode: String, price: String): Double {
+        val formatter: NumberFormat = NumberFormat.getNumberInstance(/*Locale("en","nl")*/)
+        val symbol = getCurrencySymbol(currencyCode)
+        return formatter.parse(price.replace(symbol, ""))!!.toString().replace(",", ".").toDouble()
+    }
 }

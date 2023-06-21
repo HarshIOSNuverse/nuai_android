@@ -51,12 +51,6 @@ class HealthBasicInfo() : Parcelable {
     @SerializedName("wellness_score")
     var wellnessScore: Int = 0
 
-    @SerializedName("latitude")
-    var latitude: Double = 0.0
-
-    @SerializedName("longitude")
-    var longitude: Double = 0.0
-
     @SerializedName("result_date")
     var resultDate: String? = ""
 
@@ -82,8 +76,6 @@ class HealthBasicInfo() : Parcelable {
         hemoglobin = parcel.readDouble()
         hba1c = parcel.readDouble()
         wellnessScore = parcel.readInt()
-        latitude = parcel.readDouble()
-        longitude = parcel.readDouble()
         resultDate = parcel.readString()
         resultTime = parcel.readString()
         createdAt = parcel.readString()
@@ -105,8 +97,6 @@ class HealthBasicInfo() : Parcelable {
         parcel.writeDouble(hemoglobin)
         parcel.writeDouble(hba1c)
         parcel.writeInt(wellnessScore)
-        parcel.writeDouble(latitude)
-        parcel.writeDouble(longitude)
         parcel.writeString(resultDate)
         parcel.writeString(resultTime)
         parcel.writeString(createdAt)

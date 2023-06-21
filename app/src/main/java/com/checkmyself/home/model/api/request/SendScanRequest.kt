@@ -15,9 +15,7 @@ data class SendScanRequest(
     @SerializedName("breathing_rate") val breathingRate:String?,
     @SerializedName("prq") val prq:String?,
     @SerializedName("wellness_score") val wellnessScore:String?,
-    @SerializedName("recovery_ability") val recoveryAbility:String?,
-    @SerializedName("latitude") val latitude: Double,
-    @SerializedName("longitude") val longitude: Double,
+    @SerializedName("recovery_ability") val recoveryAbility:String?
 )
 {
 //    "recovery_ability": "",

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,9 +25,10 @@ import com.checkmyself.profile.ui.adapters.SubscriptionPlanListAdapter
 import com.checkmyself.profile.viewmodel.ProfileViewModel
 import com.checkmyself.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -57,6 +59,7 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
     private val profileViewModel: ProfileViewModel by viewModels()
     private val subscriptionList: ArrayList<ProductDetails> = arrayListOf()
     private var billingClient: BillingClient? = null
+    private var purchase: Purchase? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +96,25 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                     }
                     Status.SUCCESS -> {
                         if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
+                            if (purchase != null && purchase!!.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                                if (!purchase!!.isAcknowledged) {
+                                    val acknowledgePurchaseParams =
+                                        AcknowledgePurchaseParams.newBuilder()
+                                            .setPurchaseToken(purchase!!.purchaseToken)
+                                    val ackPurchaseResult = withContext(Dispatchers.IO) {
+                                        billingClient!!.acknowledgePurchase(
+                                            acknowledgePurchaseParams.build()
+                                        ) { result ->
+                                            if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+                                                Logger.d(
+                                                    "Sub",
+                                                    result.debugMessage + "Code = " + result.responseCode
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             PaymentStatusActivity.startActivityForResult(
                                 this@SubscriptionPlansActivity,
                                 it.data.id, launcher
@@ -159,10 +181,14 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
         if (CommonUtils.isNetworkAvailable(this)) {
             val selectedPlan = binding.adapter!!.selectedSubscription
             if (selectedPlan != null && purchase != null) {
-                val price =
-                    (selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceAmountMicros / 1000000).toString()
+                this.purchase = purchase
                 val currencyCode =
                     selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceCurrencyCode
+                val price =
+                    CommonUtils.getPriceWithoutCurrency(
+                        currencyCode,
+                        selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.formattedPrice
+                    ).toString()
 
                 val request = PurchaseRequest(
                     price,
