@@ -151,7 +151,8 @@ constructor(
         @GET(Url.API + "transaction/{id}")
         suspend fun getPaymentDetail(@Path("id") id: String?): Response<PaymentDetailResponse?>
         @Headers("$HEADER_BEAR: true")
-        @POST(Url.API + "transaction")
+//        @POST(Url.API + "transaction")
+        @POST(Url.API + "transactionv2")
         suspend fun addSubscription(@Body request: PurchaseRequest): Response<PurchaseResponse?>
 
         /* @Headers("$HEADER_BEAR: true")

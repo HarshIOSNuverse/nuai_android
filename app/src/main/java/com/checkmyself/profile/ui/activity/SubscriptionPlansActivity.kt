@@ -96,25 +96,25 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                     }
                     Status.SUCCESS -> {
                         if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
-                            if (purchase != null && purchase!!.purchaseState == Purchase.PurchaseState.PURCHASED) {
-                                if (!purchase!!.isAcknowledged) {
-                                    val acknowledgePurchaseParams =
-                                        AcknowledgePurchaseParams.newBuilder()
-                                            .setPurchaseToken(purchase!!.purchaseToken)
-                                    val ackPurchaseResult = withContext(Dispatchers.IO) {
-                                        billingClient!!.acknowledgePurchase(
-                                            acknowledgePurchaseParams.build()
-                                        ) { result ->
-                                            if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                                                Logger.d(
-                                                    "Sub",
-                                                    result.debugMessage + "Code = " + result.responseCode
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+//                            if (purchase != null && purchase!!.purchaseState == Purchase.PurchaseState.PURCHASED) {
+//                                if (!purchase!!.isAcknowledged) {
+//                                    val acknowledgePurchaseParams =
+//                                        AcknowledgePurchaseParams.newBuilder()
+//                                            .setPurchaseToken(purchase!!.purchaseToken)
+//                                    val ackPurchaseResult = withContext(Dispatchers.IO) {
+//                                        billingClient!!.acknowledgePurchase(
+//                                            acknowledgePurchaseParams.build()
+//                                        ) { result ->
+//                                            if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+//                                                Logger.d(
+//                                                    "Sub",
+//                                                    result.debugMessage + "Code = " + result.responseCode
+//                                                )
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
                             PaymentStatusActivity.startActivityForResult(
                                 this@SubscriptionPlansActivity,
                                 it.data.id, launcher
@@ -182,8 +182,7 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
             val selectedPlan = binding.adapter!!.selectedSubscription
             if (selectedPlan != null && purchase != null) {
                 this.purchase = purchase
-                val currencyCode =
-                    selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceCurrencyCode
+                val currencyCode = selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceCurrencyCode
                 val price =
                     CommonUtils.getPriceWithoutCurrency(
                         currencyCode,
@@ -207,7 +206,9 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                         else -> {
                             Enums.PurchaseStatus.FAILED.toString()
                         }
-                    }
+                    },
+                    selectedPlan.productId,
+                    purchase.purchaseToken
 
                 )
                 profileViewModel.addSubscription(request)

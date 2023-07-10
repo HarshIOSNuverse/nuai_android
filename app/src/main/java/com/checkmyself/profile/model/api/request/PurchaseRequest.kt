@@ -9,4 +9,6 @@ data class PurchaseRequest constructor(
     @SerializedName("trx_ref_no") val trxRefNo: String?,
     @SerializedName("trx_datetime") val trxDatetime: String?,
     @SerializedName("status") val status: String?,
+    @SerializedName("product_id") val productId: String?,
+    @SerializedName("purchase_token") val purchaseToken: String?,
 )
