@@ -118,7 +118,10 @@ dependencies {
     // CalendarView
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
     //AI lib
+//    implementation project(':bnhhrlib')
     implementation project(':bnhhrlib')
+//    implementation project(':bnhhrlib4_12_1')
+//    implementation project(':bnhsdk')
     //Certificate Transparency
     implementation("com.appmattus.certificatetransparency:certificatetransparency-android:1.0.0")
     // Progressbar

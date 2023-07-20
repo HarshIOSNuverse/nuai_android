@@ -20,8 +20,8 @@ import androidx.core.content.res.ResourcesCompat
 import com.checkmyself.R
 import com.checkmyself.databinding.LayoutNoInternetBinding
 import com.checkmyself.databinding.ToolbarLayoutBinding
-import com.checkmyself.home.ui.activity.ScanByFaceActivity
-import com.checkmyself.home.ui.activity.ScanByFingerActivity
+//import com.checkmyself.home.ui.activity.ScanByFaceActivity
+//import com.checkmyself.home.ui.activity.ScanByFingerActivity
 import com.checkmyself.onboarding.ui.activity.LoginRegisterActivity
 import com.checkmyself.onboarding.ui.activity.SplashActivity
 import com.checkmyself.onboarding.ui.activity.SplashAnimationActivity
@@ -192,14 +192,14 @@ open class BaseActivity : AppCompatActivity() {
         when (requestCode) {
             RP_CAMERA -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (this is ScanByFaceActivity) {
+                    /*if (this is ScanByFaceActivity) {
                         this.createHealthMonitorManager()
 //                        createSession()
                     }
                     if (this is ScanByFingerActivity) {
                         this.createHealthMonitorManager()
 //                        createSession()
-                    }
+                    }*/
                 } else {
                     CommonUtils.showToast(this, getString(R.string.required_permission_not_granted))
                     finish()
@@ -207,4 +207,5 @@ open class BaseActivity : AppCompatActivity() {
             }
         }
     }
+
 }

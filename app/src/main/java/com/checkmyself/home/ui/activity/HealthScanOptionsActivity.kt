@@ -70,6 +70,7 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
                     Status.LOADING -> {
                         showHideProgress(false)
                     }
+
                     Status.SUCCESS -> {
                         if (it.data != null && (it.code == ResponseStatus.STATUS_CODE_SUCCESS)) {
                             showHideProgress(false)
@@ -77,6 +78,7 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
                             user = it.data.user
                         }
                     }
+
                     Status.ERROR -> {
                         showHideProgress(false)
                         CommonUtils.showToast(this@HealthScanOptionsActivity, it.message)
@@ -124,11 +126,13 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
                 binding.chkFinger.isChecked = false
                 updateView(binding.chkFace.id)
             }
+
             R.id.cr_finger, R.id.chk_finger -> {
                 binding.chkFace.isChecked = false
                 binding.chkFinger.isChecked = true
                 updateView(binding.chkFinger.id)
             }
+
             R.id.measure_now_btn -> {
                 if (user != null) {
                     if (user!!.numberOfSubscriptions == 0) {
@@ -202,9 +206,11 @@ class HealthScanOptionsActivity : BaseActivity(), View.OnClickListener {
 
     private fun gotoScan() {
         if (binding.chkFace.isChecked) {
-            ScanByFaceActivity.startActivity(this)
+//            ScanByFaceActivity.startActivity(this)
+            ScanByFaceActivity1.startActivity(this)
         } else {
-            ScanByFingerActivity.startActivity(this)
+//            ScanByFingerActivity.startActivity(this)
+            ScanByFingerActivity1.startActivity(this)
         }
     }
 

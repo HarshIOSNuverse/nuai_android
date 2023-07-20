@@ -1,6 +1,5 @@
 package com.checkmyself.profile.ui.activity
 
-import ai.binah.hrv.Utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent

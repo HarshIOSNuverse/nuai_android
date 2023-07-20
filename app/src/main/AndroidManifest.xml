@@ -153,10 +153,21 @@
             android:theme="@style/Theme.Nuai.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
+            android:name=".home.ui.activity.ScanByFaceActivity1"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".home.ui.activity.ScanByFingerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Nuai.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".home.ui.activity.ScanByFingerActivity1"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Nuai.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+
         <activity
             android:name=".settings.ui.activity.SendFeedbackActivity"
             android:screenOrientation="portrait"
