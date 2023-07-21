@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "checkmyself"
 include ':app'
-include ':bnhhrlib'
