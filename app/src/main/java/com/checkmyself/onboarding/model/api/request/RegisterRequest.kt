@@ -10,8 +10,8 @@ data class RegisterRequest(
     @SerializedName("email") val email: String,
     @SerializedName("date_of_birth") val dateOfBirth: String?,
     @SerializedName("gender") val gender: String,
-    @SerializedName("weight") val weight: Int,
-    @SerializedName("height") val height: Int,
+    @SerializedName("weight") val weight: Double,
+    @SerializedName("height") val height: Double,
     @SerializedName("password") var password: String?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -20,8 +20,8 @@ data class RegisterRequest(
         parcel.readString()!!,
         parcel.readString(),
         parcel.readString()!!,
-        parcel.readInt(),
-        parcel.readInt(),
+        parcel.readDouble(),
+        parcel.readDouble(),
         parcel.readString()
     )
 
@@ -31,8 +31,8 @@ data class RegisterRequest(
         parcel.writeString(email)
         parcel.writeString(dateOfBirth)
         parcel.writeString(gender)
-        parcel.writeInt(weight)
-        parcel.writeInt(height)
+        parcel.writeDouble(weight)
+        parcel.writeDouble(height)
         parcel.writeString(password)
     }
 

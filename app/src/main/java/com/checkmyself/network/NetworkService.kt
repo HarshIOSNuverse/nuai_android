@@ -11,9 +11,11 @@ import com.checkmyself.home.model.api.response.MeasurementResponse
 import com.checkmyself.onboarding.model.api.request.*
 import com.checkmyself.onboarding.model.api.response.LoginResponse
 import com.checkmyself.onboarding.model.api.response.MyProfileResponse
+import com.checkmyself.profile.model.api.request.CheckVersionRequest
 import com.checkmyself.profile.model.api.request.PurchaseRequest
 import com.checkmyself.profile.model.api.request.SendFeedbackRequest
 import com.checkmyself.profile.model.api.request.UpdateProfileRequest
+import com.checkmyself.profile.model.api.response.CheckVersionResponse
 import com.checkmyself.profile.model.api.response.MyPlansResponse
 import com.checkmyself.profile.model.api.response.PaymentDetailResponse
 import com.checkmyself.profile.model.api.response.PaymentListResponse
@@ -154,6 +156,12 @@ constructor(
 //        @POST(Url.API + "transaction")
         @POST(Url.API + "transactionv2")
         suspend fun addSubscription(@Body request: PurchaseRequest): Response<PurchaseResponse?>
+
+        @Headers("$HEADER_BEAR: true")
+//        @POST(Url.API + "transaction")
+        @POST(Url.API + "check/version")
+        suspend fun checkVersion(@Body request: CheckVersionRequest): Response<CheckVersionResponse?>
+
 
         /* @Headers("$HEADER_BEAR: true")
          @POST(Url.API + "register-device")

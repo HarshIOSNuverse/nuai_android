@@ -353,4 +353,9 @@ Blood Pressure is categorized as low, normal, or elevated: low blood pressure is
     <string name="unenven_lighting">Unenven Lighting</string>
     <string name="unenven_lighting_msg">Please ensure even distribution of light across your face.</string>
 
+    <string name="update">Update</string>
+    <string name="a_new_version_available">A new version of this app is available.</string>
+    <string name="a_new_version_available1">A new version of this app is available. Do you want to update now.</string>
+    <string name="skip">Skip</string>
+
 </resources>

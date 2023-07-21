@@ -5,9 +5,11 @@ import com.checkmyself.network.CommonResponse
 import com.checkmyself.network.NetworkService
 import com.checkmyself.onboarding.model.api.response.LoginResponse
 import com.checkmyself.onboarding.model.api.response.MyProfileResponse
+import com.checkmyself.profile.model.api.request.CheckVersionRequest
 import com.checkmyself.profile.model.api.request.PurchaseRequest
 import com.checkmyself.profile.model.api.request.SendFeedbackRequest
 import com.checkmyself.profile.model.api.request.UpdateProfileRequest
+import com.checkmyself.profile.model.api.response.CheckVersionResponse
 import com.checkmyself.profile.model.api.response.MyPlansResponse
 import com.checkmyself.profile.model.api.response.PaymentDetailResponse
 import com.checkmyself.profile.model.api.response.PaymentListResponse
@@ -143,4 +145,20 @@ class ProfileRepository @Inject constructor(private val networkService: NetworkS
             }
         }.flowOn(Dispatchers.IO)
     }
+
+    suspend fun checkVersion(request: CheckVersionRequest): Flow<ApiResponseState<CheckVersionResponse>> {
+        return flow {
+            val response = networkService.api.checkVersion(request)
+            if (response.isSuccessful) {
+                emit(ApiResponseState.success(response.body(), response.code()))
+            } else {
+                emit(
+                    ApiResponseState.error(
+                        CommonUtils.getErrorResponse(response.errorBody()).message, response.code()
+                    )
+                )
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
 }

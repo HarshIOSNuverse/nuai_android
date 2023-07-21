@@ -51,19 +51,19 @@ class AboutAppActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun init() {
-//        binding.appVersionSdkVersionText.text =
-//            "${getString(R.string.app_version)} ${BuildConfig.APP_VERSION} (${BuildConfig.VERSION_CODE}) | ${
-//                getString(
-//                    R.string.sdk_version
-//                )
-//            } ${ai.binah.hrv.BuildConfig.VERSION_NAME} (${ai.binah.hrv.BuildConfig.VERSION_CODE})"
-
         binding.appVersionSdkVersionText.text =
             "${getString(R.string.app_version)} ${BuildConfig.APP_VERSION} (${BuildConfig.VERSION_CODE}) | ${
                 getString(
                     R.string.sdk_version
                 )
-            } )"
+            } ${ai.binah.sdk.BuildConfig.VERSION_NAME} (${ai.binah.sdk.BuildConfig.VERSION_CODE})"
+
+//        binding.appVersionSdkVersionText.text =
+//            "${getString(R.string.app_version)} ${BuildConfig.APP_VERSION} (${BuildConfig.VERSION_CODE}) | ${
+//                getString(
+//                    R.string.sdk_version
+//                )
+//            } )"
 
         setSpannableColor(
             binding.linkMessageText,

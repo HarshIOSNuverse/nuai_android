@@ -9,9 +9,11 @@ import com.checkmyself.network.CommonResponse
 import com.checkmyself.network.Status
 import com.checkmyself.onboarding.model.api.response.LoginResponse
 import com.checkmyself.onboarding.model.api.response.MyProfileResponse
+import com.checkmyself.profile.model.api.request.CheckVersionRequest
 import com.checkmyself.profile.model.api.request.PurchaseRequest
 import com.checkmyself.profile.model.api.request.SendFeedbackRequest
 import com.checkmyself.profile.model.api.request.UpdateProfileRequest
+import com.checkmyself.profile.model.api.response.CheckVersionResponse
 import com.checkmyself.profile.model.api.response.MyPlansResponse
 import com.checkmyself.profile.model.api.response.PaymentDetailResponse
 import com.checkmyself.profile.model.api.response.PaymentListResponse
@@ -42,6 +44,8 @@ class ProfileViewModel @Inject constructor(
         MutableStateFlow(ApiResponseState(Status.LOADING, PaymentDetailResponse()))
     val subscriptionState =
         MutableStateFlow(ApiResponseState(Status.LOADING, PurchaseResponse()))
+    val checkVersionState =
+        MutableStateFlow(ApiResponseState(Status.LOADING, CheckVersionResponse()))
 
     fun getMe() {
         if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
@@ -73,6 +77,7 @@ class ProfileViewModel @Inject constructor(
                     100
                 )
             }
+
             else -> {
                 updateProfileState.value = ApiResponseState.loading()
                 viewModelScope.launch {
@@ -162,6 +167,7 @@ class ProfileViewModel @Inject constructor(
                     100
                 )
             }
+
             else -> {
                 paymentListState.value = ApiResponseState.loading()
                 viewModelScope.launch {
@@ -185,6 +191,7 @@ class ProfileViewModel @Inject constructor(
                     100
                 )
             }
+
             else -> {
                 paymentDetailState.value = ApiResponseState.loading()
                 viewModelScope.launch {
@@ -208,6 +215,7 @@ class ProfileViewModel @Inject constructor(
                     100
                 )
             }
+
             else -> {
                 subscriptionState.value = ApiResponseState.loading()
                 viewModelScope.launch {
@@ -222,4 +230,29 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun checkVersion(request: CheckVersionRequest) {
+        when {
+            (!CommonUtils.isNetworkAvailable(resourcesProvider.context)) -> {
+                checkVersionState.value = ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
+            }
+
+            else -> {
+                checkVersionState.value = ApiResponseState.loading()
+                viewModelScope.launch {
+                    profileRepository.checkVersion(request).catch {
+                        checkVersionState.value = ApiResponseState.error(it.message, 100)
+                    }.collect {
+                        checkVersionState.value =
+                            if (it.data != null) ApiResponseState.success(it.data, it.code)
+                            else ApiResponseState.error(it.message, it.code)
+                    }
+                }
+            }
+        }
+    }
+
 }

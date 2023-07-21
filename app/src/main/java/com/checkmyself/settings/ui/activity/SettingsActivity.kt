@@ -59,10 +59,11 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun init() {
-//        binding.appVersionSdkVersionText.text =
-//            "${getString(R.string.app_version)} ${BuildConfig.APP_VERSION} | ${getString(R.string.sdk_version)} ${ai.binah.hrv.BuildConfig.VERSION_NAME}"
         binding.appVersionSdkVersionText.text =
-            "${getString(R.string.app_version)} ${BuildConfig.APP_VERSION} | ${getString(R.string.sdk_version)} "
+            "${getString(R.string.app_version)} ${BuildConfig.APP_VERSION} | ${getString(R.string.sdk_version)} ${ai.binah.sdk.BuildConfig.VERSION_NAME}"
+
+//        binding.appVersionSdkVersionText.text =
+//            "${getString(R.string.app_version)} ${BuildConfig.APP_VERSION} | ${getString(R.string.sdk_version)} "
     }
 
     private fun initObserver() {
