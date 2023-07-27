@@ -19,7 +19,10 @@ import ai.binah.sdk.api.vital_signs.VitalSignsListener
 import ai.binah.sdk.api.vital_signs.VitalSignsResults
 import ai.binah.sdk.api.vital_signs.vitals.VitalSignBloodPressure
 import ai.binah.sdk.api.vital_signs.vitals.VitalSignPNSZone
+import ai.binah.sdk.api.vital_signs.vitals.VitalSignPRQ
 import ai.binah.sdk.api.vital_signs.vitals.VitalSignPulseRate
+import ai.binah.sdk.api.vital_signs.vitals.VitalSignRespirationRate
+import ai.binah.sdk.api.vital_signs.vitals.VitalSignSDNN
 import ai.binah.sdk.api.vital_signs.vitals.VitalSignSNSZone
 import ai.binah.sdk.api.vital_signs.vitals.VitalSignStressLevel
 import ai.binah.sdk.session.FaceSessionBuilder
@@ -146,14 +149,12 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
                         if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
                             faceResultID = it.data.id
                             MeasurementResultActivity.startActivity(
-                                this@ScanByFaceActivity1,
-                                faceResultID
+                                this@ScanByFaceActivity1, faceResultID
                             )
                             CommonUtils.showToast(this@ScanByFaceActivity1, it.data.message)
                             finish()
                             AnimationsHandler.playActivityAnimation(
-                                this@ScanByFaceActivity1,
-                                AnimationsHandler.Animations.RightToLeft
+                                this@ScanByFaceActivity1, AnimationsHandler.Animations.RightToLeft
                             )
                         }
                     }
@@ -464,8 +465,7 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
                             stopMeasuring()
 //                            closeSession()
 //                            finish()
-                            AlertDialogManager.showInformationDialog(
-                                this@ScanByFaceActivity1,
+                            AlertDialogManager.showInformationDialog(this@ScanByFaceActivity1,
                                 0,
                                 null,
                                 getString(R.string.no_enough_data_was_recorded),
@@ -542,60 +542,42 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
 
                 var msg = getString(R.string.face_not_detected) + "\n\n" + getString(R.string.face_not_detected_msg)
                 setSpannableColor(
-                    binding.measurementsLayout.tvScanningMsg,
-                    msg,
-                    getString(R.string.face_not_detected),
-                    ContextCompat.getColor(this, R.color.error_msg_text_color)
+                    binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.face_not_detected), ContextCompat.getColor(this, R.color.error_msg_text_color)
                 )
 
                 when (imageData.imageValidity) {
                     ImageValidity.INVALID_DEVICE_ORIENTATION -> {
                         msg = getString(R.string.unsupported_orientation) + "\n\n" + getString(R.string.unsupported_orientation_msg)
                         setSpannableColor(
-                            binding.measurementsLayout.tvScanningMsg,
-                            msg,
-                            getString(R.string.unsupported_orientation),
-                            ContextCompat.getColor(this, R.color.error_msg_text_color)
+                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.unsupported_orientation), ContextCompat.getColor(this, R.color.error_msg_text_color)
                         )
                     }
 
                     ImageValidity.INVALID_ROI -> {
                         msg = getString(R.string.face_not_detected) + "\n\n" + getString(R.string.face_not_detected_msg)
                         setSpannableColor(
-                            binding.measurementsLayout.tvScanningMsg,
-                            msg,
-                            getString(R.string.face_not_detected),
-                            ContextCompat.getColor(this, R.color.error_msg_text_color)
+                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.face_not_detected), ContextCompat.getColor(this, R.color.error_msg_text_color)
                         )
                     }
 
                     ImageValidity.TILTED_HEAD -> {
                         msg = getString(R.string.tilted_head) + "\n\n" + getString(R.string.tilted_head_msg)
                         setSpannableColor(
-                            binding.measurementsLayout.tvScanningMsg,
-                            msg,
-                            getString(R.string.tilted_head),
-                            ContextCompat.getColor(this, R.color.error_msg_text_color)
+                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.tilted_head), ContextCompat.getColor(this, R.color.error_msg_text_color)
                         )
                     }
 
                     ImageValidity.FACE_TOO_FAR -> {
                         msg = getString(R.string.face_to_far) + "\n\n" + getString(R.string.face_to_far_msg)
                         setSpannableColor(
-                            binding.measurementsLayout.tvScanningMsg,
-                            msg,
-                            getString(R.string.face_to_far),
-                            ContextCompat.getColor(this, R.color.error_msg_text_color)
+                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.face_to_far), ContextCompat.getColor(this, R.color.error_msg_text_color)
                         )
                     }
 
                     ImageValidity.UNEVEN_LIGHT -> {
                         msg = getString(R.string.unenven_lighting) + "\n\n" + getString(R.string.unenven_lighting_msg)
                         setSpannableColor(
-                            binding.measurementsLayout.tvScanningMsg,
-                            msg,
-                            getString(R.string.unenven_lighting),
-                            ContextCompat.getColor(this, R.color.error_msg_text_color)
+                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.unenven_lighting), ContextCompat.getColor(this, R.color.error_msg_text_color)
                         )
                     }
                 }
@@ -724,6 +706,18 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
             scanningResultData.heartRate = "" + finalResults.getResult(VitalSignTypes.PULSE_RATE).value
         }
 
+        var pulseRateConfidence: String? = ""
+        var pulseRateConfidenceOrdinal: String? = ""
+        if ((finalResults.getResult(VitalSignTypes.PULSE_RATE) as? VitalSignPulseRate)?.confidence?.level?.name != null) {
+            pulseRateConfidence = (finalResults.getResult(VitalSignTypes.PULSE_RATE) as? VitalSignPulseRate)?.confidence?.level?.name
+        }
+        if ((finalResults.getResult(VitalSignTypes.PULSE_RATE) as? VitalSignPulseRate)?.confidence?.level?.ordinal != null) {
+            pulseRateConfidenceOrdinal = (finalResults.getResult(VitalSignTypes.PULSE_RATE) as? VitalSignPulseRate)?.confidence?.level?.ordinal?.toString()
+        }
+        Logger.e("pulseRateConfidence = $pulseRateConfidence")
+        Logger.e("pulseRateConfidenceOrdinal = $pulseRateConfidenceOrdinal")
+        scanningResultData.heartRateConfLevel = pulseRateConfidenceOrdinal
+
         if (finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION)?.value == null) {
             scanningResultData.oxygenSaturation = "0"
         } else {
@@ -748,6 +742,19 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
             scanningResultData.hrvSdnn = "" + finalResults.getResult(VitalSignTypes.SDNN).value
         }
 
+
+        var sdnnConfidence: String? = ""
+        var sdnnConfidenceOrdinal: String? = ""
+        if ((finalResults.getResult(VitalSignTypes.SDNN) as? VitalSignSDNN)?.confidence?.level?.name != null) {
+            sdnnConfidence = (finalResults.getResult(VitalSignTypes.SDNN) as? VitalSignSDNN)?.confidence?.level?.name
+        }
+        if ((finalResults.getResult(VitalSignTypes.SDNN) as? VitalSignSDNN)?.confidence?.level?.ordinal != null) {
+            sdnnConfidenceOrdinal = (finalResults.getResult(VitalSignTypes.SDNN) as? VitalSignSDNN)?.confidence?.level?.ordinal?.toString()
+        }
+        Logger.e("sdnnConfidence = $sdnnConfidence")
+        Logger.e("sdnnConfidenceOrdinal = $sdnnConfidenceOrdinal")
+        scanningResultData.hrvSdnnConfLevel = sdnnConfidenceOrdinal
+
         if ((finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel?)?.value == null || (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel?)?.value?.ordinal == 0) {
             scanningResultData.stressLevel = 0
         } else {
@@ -766,11 +773,37 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
             scanningResultData.prq = "" + finalResults.getResult(VitalSignTypes.PRQ).value
         }
 
+        var prqConfidence: String? = ""
+        var prqConfidenceOrdinal: String? = ""
+        if ((finalResults.getResult(VitalSignTypes.PRQ) as? VitalSignPRQ)?.confidence?.level?.name != null) {
+            prqConfidence = (finalResults.getResult(VitalSignTypes.PRQ) as? VitalSignPRQ)?.confidence?.level?.name
+        }
+        if ((finalResults.getResult(VitalSignTypes.PRQ) as? VitalSignPRQ)?.confidence?.level?.ordinal != null) {
+            prqConfidenceOrdinal = (finalResults.getResult(VitalSignTypes.PRQ) as? VitalSignPRQ)?.confidence?.level?.ordinal?.toString()
+        }
+        Logger.e("prqConfidence = $prqConfidence")
+        Logger.e("prqConfidenceOrdinal = $prqConfidenceOrdinal")
+        scanningResultData.prqConfLevel = prqConfidenceOrdinal
+
+
         if (finalResults.getResult(VitalSignTypes.RESPIRATION_RATE)?.value == null) {
             scanningResultData.breathingRate = ""
         } else {
             scanningResultData.breathingRate = "" + finalResults.getResult(VitalSignTypes.RESPIRATION_RATE).value
         }
+
+        var respirationRateConfidence: String? = ""
+        var respirationRateConfidenceOrdinal: String? = ""
+        if ((finalResults.getResult(VitalSignTypes.RESPIRATION_RATE) as? VitalSignRespirationRate)?.confidence?.level?.name != null) {
+            respirationRateConfidence = (finalResults.getResult(VitalSignTypes.RESPIRATION_RATE) as? VitalSignRespirationRate)?.confidence?.level?.name
+        }
+        if ((finalResults.getResult(VitalSignTypes.RESPIRATION_RATE) as? VitalSignRespirationRate)?.confidence?.level?.ordinal != null) {
+            respirationRateConfidenceOrdinal = (finalResults.getResult(VitalSignTypes.RESPIRATION_RATE) as? VitalSignRespirationRate)?.confidence?.level?.ordinal.toString()
+        }
+        Logger.e("respirationRateConfidence = $respirationRateConfidence")
+        Logger.e("respirationRateConfidenceOrdinal = $respirationRateConfidenceOrdinal")
+        scanningResultData.breathingRateConfLevel = respirationRateConfidenceOrdinal
+
         if (finalResults.getResult(VitalSignTypes.WELLNESS_INDEX)?.value == null) {
             scanningResultData.wellnessScore = ""
         } else {
@@ -819,7 +852,12 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
                     scanningResultData.breathingRate,
                     scanningResultData.prq,
                     scanningResultData.wellnessScore,
-                    scanningResultData.recoveryAbility
+                    scanningResultData.recoveryAbility,
+
+                    scanningResultData.heartRateConfLevel,
+                    scanningResultData.breathingRateConfLevel,
+                    scanningResultData.prqConfLevel,
+                    scanningResultData.hrvSdnnConfLevel,
                 )
                 if (request.bloodPressure == "0" && request.heartRate == "0" && request.oxygenSaturation == "0" && request.prq == "0") {
 //                    CommonUtils.showToast(this, getString(R.string.no_result_found))
@@ -906,8 +944,7 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
                         binding.measurementsLayout.root.visibility = View.INVISIBLE
                         if (!isErrorDialogShowing) {
                             isErrorDialogShowing = true
-                            AlertDialogManager.showInformationDialog(
-                                this,
+                            AlertDialogManager.showInformationDialog(this,
                                 0,
                                 msg = getString(R.string.face_or_finger_not_detected_2_times_msg),
                                 button1Message = getString(R.string.retry),

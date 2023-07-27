@@ -13,6 +13,10 @@ class ScanningResultData : Serializable {
     @Expose
     var heartRate = "0"
 
+    @SerializedName("heart_rate_conf_level")
+    @Expose
+    var heartRateConfLevel: String? = null
+
     @SerializedName("oxygen_saturation")
     @Expose
     var oxygenSaturation = "0"
@@ -24,6 +28,10 @@ class ScanningResultData : Serializable {
     @SerializedName("hrv_sdnn")
     @Expose
     var hrvSdnn = "0"
+
+    @SerializedName("hrv_sdnn_conf_level")
+    @Expose
+    var hrvSdnnConfLevel: String? = null
 
     @SerializedName("blood_pressure")
     @Expose
@@ -41,9 +49,17 @@ class ScanningResultData : Serializable {
     @Expose
     var prq: String? = "0"
 
+    @SerializedName("prq_conf_level")
+    @Expose
+    var prqConfLevel: String? = null
+
     @SerializedName("breathing_rate")
     @Expose
     var breathingRate: String? = "0"
+
+    @SerializedName("breathing_rate_conf_level")
+    @Expose
+    var breathingRateConfLevel: String? = null
 
     @SerializedName("stress_response")
     @Expose

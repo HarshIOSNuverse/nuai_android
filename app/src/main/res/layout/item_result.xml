@@ -90,21 +90,30 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_observed_value">
 
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_confidence_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star_low"
+                android:layout_marginEnd="@dimen/dp_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_title"
+                app:layout_constraintTop_toTopOf="@+id/tv_title"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_title"/>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_title"
                 style="@style/TextViewStyleLight"
                 android:layout_width="0dp"
-                android:layout_marginStart="@dimen/dp_10"
                 android:textSize="@dimen/sp_15"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_confidence_level"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_short_desc"
                 style="@style/TextViewStyleLight"
                 android:layout_width="0dp"
-                android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_7"
                 android:textColor="@color/secondary_text_color"
                 android:textSize="@dimen/sp_14"

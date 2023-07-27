@@ -19,6 +19,10 @@ import ai.binah.sdk.api.vital_signs.VitalSignsListener
 import ai.binah.sdk.api.vital_signs.VitalSignsResults
 import ai.binah.sdk.api.vital_signs.vitals.VitalSignBloodPressure
 import ai.binah.sdk.api.vital_signs.vitals.VitalSignPNSZone
+import ai.binah.sdk.api.vital_signs.vitals.VitalSignPRQ
+import ai.binah.sdk.api.vital_signs.vitals.VitalSignPulseRate
+import ai.binah.sdk.api.vital_signs.vitals.VitalSignRespirationRate
+import ai.binah.sdk.api.vital_signs.vitals.VitalSignSDNN
 import ai.binah.sdk.api.vital_signs.vitals.VitalSignSNSZone
 import ai.binah.sdk.api.vital_signs.vitals.VitalSignStressLevel
 import ai.binah.sdk.session.FingerSessionBuilder
@@ -69,6 +73,7 @@ import com.checkmyself.utils.AppConstant
 import com.checkmyself.utils.BinahErrorMessage
 import com.checkmyself.utils.CommonUtils
 import com.checkmyself.utils.Enums
+import com.checkmyself.utils.Logger
 import kotlinx.coroutines.launch
 
 
@@ -665,6 +670,18 @@ class ScanByFingerActivity1 : BaseActivity(), View.OnClickListener, ImageListene
         } else {
             scanningResultData.heartRate = "" + finalResults.getResult(VitalSignTypes.PULSE_RATE).value
         }
+        var pulseRateConfidence: String? = ""
+        var pulseRateConfidenceOrdinal: String? = ""
+        if ((finalResults.getResult(VitalSignTypes.PULSE_RATE) as? VitalSignPulseRate)?.confidence?.level?.name != null) {
+            pulseRateConfidence = (finalResults.getResult(VitalSignTypes.PULSE_RATE) as? VitalSignPulseRate)?.confidence?.level?.name
+        }
+        if ((finalResults.getResult(VitalSignTypes.PULSE_RATE) as? VitalSignPulseRate)?.confidence?.level?.ordinal != null) {
+            pulseRateConfidenceOrdinal = (finalResults.getResult(VitalSignTypes.PULSE_RATE) as? VitalSignPulseRate)?.confidence?.level?.ordinal?.toString()
+        }
+        Logger.e("pulseRateConfidence = $pulseRateConfidence")
+        Logger.e("pulseRateConfidenceOrdinal = $pulseRateConfidenceOrdinal")
+        scanningResultData.heartRateConfLevel = pulseRateConfidenceOrdinal
+
 
         if (finalResults.getResult(VitalSignTypes.OXYGEN_SATURATION)?.value == null) {
             scanningResultData.oxygenSaturation = "0"
@@ -689,6 +706,18 @@ class ScanByFingerActivity1 : BaseActivity(), View.OnClickListener, ImageListene
         } else {
             scanningResultData.hrvSdnn = "" + finalResults.getResult(VitalSignTypes.SDNN).value
         }
+        var sdnnConfidence: String? = ""
+        var sdnnConfidenceOrdinal: String? = ""
+        if ((finalResults.getResult(VitalSignTypes.SDNN) as? VitalSignSDNN)?.confidence?.level?.name != null) {
+            sdnnConfidence = (finalResults.getResult(VitalSignTypes.SDNN) as? VitalSignSDNN)?.confidence?.level?.name
+        }
+        if ((finalResults.getResult(VitalSignTypes.SDNN) as? VitalSignSDNN)?.confidence?.level?.ordinal != null) {
+            sdnnConfidenceOrdinal = (finalResults.getResult(VitalSignTypes.SDNN) as? VitalSignSDNN)?.confidence?.level?.ordinal?.toString()
+        }
+        Logger.e("sdnnConfidence = $sdnnConfidence")
+        Logger.e("sdnnConfidenceOrdinal = $sdnnConfidenceOrdinal")
+        scanningResultData.hrvSdnnConfLevel = sdnnConfidenceOrdinal
+
 
         if ((finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel?)?.value == null || (finalResults.getResult(VitalSignTypes.STRESS_LEVEL) as VitalSignStressLevel?)?.value?.ordinal == 0) {
             scanningResultData.stressLevel = 0
@@ -707,12 +736,37 @@ class ScanByFingerActivity1 : BaseActivity(), View.OnClickListener, ImageListene
         } else {
             scanningResultData.prq = "" + finalResults.getResult(VitalSignTypes.PRQ).value
         }
+        var prqConfidence: String? = ""
+        var prqConfidenceOrdinal: String? = ""
+        if ((finalResults.getResult(VitalSignTypes.PRQ) as? VitalSignPRQ)?.confidence?.level?.name != null) {
+            prqConfidence = (finalResults.getResult(VitalSignTypes.PRQ) as? VitalSignPRQ)?.confidence?.level?.name
+        }
+        if ((finalResults.getResult(VitalSignTypes.PRQ) as? VitalSignPRQ)?.confidence?.level?.ordinal != null) {
+            prqConfidenceOrdinal = (finalResults.getResult(VitalSignTypes.PRQ) as? VitalSignPRQ)?.confidence?.level?.ordinal?.toString()
+        }
+        Logger.e("prqConfidence = $prqConfidence")
+        Logger.e("prqConfidenceOrdinal = $prqConfidenceOrdinal")
+        scanningResultData.prqConfLevel = prqConfidenceOrdinal
+
 
         if (finalResults.getResult(VitalSignTypes.RESPIRATION_RATE)?.value == null) {
             scanningResultData.breathingRate = ""
         } else {
             scanningResultData.breathingRate = "" + finalResults.getResult(VitalSignTypes.RESPIRATION_RATE).value
         }
+
+        var respirationRateConfidence: String? = ""
+        var respirationRateConfidenceOrdinal: String? = ""
+        if ((finalResults.getResult(VitalSignTypes.RESPIRATION_RATE) as? VitalSignRespirationRate)?.confidence?.level?.name != null) {
+            respirationRateConfidence = (finalResults.getResult(VitalSignTypes.RESPIRATION_RATE) as? VitalSignRespirationRate)?.confidence?.level?.name
+        }
+        if ((finalResults.getResult(VitalSignTypes.RESPIRATION_RATE) as? VitalSignRespirationRate)?.confidence?.level?.ordinal != null) {
+            respirationRateConfidenceOrdinal = (finalResults.getResult(VitalSignTypes.RESPIRATION_RATE) as? VitalSignRespirationRate)?.confidence?.level?.ordinal.toString()
+        }
+        Logger.e("respirationRateConfidence = $respirationRateConfidence")
+        Logger.e("respirationRateConfidenceOrdinal = $respirationRateConfidenceOrdinal")
+        scanningResultData.breathingRateConfLevel = respirationRateConfidenceOrdinal
+
         if (finalResults.getResult(VitalSignTypes.WELLNESS_INDEX)?.value == null) {
             scanningResultData.wellnessScore = ""
         } else {
@@ -761,7 +815,12 @@ class ScanByFingerActivity1 : BaseActivity(), View.OnClickListener, ImageListene
                     scanningResultData.breathingRate,
                     scanningResultData.prq,
                     scanningResultData.wellnessScore,
-                    scanningResultData.recoveryAbility
+                    scanningResultData.recoveryAbility,
+
+                    scanningResultData.heartRateConfLevel,
+                    scanningResultData.breathingRateConfLevel,
+                    scanningResultData.prqConfLevel,
+                    scanningResultData.hrvSdnnConfLevel,
                 )
                 if (request.bloodPressure == "0" && request.heartRate == "0" && request.oxygenSaturation == "0" && request.prq == "0") {
 //                    CommonUtils.showToast(this, getString(R.string.no_result_found))

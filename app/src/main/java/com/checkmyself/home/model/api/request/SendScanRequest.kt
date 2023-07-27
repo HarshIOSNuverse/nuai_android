@@ -15,7 +15,12 @@ data class SendScanRequest(
     @SerializedName("breathing_rate") val breathingRate:String?,
     @SerializedName("prq") val prq:String?,
     @SerializedName("wellness_score") val wellnessScore:String?,
-    @SerializedName("recovery_ability") val recoveryAbility:String?
+    @SerializedName("recovery_ability") val recoveryAbility:String?,
+
+    @SerializedName("heart_rate_conf_level") val heartRateConfLevel:String?,
+    @SerializedName("breathing_rate_conf_level") val breathingRateConfLevel:String?,
+    @SerializedName("prq_conf_level") val prqConfLevel:String?,
+    @SerializedName("hrv_sdnn_conf_level") val hrvSdnnConfLevel:String?
 )
 {
 //    "recovery_ability": "",

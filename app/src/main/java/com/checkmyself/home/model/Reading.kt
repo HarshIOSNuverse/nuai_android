@@ -35,6 +35,12 @@ class Reading() : Parcelable {
     @SerializedName("color_code")
     var colorCode: String? = null
 
+    @SerializedName("has_confidence_level")
+    var hasConfidenceLevel: Int = 0
+
+    @SerializedName("confidence_level")
+    var confidenceLevel: String? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
         title = parcel.readString()
@@ -46,6 +52,8 @@ class Reading() : Parcelable {
         level = parcel.readString()
         levelIcon = parcel.readString()
         colorCode = parcel.readString()
+        hasConfidenceLevel = parcel.readInt()
+        confidenceLevel = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -59,6 +67,8 @@ class Reading() : Parcelable {
         parcel.writeString(level)
         parcel.writeString(levelIcon)
         parcel.writeString(colorCode)
+        parcel.writeInt(hasConfidenceLevel)
+        parcel.writeString(confidenceLevel)
     }
 
     override fun describeContents(): Int {
