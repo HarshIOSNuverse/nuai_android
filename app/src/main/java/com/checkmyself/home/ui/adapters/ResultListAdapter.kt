@@ -85,10 +85,14 @@ internal class ResultListAdapter(items: ArrayList<Reading>) : RecyclerView.Adapt
                     "1" -> {
                         holder.binding.ivConfidenceLevel.setImageResource(R.drawable.ic_star_low)
                     }
+
+                    else -> {
+                        holder.binding.ivConfidenceLevel.visibility = View.GONE
+                    }
                 }
 
             } else {
-                holder.binding.ivConfidenceLevel.visibility = View.VISIBLE
+                holder.binding.ivConfidenceLevel.visibility = View.GONE
             }
         } else {
             holder.binding.ivConfidenceLevel.visibility = View.GONE
