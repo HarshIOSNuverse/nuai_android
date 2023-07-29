@@ -612,16 +612,16 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
                 tag, "onVitalSign Message Type: " + vitalSign?.type + " message: " + vitalSign?.value
             )
             when (vitalSign?.type) {
-//                VitalSignTypes.PULSE_RATE -> {
-//                    val pulseRate = (vitalSign as VitalSignPulseRate).value
-//                    measurementLayout.tvReading.text = pulseRate?.toString() ?: "--"
-//                }
-                VitalSignTypes.RESPIRATION_RATE -> {
-                    if (vitalSign.type == 2) {
-                        val bpm = vitalSign.value
-                        measurementLayout.tvReading.text = bpm?.toString() ?: "--"
-                    }
+                VitalSignTypes.PULSE_RATE -> {
+                    val pulseRate = (vitalSign as VitalSignPulseRate).value
+                    measurementLayout.tvReading.text = pulseRate?.toString() ?: "--"
                 }
+//                VitalSignTypes.RESPIRATION_RATE -> {
+//                    if (vitalSign.type == 2) {
+//                        val bpm = vitalSign.value
+//                        measurementLayout.tvReading.text = bpm?.toString() ?: "--"
+//                    }
+//                }
             }
         }
     }
@@ -651,8 +651,8 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
 
 //        val enabledVitalSigns = resolveEnabledVitalSigns()
         val measurementsLayout: MeasurementsLayoutBinding = binding.measurementsLayout
-        if (enabledVitalSigns?.isEnabled(VitalSignTypes.RESPIRATION_RATE) == true) {
-            val bpm = finalResults.getResult(VitalSignTypes.RESPIRATION_RATE)
+        if (enabledVitalSigns?.isEnabled(VitalSignTypes.PULSE_RATE) == true) {
+            val bpm = finalResults.getResult(VitalSignTypes.PULSE_RATE)
             if (bpm?.value == null) {
                 measurementsLayout.tvReading.text = "-"
             } else {
