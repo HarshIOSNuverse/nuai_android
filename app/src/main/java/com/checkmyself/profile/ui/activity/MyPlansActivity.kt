@@ -70,6 +70,7 @@ class MyPlansActivity : BaseActivity(), View.OnClickListener {
                     Status.LOADING -> {
                         showHideProgress(false)
                     }
+
                     Status.SUCCESS -> {
                         showHideProgress(false)
                         if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
@@ -77,6 +78,7 @@ class MyPlansActivity : BaseActivity(), View.OnClickListener {
                             setPlanDetails(it.data)
                         }
                     }
+
                     Status.ERROR -> {
                         showHideProgress(false)
                         CommonUtils.showToast(this@MyPlansActivity, it.message)
@@ -95,11 +97,15 @@ class MyPlansActivity : BaseActivity(), View.OnClickListener {
                     getString(R.string.type_plan),
                     CommonUtils.getFirstLatterCap(data.activePlan!!.planType)
                 )
+//            binding.tvPlanAmount.text =
+//                CommonUtils.getCurrencySymbol(data.activePlan!!.trxCurrency) + " " + CommonUtils.roundDouble(
+//                    data.activePlan!!.trxAmount,
+//                    2
+//                )
+
             binding.tvPlanAmount.text =
-                CommonUtils.getCurrencySymbol(data.activePlan!!.trxCurrency) + " " + CommonUtils.roundDouble(
-                    data.activePlan!!.trxAmount,
-                    2
-                )
+                CommonUtils.getCurrencySymbol(data.activePlan!!.trxCurrency) + " " + CommonUtils.roundDouble1(data.activePlan!!.trxAmount, 2)
+
             if (!data.activePlan!!.trxDatetime.isNullOrEmpty())
                 binding.tvPurchaseDate.text = String.format(
                     getString(R.string.purchased_on), DateFormatter.getFormattedByString(
@@ -131,11 +137,14 @@ class MyPlansActivity : BaseActivity(), View.OnClickListener {
                     getString(R.string.type_plan),
                     CommonUtils.getFirstLatterCap(data.upcomingPlan!!.planType)
                 )
+//            binding.tvUpcomingPlanAmount.text =
+//                CommonUtils.getCurrencySymbol(data.upcomingPlan!!.trxCurrency) + " " + CommonUtils.roundDouble(
+//                    data.upcomingPlan!!.trxAmount,
+//                    2
+//                )
             binding.tvUpcomingPlanAmount.text =
-                CommonUtils.getCurrencySymbol(data.upcomingPlan!!.trxCurrency) + " " + CommonUtils.roundDouble(
-                    data.upcomingPlan!!.trxAmount,
-                    2
-                )
+                CommonUtils.getCurrencySymbol(data.upcomingPlan!!.trxCurrency) + " " + CommonUtils.roundDouble1(data.upcomingPlan!!.trxAmount,2)
+
             if (!data.upcomingPlan!!.trxDatetime.isNullOrEmpty())
                 binding.tvUpcomingPurchaseDate.text = String.format(
                     getString(R.string.purchased_on), DateFormatter.getFormattedByString(
@@ -167,6 +176,7 @@ class MyPlansActivity : BaseActivity(), View.OnClickListener {
                     )
                 }
             }
+
             R.id.subscribe_now_btn, R.id.upgrade_now_btn -> {
                 SubscriptionPlansActivity.startActivityForResult(this, subscriptionLauncher)
             }

@@ -231,6 +231,14 @@ object CommonUtils {
 
     }
 
+    fun roundDouble1(price: Double, numberOfFraction: Int): String {
+        return String.format(Locale.US, "%,.${numberOfFraction}f", price)
+    }
+
+    fun roundDouble2(price: Double, numberOfFraction: Int): String {
+        return String.format(Locale.US, "%.${numberOfFraction}f", price)
+    }
+
     fun getFirstLatterCap(message: String?): String {
         val newMessage = java.lang.StringBuilder("")
         if (!message.isNullOrEmpty()) {
@@ -325,7 +333,7 @@ object CommonUtils {
                     val currency = Currency.getInstance(locale)
                     currencyLocaleMap!![currency] = locale
                 } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
+//                    e.printStackTrace()
                 }
             }
         }

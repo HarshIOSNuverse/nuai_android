@@ -112,11 +112,18 @@ class PaymentStatusActivity : BaseActivity(), View.OnClickListener {
                 binding.crSuccessDetail.visibility = View.GONE
                 binding.measureNowBtn.text = getString(R.string.retry_payment)
             }
+//            binding.tvAmount.text =
+//                CommonUtils.getCurrencySymbol(paymentInfo?.trxCurrency) + " " + CommonUtils.roundDouble(
+//                    paymentInfo!!.trxAmount,
+//                    2
+//                )
+
             binding.tvAmount.text =
-                CommonUtils.getCurrencySymbol(paymentInfo?.trxCurrency) + " " + CommonUtils.roundDouble(
+                CommonUtils.getCurrencySymbol(paymentInfo?.trxCurrency) + " " + CommonUtils.roundDouble1(
                     paymentInfo!!.trxAmount,
                     2
                 )
+
             if (!paymentInfo?.endDate.isNullOrEmpty())
                 binding.tvPlanExpireDate.text = DateFormatter.getFormattedByString(
                     DateFormatter.yyyy_MM_dd_DASH, DateFormatter.MMMM_d_yyyy,

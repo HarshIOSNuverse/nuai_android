@@ -94,6 +94,7 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                     Status.LOADING -> {
                         showHideProgress(it.data == null)
                     }
+
                     Status.SUCCESS -> {
                         if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
 //                            if (purchase != null && purchase!!.purchaseState == Purchase.PurchaseState.PURCHASED) {
@@ -121,6 +122,7 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                             )
                         }
                     }
+
                     Status.ERROR -> {
                         showHideProgress(false)
                         CommonUtils.showToast(this@SubscriptionPlansActivity, it.message)
@@ -165,12 +167,15 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                         }
                     }
                 }
+
                 BillingClient.BillingResponseCode.USER_CANCELED -> {
                     CommonUtils.showToast(this, "Payment cancelled")
                 }
+
                 BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
                     CommonUtils.showToast(this, "Already Owned")
                 }
+
                 else -> {
                     CommonUtils.showToast(this, billingResult.debugMessage)
                 }
@@ -182,15 +187,20 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
             val selectedPlan = binding.adapter!!.selectedSubscription
             if (selectedPlan != null && purchase != null) {
                 this.purchase = purchase
-                val currencyCode = selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceCurrencyCode
-                val price =
-                    CommonUtils.getPriceWithoutCurrency(
-                        currencyCode,
-                        selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.formattedPrice
-                    ).toString()
+//                val currencyCode = selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceCurrencyCode
+//                val price =
+//                    CommonUtils.getPriceWithoutCurrency(
+//                        currencyCode,
+//                        selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.formattedPrice
+//                    ).toString()
+
+                val currencyCode =selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceCurrencyCode
+                val price = (selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceAmountMicros.toDouble() / 1000000).toDouble()
+                val priceStr = CommonUtils.roundDouble2(price, 2)
 
                 val request = PurchaseRequest(
-                    price,
+//                    price,
+                    priceStr,
                     currencyCode,
                     if (Enums.SubscriptionType.MONTHLY.toString()
                             .lowercase() == selectedPlan.name.lowercase()
@@ -203,14 +213,17 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                         Purchase.PurchaseState.PENDING -> {
                             Enums.PurchaseStatus.SUCCESS.toString()
                         }
+
                         else -> {
                             Enums.PurchaseStatus.FAILED.toString()
                         }
                     },
                     selectedPlan.productId,
                     purchase.purchaseToken
-
                 )
+
+                Logger.e("currencyCode = $currencyCode")
+                Logger.e("price = $price")
                 profileViewModel.addSubscription(request)
             }
         } else {

@@ -46,11 +46,15 @@ internal class PaymentHistoryListAdapter(items: ArrayList<MyPlan>) :
                 context.getString(R.string.type_plan),
                 CommonUtils.getFirstLatterCap(payment.planType)
             )
+//        holder.binding.tvAmount.text =
+//            CommonUtils.getCurrencySymbol(payment.trxCurrency) + " " + CommonUtils.roundDouble(
+//                payment.trxAmount,
+//                2
+//            )
+
         holder.binding.tvAmount.text =
-            CommonUtils.getCurrencySymbol(payment.trxCurrency) + " " + CommonUtils.roundDouble(
-                payment.trxAmount,
-                2
-            )
+            CommonUtils.getCurrencySymbol(payment.trxCurrency) + " " + CommonUtils.roundDouble1(payment.trxAmount,2)
+
         if (!payment.trxDatetime.isNullOrEmpty())
             holder.binding.tvPurchaseDate.text = String.format(
                 context.getString(R.string.purchased_on), DateFormatter.getFormattedByString(

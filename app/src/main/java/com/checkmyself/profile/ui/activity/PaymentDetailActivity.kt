@@ -75,6 +75,7 @@ class PaymentDetailActivity : BaseActivity() {
                     Status.LOADING -> {
                         showHideProgress(false)
                     }
+
                     Status.SUCCESS -> {
                         showHideProgress(false)
                         if (it.data != null && it.code == ResponseStatus.STATUS_CODE_SUCCESS) {
@@ -82,6 +83,7 @@ class PaymentDetailActivity : BaseActivity() {
                         }
                         setPaymentDetails()
                     }
+
                     Status.ERROR -> {
                         setPaymentDetails()
                         showHideProgress(false)
@@ -101,11 +103,13 @@ class PaymentDetailActivity : BaseActivity() {
                     getString(R.string.type_plan),
                     CommonUtils.getFirstLatterCap(paymentInfo?.planType)
                 )
+//            binding.tvPlanAmount.text =
+//                CommonUtils.getCurrencySymbol(paymentInfo?.trxCurrency) + " " + CommonUtils.roundDouble(
+//                    paymentInfo!!.trxAmount,
+//                    2
+//                )
             binding.tvPlanAmount.text =
-                CommonUtils.getCurrencySymbol(paymentInfo?.trxCurrency) + " " + CommonUtils.roundDouble(
-                    paymentInfo!!.trxAmount,
-                    2
-                )
+                CommonUtils.getCurrencySymbol(paymentInfo?.trxCurrency) + " " + CommonUtils.roundDouble1(paymentInfo!!.trxAmount, 2)
             if (!paymentInfo?.trxDatetime.isNullOrEmpty())
                 binding.tvPurchaseDate.text = String.format(
                     getString(R.string.purchased_on), DateFormatter.getFormattedByString(
