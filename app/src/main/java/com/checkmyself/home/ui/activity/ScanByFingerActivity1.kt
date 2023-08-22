@@ -541,47 +541,48 @@ class ScanByFingerActivity1 : BaseActivity(), View.OnClickListener, ImageListene
 
             } else {
 
-                var msg = getString(R.string.face_not_detected) + "\n\n" + getString(R.string.face_not_detected_msg)
+
+                var msg = getString(R.string.could_not_collect_data_over_seconds) + "\n\n" + getString(R.string.pls_dont_remove_your_finger)
                 setSpannableColor(
                     binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.face_not_detected), ContextCompat.getColor(this, R.color.error_msg_text_color)
                 )
 
-                when (imageData.imageValidity) {
-                    ImageValidity.INVALID_DEVICE_ORIENTATION -> {
-                        msg = getString(R.string.unsupported_orientation) + "\n\n" + getString(R.string.unsupported_orientation_msg)
-                        setSpannableColor(
-                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.unsupported_orientation), ContextCompat.getColor(this, R.color.error_msg_text_color)
-                        )
-                    }
-
-                    ImageValidity.INVALID_ROI -> {
-                        msg = getString(R.string.face_not_detected) + "\n\n" + getString(R.string.face_not_detected_msg)
-                        setSpannableColor(
-                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.face_not_detected), ContextCompat.getColor(this, R.color.error_msg_text_color)
-                        )
-                    }
-
-                    ImageValidity.TILTED_HEAD -> {
-                        msg = getString(R.string.tilted_head) + "\n\n" + getString(R.string.tilted_head_msg)
-                        setSpannableColor(
-                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.tilted_head), ContextCompat.getColor(this, R.color.error_msg_text_color)
-                        )
-                    }
-
-                    ImageValidity.FACE_TOO_FAR -> {
-                        msg = getString(R.string.face_to_far) + "\n\n" + getString(R.string.face_to_far_msg)
-                        setSpannableColor(
-                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.face_to_far), ContextCompat.getColor(this, R.color.error_msg_text_color)
-                        )
-                    }
-
-                    ImageValidity.UNEVEN_LIGHT -> {
-                        msg = getString(R.string.unenven_lighting) + "\n\n" + getString(R.string.unenven_lighting_msg)
-                        setSpannableColor(
-                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.unenven_lighting), ContextCompat.getColor(this, R.color.error_msg_text_color)
-                        )
-                    }
-                }
+//                when (imageData.imageValidity) {
+//                    ImageValidity.INVALID_DEVICE_ORIENTATION -> {
+//                        msg = getString(R.string.unsupported_orientation) + "\n\n" + getString(R.string.unsupported_orientation_msg)
+//                        setSpannableColor(
+//                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.unsupported_orientation), ContextCompat.getColor(this, R.color.error_msg_text_color)
+//                        )
+//                    }
+//
+//                    ImageValidity.INVALID_ROI -> {
+//                        msg = getString(R.string.could_not_collect_data_over_seconds) + "\n\n" + getString(R.string.pls_dont_remove_your_finger)
+//                        setSpannableColor(
+//                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.face_not_detected), ContextCompat.getColor(this, R.color.error_msg_text_color)
+//                        )
+//                    }
+//
+//                    ImageValidity.TILTED_HEAD -> {
+//                        msg = getString(R.string.tilted_head) + "\n\n" + getString(R.string.tilted_head_msg)
+//                        setSpannableColor(
+//                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.tilted_head), ContextCompat.getColor(this, R.color.error_msg_text_color)
+//                        )
+//                    }
+//
+//                    ImageValidity.FACE_TOO_FAR -> {
+//                        msg = getString(R.string.face_to_far) + "\n\n" + getString(R.string.face_to_far_msg)
+//                        setSpannableColor(
+//                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.face_to_far), ContextCompat.getColor(this, R.color.error_msg_text_color)
+//                        )
+//                    }
+//
+//                    ImageValidity.UNEVEN_LIGHT -> {
+//                        msg = getString(R.string.unenven_lighting) + "\n\n" + getString(R.string.unenven_lighting_msg)
+//                        setSpannableColor(
+//                            binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.unenven_lighting), ContextCompat.getColor(this, R.color.error_msg_text_color)
+//                        )
+//                    }
+//                }
 
                 binding.ivFingerMask.setImageResource(R.drawable.ic_finger_red_elipse)
                 binding.measurementsLayout.tvScanningMsg.text = getString(R.string.could_not_collect_data_over_seconds)
