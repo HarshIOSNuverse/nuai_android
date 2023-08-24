@@ -48,6 +48,9 @@ class PaymentInfo() : Parcelable {
     @SerializedName("user")
     var user: User? = null
 
+    @SerializedName("plan_amount")
+    var planAmount: String? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
         uuid = parcel.readString()
@@ -63,6 +66,7 @@ class PaymentInfo() : Parcelable {
         trxStatus = parcel.readString()
         status = parcel.readString()
         user = parcel.readParcelable(User::class.java.classLoader)
+        planAmount = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -80,6 +84,7 @@ class PaymentInfo() : Parcelable {
         parcel.writeString(trxStatus)
         parcel.writeString(status)
         parcel.writeParcelable(user, flags)
+        parcel.writeString(planAmount)
     }
 
     override fun describeContents(): Int {

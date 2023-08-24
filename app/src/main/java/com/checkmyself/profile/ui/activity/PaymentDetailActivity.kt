@@ -108,8 +108,17 @@ class PaymentDetailActivity : BaseActivity() {
 //                    paymentInfo!!.trxAmount,
 //                    2
 //                )
-            binding.tvPlanAmount.text =
-                CommonUtils.getCurrencySymbol(paymentInfo?.trxCurrency) + " " + CommonUtils.roundDouble1(paymentInfo!!.trxAmount, 2)
+
+//            binding.tvPlanAmount.text =
+//                CommonUtils.getCurrencySymbol(paymentInfo?.trxCurrency) + " " + CommonUtils.roundDouble1(paymentInfo!!.trxAmount, 2)
+
+            if (!paymentInfo?.planAmount.isNullOrEmpty()) {
+                binding.tvPlanAmount.text = paymentInfo?.planAmount
+            } else {
+                binding.tvPlanAmount.text = "-"
+            }
+
+
             if (!paymentInfo?.trxDatetime.isNullOrEmpty())
                 binding.tvPurchaseDate.text = String.format(
                     getString(R.string.purchased_on), DateFormatter.getFormattedByString(

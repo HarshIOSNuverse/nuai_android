@@ -11,4 +11,5 @@ data class PurchaseRequest constructor(
     @SerializedName("status") val status: String?,
     @SerializedName("product_id") val productId: String?,
     @SerializedName("purchase_token") val purchaseToken: String?,
+    @SerializedName("plan_amount") val planAmount: String?,
 )

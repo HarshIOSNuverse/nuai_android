@@ -52,8 +52,15 @@ internal class PaymentHistoryListAdapter(items: ArrayList<MyPlan>) :
 //                2
 //            )
 
-        holder.binding.tvAmount.text =
-            CommonUtils.getCurrencySymbol(payment.trxCurrency) + " " + CommonUtils.roundDouble1(payment.trxAmount,2)
+//        holder.binding.tvAmount.text =
+//            CommonUtils.getCurrencySymbol(payment.trxCurrency) + " " + CommonUtils.roundDouble1(payment.trxAmount,2)
+
+
+        if (!payment.planAmount.isNullOrEmpty()) {
+            holder.binding.tvAmount.text = payment.planAmount
+        } else {
+            holder.binding.tvAmount.text = "-"
+        }
 
         if (!payment.trxDatetime.isNullOrEmpty())
             holder.binding.tvPurchaseDate.text = String.format(

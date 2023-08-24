@@ -342,9 +342,9 @@ object CommonUtils {
     }
 
     fun getPriceWithCurrency(subscription: ProductDetails): String {
-        return subscription.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
-            0
-        )?.formattedPrice!!/*getCurrencySymbol(
+        return subscription.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.formattedPrice!!
+
+    /*getCurrencySymbol(
             subscription.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
                 0
             )?.priceCurrencyCode

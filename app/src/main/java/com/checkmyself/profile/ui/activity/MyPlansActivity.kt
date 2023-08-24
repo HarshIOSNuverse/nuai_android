@@ -103,8 +103,16 @@ class MyPlansActivity : BaseActivity(), View.OnClickListener {
 //                    2
 //                )
 
-            binding.tvPlanAmount.text =
-                CommonUtils.getCurrencySymbol(data.activePlan!!.trxCurrency) + " " + CommonUtils.roundDouble1(data.activePlan!!.trxAmount, 2)
+//            binding.tvPlanAmount.text =
+//                CommonUtils.getCurrencySymbol(data.activePlan!!.trxCurrency) + " " + CommonUtils.roundDouble1(data.activePlan!!.trxAmount, 2)
+
+            if (!data.activePlan?.planAmount.isNullOrEmpty()) {
+                binding.tvPlanAmount.text = data.activePlan?.planAmount
+            } else {
+                binding.tvPlanAmount.text = "-"
+            }
+
+
 
             if (!data.activePlan!!.trxDatetime.isNullOrEmpty())
                 binding.tvPurchaseDate.text = String.format(
@@ -142,8 +150,16 @@ class MyPlansActivity : BaseActivity(), View.OnClickListener {
 //                    data.upcomingPlan!!.trxAmount,
 //                    2
 //                )
-            binding.tvUpcomingPlanAmount.text =
-                CommonUtils.getCurrencySymbol(data.upcomingPlan!!.trxCurrency) + " " + CommonUtils.roundDouble1(data.upcomingPlan!!.trxAmount,2)
+
+//            binding.tvUpcomingPlanAmount.text =
+//                CommonUtils.getCurrencySymbol(data.upcomingPlan!!.trxCurrency) + " " + CommonUtils.roundDouble1(data.upcomingPlan!!.trxAmount, 2)
+
+            if (!data.upcomingPlan?.planAmount.isNullOrEmpty()) {
+                binding.tvUpcomingPlanAmount.text = data.upcomingPlan?.planAmount
+            } else {
+                binding.tvUpcomingPlanAmount.text = "-"
+            }
+
 
             if (!data.upcomingPlan!!.trxDatetime.isNullOrEmpty())
                 binding.tvUpcomingPurchaseDate.text = String.format(

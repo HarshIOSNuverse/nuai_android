@@ -117,8 +117,7 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
 //                                }
 //                            }
                             PaymentStatusActivity.startActivityForResult(
-                                this@SubscriptionPlansActivity,
-                                it.data.id, launcher
+                                this@SubscriptionPlansActivity, it.data.id, launcher
                             )
                         }
                     }
@@ -156,31 +155,30 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private val purchasesUpdatedListener =
-        PurchasesUpdatedListener { billingResult, purchases ->
-            Logger.d(TAG, "onPurchasesUpdated() response: ${billingResult.responseCode}")
-            when (billingResult.responseCode) {
-                BillingClient.BillingResponseCode.OK -> {
-                    if (!purchases.isNullOrEmpty()) {
-                        runOnUiThread {
-                            addSubscription(purchases[0])
-                        }
+    private val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
+        Logger.d(TAG, "onPurchasesUpdated() response: ${billingResult.responseCode}")
+        when (billingResult.responseCode) {
+            BillingClient.BillingResponseCode.OK -> {
+                if (!purchases.isNullOrEmpty()) {
+                    runOnUiThread {
+                        addSubscription(purchases[0])
                     }
                 }
+            }
 
-                BillingClient.BillingResponseCode.USER_CANCELED -> {
-                    CommonUtils.showToast(this, "Payment cancelled")
-                }
+            BillingClient.BillingResponseCode.USER_CANCELED -> {
+                CommonUtils.showToast(this, "Payment cancelled")
+            }
 
-                BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
-                    CommonUtils.showToast(this, "Already Owned")
-                }
+            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
+                CommonUtils.showToast(this, "Already Owned")
+            }
 
-                else -> {
-                    CommonUtils.showToast(this, billingResult.debugMessage)
-                }
+            else -> {
+                CommonUtils.showToast(this, billingResult.debugMessage)
             }
         }
+    }
 
     private fun addSubscription(purchase: Purchase?) {
         if (CommonUtils.isNetworkAvailable(this)) {
@@ -194,32 +192,23 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
 //                        selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.formattedPrice
 //                    ).toString()
 
-                val currencyCode =selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceCurrencyCode
+                val currencyCode = selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceCurrencyCode
                 val price = (selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.priceAmountMicros.toDouble() / 1000000).toDouble()
                 val priceStr = CommonUtils.roundDouble2(price, 2)
 
                 val request = PurchaseRequest(
 //                    price,
-                    priceStr,
-                    currencyCode,
-                    if (Enums.SubscriptionType.MONTHLY.toString()
-                            .lowercase() == selectedPlan.name.lowercase()
-                    ) Enums.SubscriptionType.MONTHLY.toString()
-                    else Enums.SubscriptionType.YEARLY.toString(),
-                    purchase.orderId,
-                    DateFormatter.getDateTimeInUTC(Date().time, DateFormatter.yyyy_MM_dd_HH_mm_ss),
-                    when (purchase.purchaseState) {
-                        Purchase.PurchaseState.PURCHASED,
-                        Purchase.PurchaseState.PENDING -> {
+                    priceStr, currencyCode, if (Enums.SubscriptionType.MONTHLY.toString().lowercase() == selectedPlan.name.lowercase()) Enums.SubscriptionType.MONTHLY.toString()
+                    else Enums.SubscriptionType.YEARLY.toString(), purchase.orderId, DateFormatter.getDateTimeInUTC(Date().time, DateFormatter.yyyy_MM_dd_HH_mm_ss), when (purchase.purchaseState) {
+                        Purchase.PurchaseState.PURCHASED, Purchase.PurchaseState.PENDING -> {
                             Enums.PurchaseStatus.SUCCESS.toString()
                         }
 
                         else -> {
                             Enums.PurchaseStatus.FAILED.toString()
                         }
-                    },
-                    selectedPlan.productId,
-                    purchase.purchaseToken
+                    }, selectedPlan.productId, purchase.purchaseToken,
+                    selectedPlan.subscriptionOfferDetails!![0]!!.pricingPhases.pricingPhaseList[0]!!.formattedPrice
                 )
 
                 Logger.e("currencyCode = $currencyCode")
@@ -232,14 +221,11 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initBilling() {
-        billingClient =
-            BillingClient.newBuilder(this).enablePendingPurchases()
-                .setListener(purchasesUpdatedListener).build()
+        billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(purchasesUpdatedListener).build()
         billingClient!!.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 Logger.e(
-                    "onBillingSetupFinished",
-                    "onBillingSetupFinished " + billingResult.debugMessage + " " + billingResult.responseCode
+                    "onBillingSetupFinished", "onBillingSetupFinished " + billingResult.debugMessage + " " + billingResult.responseCode
                 )
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                     querySkuDetailsAsync()
@@ -258,14 +244,8 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
     private fun querySkuDetailsAsync() {
         val params = QueryProductDetailsParams.newBuilder().setProductList(
             listOf(
-                QueryProductDetailsParams.Product.newBuilder()
-                    .setProductId(AppConstant.MONTHLY_PLAN_ID)
-                    .setProductType(ProductType.SUBS)
-                    .build(),
-                QueryProductDetailsParams.Product.newBuilder()
-                    .setProductId(AppConstant.YEARLY_PLAN_ID)
-                    .setProductType(ProductType.SUBS)
-                    .build()
+                QueryProductDetailsParams.Product.newBuilder().setProductId(AppConstant.MONTHLY_PLAN_ID).setProductType(ProductType.SUBS).build(),
+                QueryProductDetailsParams.Product.newBuilder().setProductId(AppConstant.YEARLY_PLAN_ID).setProductType(ProductType.SUBS).build()
             )
         ).build()
         billingClient!!.queryProductDetailsAsync(params) { _, productDetailsList ->
@@ -274,9 +254,14 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                 subscriptionList.addAll(productDetailsList)
             }
             runOnUiThread {
-                binding.adapter!!.setSaveAmountForYearlyPlan(subscriptionList)
+//                binding.adapter!!.setSaveAmountForYearlyPlan(subscriptionList)
                 binding.adapter!!.notifyDataSetChanged()
                 setNoResult()
+
+                for (i in subscriptionList.indices) {
+                    val formattedPrice = subscriptionList[i].subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.formattedPrice
+                    Logger.e("formattedPrice $formattedPrice")
+                }
             }
         }
     }
@@ -289,13 +274,10 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
                     .setProductDetails(productDetails)
                     // to get an offer token, call ProductDetails.subscriptionOfferDetails()
                     // for a list of offers that are available to the user
-                    .setOfferToken("" + productDetails.subscriptionOfferDetails?.get(0)?.offerToken)
-                    .build()
+                    .setOfferToken("" + productDetails.subscriptionOfferDetails?.get(0)?.offerToken).build()
             )
 
-            val billingFlowParams = BillingFlowParams.newBuilder()
-                .setProductDetailsParamsList(productDetailsParamsList)
-                .build()
+            val billingFlowParams = BillingFlowParams.newBuilder().setProductDetailsParamsList(productDetailsParamsList).build()
             val billingResult = billingClient?.launchBillingFlow(this, billingFlowParams)
             Logger.e("responseCode", billingResult.toString())
         }
@@ -313,11 +295,10 @@ class SubscriptionPlansActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private val launcher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                setResult(Activity.RESULT_OK)
-                finish()
-            }
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            setResult(Activity.RESULT_OK)
+            finish()
         }
+    }
 }

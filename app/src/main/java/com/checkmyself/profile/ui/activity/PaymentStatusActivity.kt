@@ -118,11 +118,18 @@ class PaymentStatusActivity : BaseActivity(), View.OnClickListener {
 //                    2
 //                )
 
-            binding.tvAmount.text =
-                CommonUtils.getCurrencySymbol(paymentInfo?.trxCurrency) + " " + CommonUtils.roundDouble1(
-                    paymentInfo!!.trxAmount,
-                    2
-                )
+//            binding.tvAmount.text =
+//                CommonUtils.getCurrencySymbol(paymentInfo?.trxCurrency) + " " + CommonUtils.roundDouble1(
+//                    paymentInfo!!.trxAmount,
+//                    2
+//                )
+
+            if (!paymentInfo?.planAmount.isNullOrEmpty()) {
+                binding.tvAmount.text = paymentInfo?.planAmount
+            } else {
+                binding.tvAmount.text = "-"
+            }
+
 
             if (!paymentInfo?.endDate.isNullOrEmpty())
                 binding.tvPlanExpireDate.text = DateFormatter.getFormattedByString(
