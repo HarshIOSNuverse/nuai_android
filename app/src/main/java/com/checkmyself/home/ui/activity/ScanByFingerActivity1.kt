@@ -544,7 +544,7 @@ class ScanByFingerActivity1 : BaseActivity(), View.OnClickListener, ImageListene
 
                 var msg = getString(R.string.could_not_collect_data_over_seconds) + "\n\n" + getString(R.string.pls_dont_remove_your_finger)
                 setSpannableColor(
-                    binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.face_not_detected), ContextCompat.getColor(this, R.color.error_msg_text_color)
+                    binding.measurementsLayout.tvScanningMsg, msg, getString(R.string.could_not_collect_data_over_seconds), ContextCompat.getColor(this, R.color.error_msg_text_color)
                 )
 
 //                when (imageData.imageValidity) {
@@ -596,12 +596,8 @@ class ScanByFingerActivity1 : BaseActivity(), View.OnClickListener, ImageListene
     private fun setSpannableColor(view: TextView, fulltext: String, subtext1: String, color: Int) {
         val str: Spannable = SpannableString(fulltext)
         val i1 = fulltext.indexOf(subtext1)
-        str.setSpan(
-            ForegroundColorSpan(color), i1, i1 + subtext1.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        str.setSpan(
-            AbsoluteSizeSpan(17, true), i1 + subtext1.length, fulltext.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
+        str.setSpan(ForegroundColorSpan(color), i1, i1 + subtext1.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        str.setSpan(AbsoluteSizeSpan(17, true), i1 + subtext1.length, fulltext.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         view.movementMethod = LinkMovementMethod.getInstance()
         view.text = str
         view.highlightColor = Color.TRANSPARENT
@@ -905,8 +901,9 @@ class ScanByFingerActivity1 : BaseActivity(), View.OnClickListener, ImageListene
 
                     AlertCodes.MEASUREMENT_CODE_MISDETECTION_DURATION_EXCEEDS_LIMIT_ERROR -> {
                         stopMeasuring()
-                        stopTimeCount()
+//                        stopTimeCount()
 //                    updateUi(Enums.UiState.MANUALLY_STOPPED)
+
                         binding.measurementsLayout.root.visibility = View.INVISIBLE
                         if (!isErrorDialogShowing) {
                             isErrorDialogShowing = true
