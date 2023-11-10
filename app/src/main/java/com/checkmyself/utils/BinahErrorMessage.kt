@@ -48,7 +48,7 @@ object BinahErrorMessage {
             }
 
             AlertCodes.LICENSE_CODE_METER_ATTRIBUTE_USES_LIMIT_REACHED_ERROR -> {
-                "Contact Binah.ai customer support."
+                "Contact customer support."
             }
 
             AlertCodes.LICENSE_CODE_AUTHENTICATION_FAILED_ERROR -> {
@@ -60,7 +60,7 @@ object BinahErrorMessage {
             }
 
             AlertCodes.LICENSE_CODE_NETWORK_ISSUES_ERROR -> {
-                "Network issue prevents validating the license with the Binah license server."
+                "Network issue prevents validating the license with the license server."
             }
 
             AlertCodes.LICENSE_CODE_SSL_HANDSHAKE_ERROR -> {
