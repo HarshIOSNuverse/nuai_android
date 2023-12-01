@@ -1,5 +1,6 @@
 package com.checkmyself.profile.repository
 
+import com.checkmyself.home.model.api.response.ScanKeyResponse
 import com.checkmyself.network.ApiResponseState
 import com.checkmyself.network.CommonResponse
 import com.checkmyself.network.NetworkService
@@ -160,5 +161,21 @@ class ProfileRepository @Inject constructor(private val networkService: NetworkS
             }
         }.flowOn(Dispatchers.IO)
     }
+
+    suspend fun getScanKey(): Flow<ApiResponseState<ScanKeyResponse>> {
+        return flow {
+            val response = networkService.api.getScanKey()
+            if (response.isSuccessful) {
+                emit(ApiResponseState.success(response.body(), response.code()))
+            } else {
+                emit(
+                    ApiResponseState.error(
+                        CommonUtils.getErrorResponse(response.errorBody()).message, response.code()
+                    )
+                )
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
 
 }

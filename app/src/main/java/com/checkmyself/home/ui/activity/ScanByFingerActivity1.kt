@@ -81,8 +81,10 @@ class ScanByFingerActivity1 : BaseActivity(), View.OnClickListener, ImageListene
 
     companion object {
         val tag: String = ScanByFingerActivity1::class.java.simpleName
-        fun startActivity(activity: Activity) {
-            Intent(activity, ScanByFingerActivity1::class.java).run {
+        fun startActivity(activity: Activity, scanKey: String) {
+            Intent(activity, ScanByFingerActivity1::class.java).apply {
+                putExtra(AppConstant.SCAN_KEY, scanKey)
+            }.run {
                 activity.startActivity(this)
                 AnimationsHandler.playActivityAnimation(
                     activity, AnimationsHandler.Animations.RightToLeft
@@ -112,10 +114,12 @@ class ScanByFingerActivity1 : BaseActivity(), View.OnClickListener, ImageListene
 
     private var enabledVitalSigns: SessionEnabledVitalSigns? = null
 
+    private var scanKey: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.scan_by_finger_activity)
+        scanKey = intent.getStringExtra(AppConstant.SCAN_KEY)
         setUpToolNewBar(binding.toolbarLayout)
         setToolBarTitle(getString(R.string.app_name))
         showToolbarIcon(true)
@@ -165,7 +169,8 @@ class ScanByFingerActivity1 : BaseActivity(), View.OnClickListener, ImageListene
     }
 
     private fun createSession() {
-        val licenseDetails = LicenseDetails(BuildConfig.LICENCE_KEY)
+//        val licenseDetails = LicenseDetails(BuildConfig.LICENCE_KEY)
+        val licenseDetails = LicenseDetails(scanKey)
 //        val subjectDemographic = SubjectDemographic(Sex.FEMALE, 35.0, 65.0)
         try {
 

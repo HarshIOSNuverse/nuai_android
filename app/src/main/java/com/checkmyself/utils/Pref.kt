@@ -17,6 +17,7 @@ object Pref {
         const val FCM_TOKEN = "fcm_token"
         const val IS_SEND_FCM_TOKEN = "is_send_fcm_token"
         const val PLAN_ABOUT_TO_EXPIRE_DATE = "PLAN_ABOUT_TO_EXPIRE_DATE"
+        const val AES_KEY = "aes_key"
     }
 
     private val prefs: SharedPreferences =

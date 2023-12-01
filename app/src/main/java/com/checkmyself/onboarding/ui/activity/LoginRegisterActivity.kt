@@ -3,12 +3,20 @@ package com.checkmyself.onboarding.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.checkmyself.R
 import com.checkmyself.base.BaseActivity
 import com.checkmyself.databinding.LoginRegisterActivityBinding
+import com.checkmyself.utils.EasyAES
+import com.checkmyself.utils.Pref
 import dagger.hilt.android.AndroidEntryPoint
+import java.security.spec.AlgorithmParameterSpec
+import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 
 @AndroidEntryPoint
@@ -51,6 +59,7 @@ class LoginRegisterActivity : BaseActivity(), View.OnClickListener {
             R.id.create_account_btn -> {
                 RegisterActivity.startActivity(this)
             }
+
             R.id.loginTxt -> {
                 LoginActivity.startActivity(this)
             }

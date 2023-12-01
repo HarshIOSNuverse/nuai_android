@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.checkmyself.R
 import com.checkmyself.di.ResourcesProvider
+import com.checkmyself.home.model.api.response.ScanKeyResponse
 import com.checkmyself.network.ApiResponseState
 import com.checkmyself.network.CommonResponse
 import com.checkmyself.network.Status
@@ -46,6 +47,11 @@ class ProfileViewModel @Inject constructor(
         MutableStateFlow(ApiResponseState(Status.LOADING, PurchaseResponse()))
     val checkVersionState =
         MutableStateFlow(ApiResponseState(Status.LOADING, CheckVersionResponse()))
+
+    val scanKeyState =
+        MutableStateFlow(ApiResponseState(Status.LOADING, ScanKeyResponse()))
+
+
 
     fun getMe() {
         if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
@@ -254,5 +260,29 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+
+    fun getScanKey() {
+        if (CommonUtils.isNetworkAvailable(resourcesProvider.context)) {
+            scanKeyState.value = ApiResponseState.loading()
+            viewModelScope.launch {
+                profileRepository.getScanKey().catch {
+                    scanKeyState.value =
+                        ApiResponseState.error(it.message, 100)
+                }.collect {
+                    scanKeyState.value =
+                        if (it.data != null) ApiResponseState.success(it.data, it.code)
+                        else ApiResponseState.error(it.message, it.code)
+                }
+            }
+        } else {
+            scanKeyState.value =
+                ApiResponseState.error(
+                    resourcesProvider.getString(R.string.no_internet_connection),
+                    100
+                )
+        }
+    }
+
 
 }

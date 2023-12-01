@@ -85,8 +85,10 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
 
     companion object {
         val tag: String = ScanByFaceActivity1::class.java.simpleName
-        fun startActivity(activity: Activity) {
-            Intent(activity, ScanByFaceActivity1::class.java).run {
+        fun startActivity(activity: Activity, scanKey: String) {
+            Intent(activity, ScanByFaceActivity1::class.java).apply {
+                putExtra(AppConstant.SCAN_KEY, scanKey)
+            }.run {
                 activity.startActivity(this)
                 AnimationsHandler.playActivityAnimation(
                     activity, AnimationsHandler.Animations.RightToLeft
@@ -115,11 +117,15 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
     }
 
     private var enabledVitalSigns: SessionEnabledVitalSigns? = null
+    private var scanKey: String? = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.scan_by_face_activity)
+
+        scanKey = intent.getStringExtra(AppConstant.SCAN_KEY)
+
         setUpToolNewBar(binding.toolbarLayout)
         setToolBarTitle(getString(R.string.app_name))
         showToolbarIcon(true)
@@ -169,7 +175,8 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
     }
 
     private fun createSession() {
-        val licenseDetails = LicenseDetails(BuildConfig.LICENCE_KEY)
+//        val licenseDetails = LicenseDetails(BuildConfig.LICENCE_KEY)
+        val licenseDetails = LicenseDetails(scanKey)
 //        val subjectDemographic = SubjectDemographic(Sex.FEMALE, 35.0, 65.0)
         try {
             session = FaceSessionBuilder(applicationContext)
@@ -465,7 +472,8 @@ class ScanByFaceActivity1 : BaseActivity(), View.OnClickListener, ImageListener,
                             stopMeasuring()
 //                            closeSession()
 //                            finish()
-                            AlertDialogManager.showInformationDialog(this@ScanByFaceActivity1,
+                            AlertDialogManager.showInformationDialog(
+                                this@ScanByFaceActivity1,
                                 0,
                                 null,
                                 getString(R.string.no_enough_data_was_recorded),

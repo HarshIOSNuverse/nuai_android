@@ -33,4 +33,6 @@ object AppConstant {
     const val BLOOD_PRESSURE_L_1 = 100
     const val BLOOD_PRESSURE_L_2 = 130
     const val BLOOD_PRESSURE_MAX = 160
+
+    const val SCAN_KEY = "scan_key"
 }

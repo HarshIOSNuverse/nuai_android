@@ -8,6 +8,7 @@ import com.checkmyself.history.model.api.response.HistoryListResponse
 import com.checkmyself.history.model.api.response.SendScanResponse
 import com.checkmyself.home.model.api.request.SendScanRequest
 import com.checkmyself.home.model.api.response.MeasurementResponse
+import com.checkmyself.home.model.api.response.ScanKeyResponse
 import com.checkmyself.onboarding.model.api.request.*
 import com.checkmyself.onboarding.model.api.response.LoginResponse
 import com.checkmyself.onboarding.model.api.response.MyProfileResponse
@@ -161,6 +162,12 @@ constructor(
 //        @POST(Url.API + "transaction")
         @POST(Url.API + "check/version")
         suspend fun checkVersion(@Body request: CheckVersionRequest): Response<CheckVersionResponse?>
+
+
+        @Headers("$HEADER_BEAR: true")
+        @GET(Url.API + "scan-key")
+        suspend fun getScanKey(): Response<ScanKeyResponse?>
+
 
 
         /* @Headers("$HEADER_BEAR: true")

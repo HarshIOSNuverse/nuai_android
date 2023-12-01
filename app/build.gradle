@@ -47,6 +47,9 @@ android {
             buildConfigField("String", "PREF_FILE", "\"" + prefFile + "\"")
             buildConfigField("String", "PREF_APP_FILE", "\"" + prefAppFile + "\"")
             buildConfigField "boolean", "DEBUG", "" + true + ""
+
+            buildConfigField "String", "AES_KEY", "\"${aesKey}\""
+
         }
 
         release {
@@ -58,6 +61,8 @@ android {
             buildConfigField("String", "PREF_FILE", "\"" + prefFile + "\"")
             buildConfigField("String", "PREF_APP_FILE", "\"" + prefAppFile + "\"")
             buildConfigField "boolean", "DEBUG", "" + false + ""
+
+            buildConfigField "String", "AES_KEY", "\"${aesKey}\""
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
